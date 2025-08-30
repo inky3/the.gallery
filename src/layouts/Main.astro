@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>THE.GALLERY</title>
+	</head>
+	<body>
+
+    <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">THE.GALLERY</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Gallery
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Poster</a></li>
+                <li><a class="dropdown-item" href="#">Terrarium</a></li>
+                <li><a class="dropdown-item" href="#">Photography</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-dark text-white text-center py-5">
+      <div class="container">
+        <h1 class="display-4">Art Gallery</h1>
+        <p class="lead">Home / Gallery</p>
+      </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section class="py-5">
+        <slot />
+    </section>
+
+        <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container">
+        <h5>THE.GALLERY</h5>
+            <p>
+              This is the gallery of one person who just want to share something for fun, some might look beautiful, some might not. But all are made with passion and love. I have many kind of thing in this website and looking forward for more, You can kindly support me by sharing this website to your friends and family. Thank you for visiting.
+            </p>
+      </div>
+    </footer>
+
+    <style>
+      /* Animation for slide effect */
+      .gallery-card {
+        transition: transform 0.4s ease, opacity 0.4s ease;
+      }
+      .hide {
+        opacity: 0;
+        transform: translateX(-50px);
+        pointer-events: none;
+        position: absolute;
+      }
+    </style>
+	</body>
+</html>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Gallery filter logic
+      const filterNav = document.getElementById("filterNav");
+      const cards = document.querySelectorAll(".gallery-card");
+
+      filterNav.addEventListener("click", (e) => {
+        if (e.target.tagName !== "A") return;
+        e.preventDefault();
+
+        // Update active state
+        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
+        e.target.classList.add("active");
+
+        const filter = e.target.getAttribute("data-filter");
+
+        cards.forEach((card) => {
+          if (filter === "all" || card.dataset.category === filter) {
+            card.classList.remove("hide");
+          } else {
+            card.classList.add("hide");
+          }
+        });
+      });
+    </script>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>

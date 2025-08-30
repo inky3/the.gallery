@@ -1,0 +1,27 @@
+---
+const { image, alt, title, category, href } = Astro.props;
+---
+
+<div class="col-md-4 gallery-card" data-category={category}>
+  <a href={href} class="text-decoration-none">
+    <div class="card h-100 shadow-sm">
+      <img src={image} class="card-img-top" alt={alt || title} />
+      <div class="card-body text-center">
+        <h5 class="card-title">{title}</h5>
+      </div>
+    </div>
+  </a>
+</div>
+
+
+<style>
+        .gallery-card {
+        transition: transform 0.4s ease, opacity 0.4s ease;
+      }
+      .hide {
+        opacity: 0;
+        transform: translateX(-50px);
+        pointer-events: none;
+        position: absolute;
+      }
+</style>

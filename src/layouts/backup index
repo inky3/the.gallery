@@ -1,0 +1,155 @@
+<Layout>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">THE.GALLERY</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Gallery
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Poster</a></li>
+                <li><a class="dropdown-item" href="#">Terrarium</a></li>
+                <li><a class="dropdown-item" href="#">Photography</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="bg-dark text-white text-center py-5">
+      <div class="container">
+        <h1 class="display-4">Gallery Full Width</h1>
+        <p class="lead">Home / Gallery</p>
+      </div>
+    </header>
+
+    <!-- Gallery Section -->
+    <section class="py-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">From Our Gallery</h2>
+          <!-- Filter Nav -->
+          <ul class="nav" id="filterNav">
+            <li class="nav-item">
+              <a class="nav-link active" data-filter="all" href="#">Highlight</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-filter="poster" href="#">Poster</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-filter="photography" href="#">Photography</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-filter="terrarium" href="#">Terrarium</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Gallery Cards -->
+        <div class="row g-4 position-relative" id="gallery">
+          <!-- Example Items with categories -->
+          <Card title="Poster Item" image="/src/assets/blank.jpg" category="poster" href="#" />
+          <Card title="Photography Item" image="/src/assets/blank.jpg" category="photography" href="#" />
+          <Card title="Terrarium Item" image="/src/assets/blank.jpg" category="terrarium" href="#" />
+          <Card title="Poster Item 2" image="/src/assets/blank.jpg" category="poster" href="#" />
+          <Card title="Photography Item 2" image="/src/assets/blank.jpg" catagoet="photography" href="#" /> 
+
+          <!-- <div class="col-md-4 gallery-card" data-category="poster">
+            <div class="card h-100">
+              <img src="/src/assets/blank.jpg" class="card-img-top" alt="Poster" />
+              <div class="card-body text-center">Poster Item</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 gallery-card" data-category="photography">
+            <div class="card h-100">
+              <img src="/src/assets/blank.jpg" class="card-img-top" alt="Photography" />
+              <div class="card-body text-center">Photography Item</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 gallery-card" data-category="terrarium">
+            <div class="card h-100">
+              <img src="/src/assets/blank.jpg" class="card-img-top" alt="Terrarium" />
+              <div class="card-body text-center">Terrarium Item</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 gallery-card" data-category="poster">
+            <div class="card h-100">
+              <img src="/src/assets/blank.jpg" class="card-img-top" alt="Poster" />
+              <div class="card-body text-center">Poster Item 2</div>
+            </div>
+          </div>
+
+          <div class="col-md-4 gallery-card" data-category="photography">
+            <div class="card h-100">
+              <img src="/src/assets/blank.jpg" class="card-img-top" alt="Photography" />
+              <div class="card-body text-center">Photography Item 2</div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </section>
+
+        <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <h5>LODZ</h5>
+            <p>
+              Podcasting operational change management inside of workflows to
+              establish a framework.
+            </p>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Quick Link</h5>
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">About</a></li>
+              <li><a href="#" class="text-white">Event</a></li>
+              <li><a href="#" class="text-white">Gallery</a></li>
+              <li><a href="#" class="text-white">Pages</a></li>
+              <li><a href="#" class="text-white">Blog</a></li>
+              <li><a href="#" class="text-white">Contact</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-3">
+            <h5>Contact Us</h5>
+            <p>Lodz Museums, California, USA</p>
+            <p>Phone: +0997 123 456 789</p>
+            <p>Email: info@lodzmuseums.com</p>
+            <h6 class="mt-3">Open Hours</h6>
+            <p>Daily: 9.00am – 8.00pm<br />Monday & Holidays: Closed</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+</Layout>
