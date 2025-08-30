@@ -5,5 +5,5 @@ export default defineConfig({
   // Add this line to specify static output
   output: 'static',
   // Replace <YOUR_REPOSITORY_NAME> with your actual repository name
-  base: '/<the.gallery>/',
+  base: '/the.gallery/',
 });
