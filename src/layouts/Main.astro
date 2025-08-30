@@ -7,6 +7,52 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>THE.GALLERY</title>
 	</head>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Gallery filter logic
+      const filterNav = document.getElementById("filterNav");
+      const cards = document.querySelectorAll(".gallery-card");
+
+      filterNav.addEventListener("click", (e) => {
+        if (e.target.tagName !== "A") return;
+        e.preventDefault();
+
+        // Update active state
+        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
+        e.target.classList.add("active");
+
+        const filter = e.target.getAttribute("data-filter");
+
+        cards.forEach((card) => {
+          if (filter === "all" || card.dataset.category === filter) {
+            card.classList.remove("hide");
+          } else {
+            card.classList.add("hide");
+          }
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentPath = window.location.pathname.replace(/\/$/, "");
+
+        document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item').forEach(link => {
+          link.classList.remove('active');
+          link.removeAttribute('aria-current');
+
+          const href = link.getAttribute('href');
+          if (!href || href === "#") return;
+
+          const linkPath = href.replace(/\/$/, "");
+
+          if (currentPath.endsWith(linkPath)) {
+            link.classList.add('active');
+            link.setAttribute('aria-current', 'page'); // Add this line
+          }
+        });
+      });
+    </script>
+
 	<body>
 
     <!-- Navbar -->
@@ -30,7 +76,7 @@
               <a class="nav-link" aria-current="page" href="/the.gallery">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/the.gallery/about/">About</a>
+              <a class="nav-link active" href="/the.gallery/about">About</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -79,52 +125,6 @@
 	</body>
 </html>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Gallery filter logic
-      const filterNav = document.getElementById("filterNav");
-      const cards = document.querySelectorAll(".gallery-card");
-
-      filterNav.addEventListener("click", (e) => {
-        if (e.target.tagName !== "A") return;
-        e.preventDefault();
-
-        // Update active state
-        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-        e.target.classList.add("active");
-
-        const filter = e.target.getAttribute("data-filter");
-
-        cards.forEach((card) => {
-          if (filter === "all" || card.dataset.category === filter) {
-            card.classList.remove("hide");
-          } else {
-            card.classList.add("hide");
-          }
-        });
-      });
-        // Highlight the navbar link based on current URL
-        // Remove trailing slash from current path
-        const currentPath = window.location.pathname.replace(/\/$/, "");
-
-        // Loop through all nav links
-        document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item').forEach(link => {
-          link.classList.remove('active');
-
-          const linkHref = link.getAttribute('href');
-          if (!linkHref || linkHref === "#") return;
-
-          // Remove trailing slash from href
-          const linkPath = linkHref.replace(/\/$/, "");
-
-          // Check if the currentPath ends with the same path as linkPath
-          if (currentPath.endsWith(linkPath)) {
-            link.classList.add('active');
-          }
-        });
-
-    </script>
-
 <style>
       html,
       body {
@@ -142,4 +142,9 @@
         pointer-events: none;
         position: absolute;
       }
+      .navbar-nav .nav-link.active {
+      color: #c2c2c2 !important;  /* Bootstrap warning color, for example */
+      font-weight: bold;
+    }
+
     </style>
