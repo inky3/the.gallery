@@ -1,7 +1,6 @@
 ---
 import Main from "../layouts/Main.astro";
 import Card from "../components/Card.astro";
-import '../assets/style.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 ---
 
@@ -91,3 +90,63 @@ import "bootstrap/dist/css/bootstrap.min.css";
       </div>
     </section>
     </Main>
+
+    <style>
+      /* Animation for slide effect */
+      .gallery-card {
+        transition: transform 0.4s ease, opacity 0.4s ease;
+      }
+      .hide {
+        opacity: 0;
+        transform: translateX(-50px);
+        pointer-events: none;
+        position: absolute;
+      }
+      .navline {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        position: relative;
+        padding: 0.3rem 0;
+        border-bottom: 2px solid #555;
+      }
+
+      .navline a {
+        text-decoration: none;
+        font-size: 1rem;
+        color: #888;
+        font-weight: normal;
+        position: relative;
+        padding-bottom: 0.5rem;
+        transition: color 0.3s ease;
+      }
+
+      .navline a.active {
+        color: #000;
+        font-weight: bold;
+      }
+
+      /* Underline + Triangle indicator */
+      .indicator {
+        position: absolute;
+        bottom: -2px;
+        height: 2px;
+        background: #000;
+        transition: all 0.3s ease;
+      }
+
+      /* Triangle accent */
+      .indicator::before {
+        content: '';
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 6px solid #000;
+      }
+
+    </style>
