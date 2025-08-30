@@ -2,6 +2,8 @@
 import Main from "../layouts/Main.astro";
 import Card from "../components/Card.astro";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+
 ---
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -26,7 +28,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
           } else {
             card.classList.add("hide");
           }
-        });
+        });xz
       });
 
       const navLinks = document.querySelectorAll('.navline a');
@@ -34,7 +36,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
       function moveIndicator(element) {
         const linkRect = element.getBoundingClientRect();
-        const parentRect = element.parentElement.getBoundingClientRect();
+        const parentRect = element.closest(".navline").getBoundingClientRect();
 
         indicator.style.width = `${linkRect.width}px`;
         indicator.style.left = `${linkRect.left - parentRect.left}px`;
@@ -74,8 +76,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
             <li class="nav-item">
               <a class="nav-link" data-filter="terrarium" href="#">Terrarium</a>
             </li>
+            <!-- Indicator lives here -->
+            <div class="indicator"></div>
           </ul>
-          <div class="indicator"></div>
         </div>
 
         <!-- Gallery Cards -->
