@@ -30,7 +30,7 @@
               <a class="nav-link" aria-current="page" href="/the.gallery">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/the.gallery/about">About</a>
+              <a class="nav-link" href="/the.gallery/about/">About</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -104,18 +104,25 @@
         });
       });
         // Highlight the navbar link based on current URL
-      const currentPath = window.location.pathname;
+        // Remove trailing slash from current path
+        const currentPath = window.location.pathname.replace(/\/$/, "");
 
-      document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item').forEach(link => {
-        link.classList.remove('active');
+        // Loop through all nav links
+        document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item').forEach(link => {
+          link.classList.remove('active');
 
-        const linkPath = link.getAttribute('href');
+          const linkHref = link.getAttribute('href');
+          if (!linkHref || linkHref === "#") return;
 
-        // Highlight if currentPath starts with linkPath
-        if (currentPath.startsWith(linkPath) && linkPath !== "#") {
-          link.classList.add('active');
-        }
-      });
+          // Remove trailing slash from href
+          const linkPath = linkHref.replace(/\/$/, "");
+
+          // Check if the currentPath ends with the same path as linkPath
+          if (currentPath.endsWith(linkPath)) {
+            link.classList.add('active');
+          }
+        });
+
     </script>
 
 <style>
