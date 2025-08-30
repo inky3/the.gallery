@@ -1,4 +1,4 @@
-    <style>
+
       /* Animation for slide effect */
       .gallery-card {
         transition: transform 0.4s ease, opacity 0.4s ease;
@@ -55,5 +55,3 @@
         border-right: 6px solid transparent;
         border-bottom: 6px solid #000;
       }
-
-    </style>
