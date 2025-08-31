@@ -1,9 +1,14 @@
 ---
 import Main from '../layouts/Main.astro';
 import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+    head: "About Us",
+    description: "Get to know me more alittle bit better."
+}
 ---
 
-<Main>
+<Main head={hero.head} description={hero.description}>
         <section class="py-5">
         <div class="container">
             <h1>About Us</h1>

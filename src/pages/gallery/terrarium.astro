@@ -1,0 +1,18 @@
+---
+import Main from '../../layouts/Main.astro';
+import Card from '../../components/Card.astro';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+    head: "Terrarium Gallery",
+    description: "Explore my curated collection of terrarium."
+}
+---
+
+<Main head={hero.head} description={hero.description}>
+    <div class="row g-4 position-relative" id="gallery">   
+    <Card title="Terrarium Item" image="img/blank.jpg" category="terrarium" href="#" />
+    <Card title="Terrarium Item" image="img/blank.jpg" category="terrarium" href="#" />
+    <Card title="Terrarium Item" image="img/blank.jpg" category="terrarium" href="#" />
+    </div>
+</Main>

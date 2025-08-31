@@ -1,62 +1,144 @@
+---
+const { head, description } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>THE.GALLERY</title>
-	</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>THE.GALLERY</title>
+  </head>
+    <!-- Bootstrap JS (kept) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Gallery filter logic
-      const filterNav = document.getElementById("filterNav");
-      const cards = document.querySelectorAll(".gallery-card");
-
-      filterNav.addEventListener("click", (e) => {
-        if (e.target.tagName !== "A") return;
-        e.preventDefault();
-
-        // Update active state
-        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-        e.target.classList.add("active");
-
-        const filter = e.target.getAttribute("data-filter");
-
-        cards.forEach((card) => {
-          if (filter === "all" || card.dataset.category === filter) {
-            card.classList.remove("hide");
-          } else {
-            card.classList.add("hide");
-          }
-        });
-      });
-
+    <!-- Active-nav + optional widgets -->
+    <script defer>
       document.addEventListener("DOMContentLoaded", () => {
-        const currentPath = window.location.pathname.replace(/\/$/, "");
+        /** ---------------------------
+         * Utility: normalize base path
+         * --------------------------- */
+        const basePath = "/the.gallery"; // GitHub Pages subfolder
+        const stripBase = (href) => {
+          if (!href) return "/";
+          let out = href;
+          if (out.startsWith(basePath)) out = out.slice(basePath.length);
+          out = out.replace(/\/+$/, ""); // trim trailing slash
+          return out === "" ? "/" : out;
+        };
+        /** ---------------------------
+         * OPTIONAL: Filter nav (guarded)
+         * --------------------------- */
+        const filterNav = document.getElementById("filterNav");
+        const cards = document.querySelectorAll(".gallery-card");
+        if (filterNav && cards.length) {
+          filterNav.addEventListener("click", (e) => {
+            if (e.target.tagName !== "A") return;
+            e.preventDefault();
 
-        document.querySelectorAll('.navbar-nav .nav-link, .dropdown-item').forEach(link => {
-          link.classList.remove('active');
-          link.removeAttribute('aria-current');
+            filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
+            e.target.classList.add("active");
 
-          const href = link.getAttribute('href');
-          if (!href || href === "#") return;
+            const filter = e.target.getAttribute("data-filter");
+            cards.forEach((card) => {
+              const cat = card.dataset.category;
+              if (filter === "all" || cat === filter) {
+                card.classList.remove("hide");
+              } else {
+                card.classList.add("hide");
+              }
+            });
+          });
+        }
 
-          const linkPath = href.replace(/\/$/, "");
+        /** ---------------------------
+         * OPTIONAL: Section indicator (guarded)
+         * --------------------------- */
+        const indicator = document.querySelector(".indicator");
+        const navline = document.querySelector(".navline");
+        if (indicator && navline) {
+          const navLinks = navline.querySelectorAll("a");
+          const moveIndicator = (el) => {
+            const linkRect = el.getBoundingClientRect();
+            const parentRect = navline.getBoundingClientRect();
+            indicator.style.width = `${linkRect.width}px`;
+            indicator.style.left = `${linkRect.left - parentRect.left}px`;
+          };
+          const activeLink = navline.querySelector("a.active");
+          if (activeLink) moveIndicator(activeLink);
 
-          if (currentPath.endsWith(linkPath)) {
-            link.classList.add('active');
-            link.setAttribute('aria-current', 'page'); // Add this line
-          }
-        });
+          navLinks.forEach((l) =>
+            l.addEventListener("click", (e) => {
+              // allow navigation in production; prevent only if testing animations
+              // e.preventDefault();
+              navLinks.forEach((x) => x.classList.remove("active"));
+              e.currentTarget.classList.add("active");
+              moveIndicator(e.currentTarget);
+            })
+          );
+          window.addEventListener("resize", () => {
+            const currentActive = navline.querySelector("a.active");
+            if (currentActive) moveIndicator(currentActive);
+          });
+        }
       });
+      // Prevent the dropdown toggle from scrolling to top when clicked
+document.addEventListener("DOMContentLoaded", () => {
+  const basePath = "/the.gallery";
+  const stripBase = (href) => {
+    if (!href) return "/";
+    let out = href;
+    if (out.startsWith(basePath)) out = out.slice(basePath.length);
+    out = out.replace(/\/+$/, "");
+    return out === "" ? "/" : out;
+  };
+  const current = stripBase(window.location.pathname);
+
+  // Reset nav
+  document.querySelectorAll(".navbar-nav .nav-link, .dropdown-item").forEach(el => {
+    el.classList.remove("active");
+    el.removeAttribute("aria-current");
+  });
+
+  // Highlight child dropdown first
+  let matchedChild = false;
+  document.querySelectorAll(".dropdown-menu .dropdown-item").forEach(item => {
+    const href = stripBase(item.getAttribute("href"));
+    if (href && href === current) {
+      matchedChild = true;
+      item.classList.add("active");
+      item.setAttribute("aria-current", "page");
+    }
+  });
+
+  // If child matched, highlight dropdown toggle
+  if (matchedChild) {
+    const toggle = document.querySelector(".nav-item.dropdown > .nav-link.dropdown-toggle");
+    if (toggle) toggle.classList.add("active");
+  } else {
+    // Highlight top-level
+    document.querySelectorAll('.navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle)').forEach(link => {
+      const href = stripBase(link.getAttribute("href"));
+      if (href === current) {
+        link.classList.add("active");
+        link.setAttribute("aria-current", "page");
+      }
+    });
+
+    // Special case: /gallery itself
+    if (current.startsWith("/gallery")) {
+      const toggle = document.querySelector(".nav-item.dropdown > .nav-link.dropdown-toggle");
+      if (toggle) toggle.classList.add("active");
+    }
+  }
+});
     </script>
 
-	<body>
-
+  <body>
     <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="/the.gallery">THE.GALLERY</a>
         <button
@@ -70,28 +152,24 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
+            <!-- NOTE: no hard-coded 'active' anywhere below -->
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="/the.gallery">Home</a>
+              <a class="nav-link" href="/the.gallery">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="/the.gallery/about">About</a>
+              <a class="nav-link" href="/the.gallery/about">About</a>
             </li>
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Gallery
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Poster</a></li>
-                <li><a class="dropdown-item" href="#">Terrarium</a></li>
-                <li><a class="dropdown-item" href="#">Photography</a></li>
+                <li><a class="dropdown-item" href="/the.gallery/gallery/poster">Poster</a></li>
+                <li><a class="dropdown-item" href="/the.gallery/gallery/terrarium">Terrarium</a></li>
+                <li><a class="dropdown-item" href="/the.gallery/gallery/photography">Photography</a></li>
               </ul>
             </li>
           </ul>
@@ -99,51 +177,53 @@
       </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <header class="bg-dark text-white text-center py-5">
       <div class="container">
-        <h1 class="display-4">Art Gallery</h1>
-        <p class="lead">Home / Gallery</p>
+        <h1 class="display-4">{head}</h1>
+        <p class="lead">{description}</p>
       </div>
     </header>
 
-    <!-- Gallery Section -->
-    <section class="py-5">
-        <slot />
+    <!-- Page slot -->
+    <section class="py-5 container">
+      <slot />
     </section>
 
-        <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <!-- Footer -->
+        <footer class="bg-dark text-white py-4 mt-5">
       <div class="container">
-        <h5>THE.GALLERY</h5>
+        <div class="row">
+          <div class="col-md mb">
+            <h5>THE.GALLERY</h5>
             <p>
-              This is the gallery of one person who just want to share something for fun, some might look beautiful, some might not. But all are made with passion and love. I have many kind of thing in this website and looking forward for more, You can kindly support me by sharing this website to your friends and family. Thank you for visiting.
+              This is the gallery of one person who just want to share something for fun, some might look beautiful, some might not. 
+              But all are made with passion and love. I have many kind of thing in this website and looking forward for more, You can kindly 
+              support me by sharing this website to your friends. Thank you for visiting.
             </p>
+          </div>
+          <div class="col-md mb">
+            <h5>Contact Us</h5>
+            <p>Lodz Museums, California, USA</p>
+            <p>Phone: +0997 123 456 789</p>
+            <p>Email: info@lodzmuseums.com</p>
+          </div>
+        </div>
       </div>
     </footer>
-
-	</body>
+  </body>
 </html>
 
 <style>
-      html,
-      body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
-      /* Animation for slide effect */
-      .gallery-card {
-        transition: transform 0.4s ease, opacity 0.4s ease;
-      }
-      .hide {
-        opacity: 0;
-        transform: translateX(-50px);
-        pointer-events: none;
-        position: absolute;
-      }
-      .navbar-nav .nav-link.active {
-      color: #fff !important;  /* Bootstrap warning color, for example */
-    }
+  html, body { margin: 0; width: 100%; height: 100%; }
 
-    </style>
+  /* Cards */
+  .gallery-card { transition: transform 0.4s ease, opacity 0.4s ease; }
+  .hide { opacity: 0; transform: translateX(-50px); pointer-events: none; position: absolute; }
+
+  /* Active colors */
+  .navbar-nav .nav-link.active,
+  .navbar-nav .dropdown-toggle.active {
+    color: #fff !important;
+  }
+</style>

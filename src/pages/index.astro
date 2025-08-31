@@ -2,6 +2,11 @@
 import Main from "../layouts/Main.astro";
 import Card from "../components/Card.astro";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+    head: "Hero Gallery",
+    description: "Exploring our highlighted work"
+}
 ---
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -55,7 +60,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
     </script>
 
-    <Main> 
+    <Main head={hero.head} description={hero.description}> 
           <section class="py-5">
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-4">
