@@ -2,7 +2,7 @@
 const { image, alt, title, category, href } = Astro.props;
 ---
 
-<div class="col-md-4 gallery-card" data-category={category}>
+<div class="col-lg-4 col-sm-6 gallery-card" data-category={category}>
   <a href={href} class="text-decoration-none">
     <div class="card h-100 shadow-sm">
       <img src={image} class="card-img-top" alt={alt || title} />
