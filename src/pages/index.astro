@@ -4,7 +4,7 @@ import Card from "../components/Card.astro";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const hero = {
-    head: "Hero Gallery",
+    head: "The.Gallery",
     description: "Exploring our highlighted work"
 }
 ---
@@ -63,10 +63,10 @@ const hero = {
     <Main head={hero.head} description={hero.description}> 
           <section class="py-5">
       <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2 class="mb-0">From Our Gallery</h2>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+          <h2 class="mb-3 mb-md-0">From Our Gallery</h2>
           <!-- Filter Nav -->
-          <ul class="nav navline" id="filterNav">
+          <ul class="nav navline flex-wrap justify-content-center justify-content-md-start" id="filterNav">
             <li class="nav-item">
               <a class="nav-link active" data-filter="all" href="#">Highlight</a>
             </li>
@@ -79,10 +79,10 @@ const hero = {
             <li class="nav-item">
               <a class="nav-link" data-filter="terrarium" href="#">Terrarium</a>
             </li>
-            <!-- Indicator lives here -->
-            <div class="indicator"></div>
+            <div class="indicator d-none d-md-block"></div>
           </ul>
         </div>
+
 
         <!-- Gallery Cards -->
         <div class="row g-4 position-relative" id="gallery">
@@ -108,14 +108,24 @@ const hero = {
         pointer-events: none;
         position: absolute;
       }
-      .navline {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        position: relative;
-        padding: 0.3rem 0;
-        border-bottom: 2px solid #555;
-      }
+        /* Ensure navline adapts on small screens */
+        .navline {
+          display: flex;
+          flex-wrap: wrap;        /* allow wrapping */
+          justify-content: center;
+          gap: 1rem;
+          position: relative;
+          padding: 0.3rem 0;
+          border-bottom: 2px solid #555;
+          margin: 0; /* reset bootstrap ul margin */
+        }
+
+        @media (max-width: 767.98px) {
+          .navline {
+            justify-content: center; /* center filter items on mobile */
+          }
+        }
+
 
       .navline a {
         text-decoration: none;
