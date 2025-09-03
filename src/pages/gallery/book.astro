@@ -4,13 +4,14 @@ import Card from '../../components/Card.astro';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const hero = {
-    head: "Photography Gallery",
-    description: "Explore my photography collection."
+    head: "Book Gallery",
+    description: "Explore my Book collection."
 }
 ---
 
 <Main head={hero.head} description={hero.description}>
     <div class="row g-4 position-relative" id="gallery">   
-    <Card title="Watch Advertisement" image="../../img/photography/Finals.jpg" category="photography" href="#" />
+    <Card title="Creativity of Aerodynamic" image="../../img/book/creativity-of-aerodynamic.jpg" category="book" href="#" />
+    <Card title="Le mans Book" image="../../img/book/le-mans-book.png" category="book" href="#" />
     </div>
 </Main>

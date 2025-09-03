@@ -1,0 +1,21 @@
+---
+import Main from '../../layouts/Main.astro';
+import Card from '../../components/Card.astro';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+    head: "Blender Gallery",
+    description: "Explore my 3D Blender creations."
+}
+---
+
+<Main head={hero.head} description={hero.description}>
+    <div class="row g-4 position-relative" id="gallery">   
+    <Card title="Bed Room" image="../../img/blender/Bedroom.png" category="blender" href="#" />
+    <Card title="Magic Room" image="../../img/blender/Room.png" category="blender" href="#" />
+    <Card title="Healing Potion" image="../../img/blender/Healing-Potion.png" category="blender" href="#" />
+    <Card title="BKitchen" image="../../img/blender/Kitchen.png" category="blender" href="#" />
+    <Card title="Moon Potion" image="../../img/blender/moon.png" category="blender" href="#" />
+    <Card title="Mushroom Bottle" image="../../img/blender/Mushroom.png" category="blender" href="#" />
+    </div>
+</Main>
