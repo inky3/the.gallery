@@ -1,34 +1,89 @@
 ---
-const { image, alt, title, category, href } = Astro.props;
+const { images = [], name, info } = Astro.props;
 ---
 
-<div class="col-lg-4 col-sm-6 gallery-card" data-category={category}>
-  <a href={href} class="text-decoration-none">
-    <div class="card h-100 shadow-sm">
-      <div class="card-img-box">
-        <img src={image || "../../img/blank.jpg"} alt={alt || title} />
-      </div>
-      <div class="card-body text-center">
-        <h5 class="card-title">{title}</h5>
+
+  <!-- Right Container (Collage) -->
+  <div class="right-panel">
+    <div class="collage-wrapper">
+      <div class="collage">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div class={`item item-${i + 1}`} key={i}>
+            <img
+              src={images[i]?.src || "../../img/blank.jpg"}
+              alt={images[i]?.title || `Image ${i + 1}`}
+            />
+          </div>
+        ))}
       </div>
     </div>
-  </a>
+  </div>
 </div>
 
+<div>
+  <!-- Below Container -->
+  <div class="below-panel">
+    <h2>{name}</h2>
+    <p>
+      {info}
+    </p>
+  </div>
+
 <style>
-  .card-img-box {
-    width: 100%;
-    height: 250px; /* fixed height, adjust as needed */
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f8f9fa; /* optional gray background */
+  /* Main two-column layout */
+
+  /* Left panel styling */
+  .below-panel {
+    background: #f8f8f8;
+    padding: 50px;
+    border-radius: 8px;
+    margin-top: 20px
   }
 
-  .card-img-box img {
+  /* Right panel inherits your collage */
+  .collage-wrapper {
+    max-width: 100%;
+  }
+
+  .collage {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 120px);
+    gap: 12px;
+  }
+
+  .collage img {
     width: 100%;
     height: 100%;
-    object-fit: cover;  /* crop & zoom */
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+  }
+
+  /* Placement for the 9 collage items */
+  .item-1 { grid-column: 1 / span 2; grid-row: 1 / span 2; }
+  .item-2 { grid-column: 3 / span 2; grid-row: 1 / span 2; }
+  .item-3 { grid-column: 5 / span 2; grid-row: 1 / span 2; }
+  .item-4 { grid-column: 1 / span 3; grid-row: 3 / span 2; }
+  .item-5 { grid-column: 4 / span 3; grid-row: 3 / span 2; }
+  .item-6 { grid-column: 1 / span 2; grid-row: 5 / span 2; }
+  .item-7 { grid-column: 3 / span 2; grid-row: 5 / span 1; }
+  .item-8 { grid-column: 5 / span 2; grid-row: 5 / span 2; }
+  .item-9 { grid-column: 3 / span 2; grid-row: 6 / span 1; }
+
+  /* Hover effect */
+  .collage img:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  /* Responsive: stack on mobile */
+  @media (max-width: 768px) {
+    .two-column-layout {
+      grid-template-columns: 1fr;
+    }
+    .left-panel {
+      margin-bottom: 20px;
+    }
   }
 </style>
