@@ -1,0 +1,34 @@
+---
+const { image, alt, title, category, href } = Astro.props;
+---
+
+<div class="col-lg-4 col-sm-6 gallery-card" data-category={category}>
+  <a href={href} class="text-decoration-none">
+    <div class="card h-100 shadow-sm">
+      <div class="card-img-box">
+        <img src={image || "../../img/blank.jpg"} alt={alt || title} />
+      </div>
+      <div class="card-body text-center">
+        <h5 class="card-title">{title}</h5>
+      </div>
+    </div>
+  </a>
+</div>
+
+<style>
+  .card-img-box {
+    width: 100%;
+    height: 250px; /* fixed height, adjust as needed */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa; /* optional gray background */
+  }
+
+  .card-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* crop & zoom */
+  }
+</style>

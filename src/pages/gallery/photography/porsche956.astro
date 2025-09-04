@@ -1,0 +1,21 @@
+---
+import Main from '../../../layouts/Main.astro';
+import Collection1 from '../../../components/Collection1.astro';
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+    head: "Porsche956",
+    description: "Explore my 3D Blender creations."
+}
+---
+
+<Main head={hero.head} description={hero.description}>
+        <Collection1 number="04" alt="Bedroom" size="col-span-2 row-span-2 h-60" image="../../img/blank.jpg" />
+        <Collection1 number="76" alt="Pink Bed" size="col-span-2 h-40" image="../../img/blank.jpg" />
+        <Collection1 number="22" alt="Cozy Sleep" size="col-span-2 h-48" image="../../img/blank.jpg" />
+        <Collection1 number="38" alt="Work Desk" size="col-span-2 h-40" image="../../img/blank.jpg" />
+        <Collection1 number="52" alt="Drawer" size="col-span-2 h-48" image="../../img/blank.jpg" />
+        <Collection1 number="102" alt="Office" size="col-span-3 h-40" image="../../img/blank.jpg" />
+        <Collection1 number="124" alt="Floral Bed" size="col-span-3 h-48" image="../../img/blank.jpg" />
+        <Collection1 number="146" alt="Chair" size="col-span-2 h-60" image="../../img/blank.jpg" />
+</div>
