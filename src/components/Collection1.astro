@@ -2,51 +2,40 @@
 const { images = [], name, info } = Astro.props;
 ---
 
-
-  <!-- Right Container (Collage) -->
-  <div class="right-panel">
-    <div class="collage-wrapper">
-      <div class="collage">
-        {Array.from({ length: 9 }).map((_, i) => (
-          <div class={`item item-${i + 1}`} key={i}>
-            <img
-              src={images[i]?.src || "../../img/blank.jpg"}
-              alt={images[i]?.title || `Image ${i + 1}`}
-            />
-          </div>
-        ))}
-      </div>
+<!-- Right Container (Collage) -->
+<div class="right-panel">
+  <div class="collage-wrapper">
+    <div class="collage">
+      {Array.from({ length: 9 }).map((_, i) => (
+        <div class={`item item-${i + 1} fade-in`} style={{ "--delay": `${i * 0.1}s` }} key={i}>
+          <img
+            src={images[i]?.src || "../../img/blank.jpg"}
+            alt={images[i]?.title || `Image ${i + 1}`}
+          />
+        </div>
+      ))}
     </div>
   </div>
 </div>
 
-<div>
-  <!-- Below Container -->
-  <div class="below-panel">
-    <h2>{name}</h2>
-    <p>
-      {info}
-    </p>
-  </div>
+<!-- Below Container -->
+<div class="below-panel fade-in">
+  <h2>{name}</h2>
+  <p>{info}</p>
+</div>
 
 <style>
-  /* Main two-column layout */
-
-  /* Left panel styling */
-  .below-panel {
-    background: #f8f8f8;
-    padding: 50px;
-    border-radius: 8px;
-    margin-top: 20px
-  }
-
-  /* Right panel inherits your collage */
+  /* --------------------------
+     Collage Wrapper
+  ---------------------------*/
   .collage-wrapper {
-    max-width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
   }
 
   .collage {
-    display: grid !important;
+    display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(6, 120px);
     gap: 12px;
@@ -57,19 +46,56 @@ const { images = [], name, info } = Astro.props;
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
-  /* Placement for the 9 collage items */
+/* --------------------------
+    Fade-in Raise Animation
+  ---------------------------*/
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px); /* start lower */
+    animation: fadeRaise 0.8s ease forwards;
+  }
+
+  @keyframes fadeRaise {
+    to {
+      opacity: 1;
+      transform: translateY(0); /* settle in place */
+    }
+  }
+
+  /* --------------------------
+    Sequential delays per item
+  ---------------------------*/
+  .item-1 { animation-delay: 0s; }
+  .item-2 { animation-delay: 0.3s; }
+  .item-3 { animation-delay: 0.6s; }
+  .item-4 { animation-delay: 0.9s; }
+  .item-5 { animation-delay: 1.2s; }
+  .item-6 { animation-delay: 1.5s; }
+  .item-7 { animation-delay: 1.8s; }
+  .item-8 { animation-delay: 2.1s; }
+  .item-9 { animation-delay: 2.4s; }
+  .h2 { animation-delay: 2.7s; }
+  .p { animation-delay: 3s; }
+
+
+
+  /* --------------------------
+     Collage Item Placements
+  ---------------------------*/
   .item-1 { grid-column: 1 / span 2; grid-row: 1 / span 2; }
-  .item-2 { grid-column: 3 / span 2; grid-row: 1 / span 2; }
-  .item-3 { grid-column: 5 / span 2; grid-row: 1 / span 2; }
+  .item-2 { grid-column: 3 / span 1; grid-row: 1 / span 1; }
+  .item-3 { grid-column: 4 / span 3; grid-row: 1 / span 1; }
+
   .item-4 { grid-column: 1 / span 3; grid-row: 3 / span 2; }
-  .item-5 { grid-column: 4 / span 3; grid-row: 3 / span 2; }
-  .item-6 { grid-column: 1 / span 2; grid-row: 5 / span 2; }
-  .item-7 { grid-column: 3 / span 2; grid-row: 5 / span 1; }
-  .item-8 { grid-column: 5 / span 2; grid-row: 5 / span 2; }
-  .item-9 { grid-column: 3 / span 2; grid-row: 6 / span 1; }
+  .item-5 { grid-column: 4 / span 2; grid-row: 2 / span 3; }
+  .item-6 { grid-column: 6 / span 1; grid-row: 3 / span 2; }
+
+  .item-7 { grid-column: 1 / span 2; grid-row: 5 / span 2; }
+  .item-8 { grid-column: 3 / span 2; grid-row: 5 / span 1; }
+  .item-9 { grid-column: 5 / span 2; grid-row: 5 / span 2; }
 
   /* Hover effect */
   .collage img:hover {
@@ -77,13 +103,23 @@ const { images = [], name, info } = Astro.props;
     transition: transform 0.3s ease;
   }
 
-  /* Responsive: stack on mobile */
+  /* Below Panel Styling */
+  .below-panel {
+    background: #f8f8f8;
+    padding: 50px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .two-column-layout {
-      grid-template-columns: 1fr;
+    .collage {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto;
     }
-    .left-panel {
-      margin-bottom: 20px;
+    .collage div {
+      grid-column: auto !important;
+      grid-row: auto !important;
     }
   }
 </style>
