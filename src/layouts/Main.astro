@@ -1,5 +1,5 @@
 ---
-const { head, description } = Astro.props;
+const { head, description, image } = Astro.props;
 ---
 
 <!doctype html>
@@ -180,7 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
     </nav>
 
     <!-- Hero -->
-    <header class="bg-dark text-white text-center py-5">
+    <header 
+        class="bg-dark text-white text-center py-5"
+        style={image
+        ? `background: url(${image}) center/cover no-repeat;`
+        : "background-color: #212529;"}
+        >
       <div class="container">
         <h1 class="display-4">{head}</h1>
         <p class="lead">{description}</p>
