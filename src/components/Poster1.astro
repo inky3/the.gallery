@@ -1,0 +1,55 @@
+---
+const { img, name = '', idea = '', date = '' } = Astro.props;
+
+// If no img provided, fallback to blank
+const imageSrc = img ? img : '/img/blank.jpg';
+---
+<div class="container">
+  <div class="row">
+    <!-- LEFT: Poster Image -->
+    <div class="col-12 col-md-7 poster-layout">
+      <img
+        src={imageSrc}
+        alt={name || 'Poster Image'}
+        class="img-fluid poster-img"
+      />
+    </div>
+
+    <!-- RIGHT: Details -->
+    <div class="col-12 col-md-5 d-flex">
+      <div class="poster-details d-flex flex-column w-100">
+        <div>
+          <h2 class="mb-3">{name}</h2>
+          <p class="idea"><strong>Idea:</strong> {idea}</p>
+        </div>
+
+        <!-- Date sticks to bottom -->
+        <p class="date mt-auto"><strong>Date:</strong> {date}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.poster-layout { padding: 20px 0; }
+
+.poster-img {
+  width: 100%;
+  height: auto;
+  max-height: 640px;   /* adjust here */
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.poster-details { padding: 12px; }
+
+.date { font-style: italic; }
+
+.idea { font-size: 16px; line-height: 1.6; }
+
+@media (max-width: 767.98px) {
+  .poster-img { max-height: 360px; }
+  .poster-details { padding-top: 12px; }
+  .date { text-align: left; }
+}
+</style>
