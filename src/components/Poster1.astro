@@ -1,6 +1,6 @@
 ---
 /**
- * Poster1.astro — flexible poster detail block
+ * Poster1.astro — flexible poster detail block with AVIF/WebP fallbacks
  * Props:
  *  - img: string (relative or absolute). Fallback: /img/blank.jpg
  *  - name?: string
@@ -14,7 +14,18 @@ const base = import.meta.env.BASE_URL || "/";
 const resolve = (p?: string) =>
   p && /^https?:\/\//i.test(p) ? p : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
 
-const imageSrc = resolve(img);
+// Build format candidates: foo.jpg -> foo.avif / foo.webp
+const deriveFormats = (p?: string) => {
+  const fallback = resolve(p);
+  const noExt = fallback.replace(/\.(avif|webp|jpe?g|png)$/i, "");
+  return {
+    avif: `${noExt}.avif`,
+    webp: `${noExt}.webp`,
+    fallback,
+  };
+};
+
+const src = deriveFormats(img);
 ---
 
 <div class="container">
@@ -22,13 +33,17 @@ const imageSrc = resolve(img);
     <!-- LEFT: Poster Image (flexible height/aspect) -->
     <div class="col-12 col-md-7">
       <figure class="poster-frame m-0">
-        <img
-          src={imageSrc}
-          alt={name || "Poster image"}
-          class="poster-img"
-          loading="lazy"
-          decoding="async"
-        />
+        <picture>
+          <source srcset={src.avif} type="image/avif" />
+          <source srcset={src.webp} type="image/webp" />
+          <img
+            src={src.fallback}
+            alt={name || "Poster image"}
+            class="poster-img"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
       </figure>
     </div>
 
@@ -46,33 +61,26 @@ const imageSrc = resolve(img);
 <style>
   /* Frame keeps a cohesive surface while allowing any aspect ratio */
   .poster-frame {
-    background: #0a0a0a;                /* subtle backdrop for transparent PNGs */
+    background: #0a0a0a;
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 8px;                       /* small mat/border feel */
+    padding: 8px;
   }
 
-  /* Flexible image: no fixed height; natural aspect ratio; fits width */
+  /* Flexible image: no fixed height; natural aspect ratio */
   .poster-img {
     display: block;
     width: 100%;
-    height: auto;                       /* key: let the poster decide its height */
+    height: auto;
     border-radius: 6px;
+    transition: transform .18s ease;
   }
+  .poster-frame:hover .poster-img { transform: translateY(-1px); }
 
-  .poster-meta {
-    padding-inline: 4px;
-  }
-
+  .poster-meta { padding-inline: 4px; }
   .poster-title { line-height: 1.25; }
   .poster-idea  { line-height: 1.6; }
   .poster-date  { font-style: italic; color: #9aa1a6; }
-
-  /* Optional micro-interaction on hover without layout shift */
-  .poster-frame:hover .poster-img {
-    transform: translateY(-1px);
-  }
-  .poster-img { transition: transform .18s ease; }
 
   @media (max-width: 767.98px) {
     .poster-meta { padding-top: .25rem; }

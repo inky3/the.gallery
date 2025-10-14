@@ -1,27 +1,50 @@
 ---
+/**
+ * Collection1.astro — same collage layout/animation with AVIF/WebP fallbacks
+ * Props:
+ *  - images: Array<{ src: string; title?: string }>
+ *  - name?: string
+ *  - info?: string
+ */
 const { images = [], name, info } = Astro.props;
 
 const base = import.meta.env.BASE_URL || "/";
 const resolve = (p?: string) =>
-  p && /^https?:\/\//i.test(p)
-    ? p
-    : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
+  p && /^https?:\/\//i.test(p) ? p : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
+
+const fmt = (p?: string) => {
+  const fallback = resolve(p);
+  const noExt = fallback.replace(/\.(avif|webp|jpe?g|png)$/i, "");
+  return {
+    avif: `${noExt}.avif`,
+    webp: `${noExt}.webp`,
+    fallback,
+  };
+};
 ---
 
 <!-- Collage Section -->
 <section class="collection">
   <div class="collage-wrapper">
     <div class="collage">
-      {Array.from({ length: 9 }).map((_, i) => (
-        <div class={`item item-${i + 1} fade-in`} style={{ animationDelay: `${i * 0.2}s` }}>
-          <img
-            src={resolve(images[i]?.src)}
-            alt={images[i]?.title || `Image ${i + 1}`}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      ))}
+      {Array.from({ length: 9 }).map((_, i) => {
+        const cfg = fmt(images[i]?.src);
+        const alt = images[i]?.title || `Image ${i + 1}`;
+        return (
+          <div class={`item item-${i + 1} fade-in`} style={{ animationDelay: `${i * 0.2}s` }}>
+            <picture>
+              <source srcset={cfg.avif} type="image/avif" />
+              <source srcset={cfg.webp} type="image/webp" />
+              <img
+                src={cfg.fallback}
+                alt={alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+          </div>
+        );
+      })}
     </div>
   </div>
 
@@ -54,22 +77,12 @@ const resolve = (p?: string) =>
     gap: 12px;
   }
 
-  .item {
-    overflow: hidden;
-    border-radius: 8px;
-  }
-
+  .item { overflow: hidden; border-radius: 8px; }
   .item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    width: 100%; height: 100%; object-fit: cover; display: block;
     transition: transform 0.3s ease;
   }
-
-  .item img:hover {
-    transform: scale(1.05);
-  }
+  .item img:hover { transform: scale(1.05); }
 
   /* === Animation === */
   .fade-in {
@@ -77,12 +90,8 @@ const resolve = (p?: string) =>
     transform: translateY(30px);
     animation: fadeRaise 0.8s ease forwards;
   }
-
   @keyframes fadeRaise {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* === Grid Placement === */
@@ -106,10 +115,7 @@ const resolve = (p?: string) =>
     text-align: center;
     max-width: 800px;
   }
-
-  .below-panel h2 {
-    margin-bottom: 0.5rem;
-  }
+  .below-panel h2 { margin-bottom: 0.5rem; }
 
   /* === Responsive === */
   @media (max-width: 768px) {
@@ -121,8 +127,6 @@ const resolve = (p?: string) =>
       grid-column: auto !important;
       grid-row: auto !important;
     }
-    .below-panel {
-      padding: 30px;
-    }
+    .below-panel { padding: 30px; }
   }
 </style>
