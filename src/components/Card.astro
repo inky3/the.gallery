@@ -1,43 +1,119 @@
 ---
-const { image, alt, title, category, href } = Astro.props;
+/**
+ * Card.astro
+ * Props:
+ *  - image: string (relative or absolute). Fallback: /img/blank.jpg
+ *  - alt:   string (optional, falls back to title)
+ *  - title: string (required)
+ *  - category: string (used by your filter script via data-category)
+ *  - href: string (defaults to '#')
+ */
+const { image, alt, title, category, href = "#" } = Astro.props;
+
+// GitHub Pages / base-path safe resolver
+const base = import.meta.env.BASE_URL || "/";
+const resolve = (p?: string) =>
+  p && /^https?:\/\//i.test(p) ? p : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
 ---
 
 <div class="col-lg-4 col-sm-6 gallery-card" data-category={category}>
-  <a href={href} class="text-decoration-none">
-    <div class="card h-100 shadow-sm">
-      <div class="card-img-box">
-        <img src={image || "../../img/blank.jpg"} class="card-img-top" alt={alt || title} />
-      </div>
-      <div class="card-body text-center">
-        <h5 class="card-title">{title}</h5>
-      </div>
+  <a
+    href={href}
+    class="tile d-block position-relative focus-ring"
+    aria-label={`${title}${category ? ` — ${category}` : ""}`}
+  >
+    <figure class="stage m-0">
+      <img
+        class="cover"
+        src={resolve(image)}
+        alt={alt || title}
+        loading="lazy"
+        decoding="async"
+        width="960"
+        height="960"
+      />
+    </figure>
+
+    <!-- Bottom pill label -->
+    <div class="label-wrap" aria-hidden="true">
+      <div class="label-pill"><span class="label-text">{title}</span></div>
     </div>
   </a>
 </div>
 
 <style>
-  .card-img-box {
-    width: 100%;
-    height: 250px; /* Fixed height for all cards, adjust as needed */
-    overflow: hidden; 
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
+  /* ---- layout / filter compatibility ---- */
+  .gallery-card { transition: transform .24s ease, opacity .24s ease; }
+  .hide { opacity: 0; transform: translateX(-24px); pointer-events: none; position: absolute; }
+
+  /* ---- tile ---- */
+  .tile{
+    border-radius: 24px;
+    border: 1px solid rgba(0,0,0,.06);
+    background: #fff;
+    overflow: hidden;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    max-width: 360px;          /* keeps cards visually consistent in wide rows */
+    margin-inline: auto;       /* center within column */
+  }
+  .tile:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,.10);
+    border-color: rgba(0,0,0,.10);
   }
 
-  .card-img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures zoom + crop to fill box */
+  /* ---- image stage (the big rounded square) ---- */
+  .stage{
+    aspect-ratio: 1 / 1;
+    background: #000;
+    overflow: hidden;
+  }
+  .cover{
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform .28s ease, opacity .28s ease;
+  }
+  .tile:hover .cover{ transform: scale(1.03); opacity: .96; box-shadow: #000;}
+  .tile {
+  transition: transform .2s ease, box-shadow .2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* base */
+  }
+  .tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.05);
   }
 
-  .gallery-card {
-    transition: transform 0.4s ease, opacity 0.4s ease;
-  }
 
-  .hide {
-    opacity: 0;
-    transform: translateX(-50px);
-    pointer-events: none;
-    position: absolute;
+  /* ---- bottom pill label ---- */
+  .label-wrap{
+    position: absolute; left: 0; right: 0; bottom: 45px;
+    display: grid; place-items: center; pointer-events: none;
+  }
+  .label-pill{
+    max-width: 86%;
+    background: rgba(0,0,0,.66);
+    color: #f1f1f1;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+    padding: .65rem 1.1rem;
+    transform: translateY(12px);
+    opacity: .92;
+    transition: transform .22s ease, opacity .22s ease, box-shadow .22s ease, border-color .22s ease;
+    backdrop-filter: saturate(120%) blur(4px);
+  }
+  .tile:hover .label-pill,
+  .tile:focus-visible .label-pill{
+    transform: translateY(0);
+    opacity: 1;
+    box-shadow: 0 6px 16px rgba(0,0,0,.22);
+    border-color: rgba(255,255,255,.55);
+  }
+  .label-text{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* ---- keyboard focus ring on whole card ---- */
+  .focus-ring:focus-visible{
+    outline: 2px solid #A4C3B2; /* your minimal accent */
+    outline-offset: 3px;
+    border-radius: 26px;
   }
 </style>

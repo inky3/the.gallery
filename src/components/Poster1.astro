@@ -1,55 +1,80 @@
 ---
-const { img, name = '', idea = '', date = '' } = Astro.props;
+/**
+ * Poster1.astro — flexible poster detail block
+ * Props:
+ *  - img: string (relative or absolute). Fallback: /img/blank.jpg
+ *  - name?: string
+ *  - idea?: string
+ *  - date?: string
+ */
+const { img, name = "", idea = "", date = "" } = Astro.props;
 
-// If no img provided, fallback to blank
-const imageSrc = img ? img : '/img/blank.jpg';
+// GitHub Pages / base-path safe resolver
+const base = import.meta.env.BASE_URL || "/";
+const resolve = (p?: string) =>
+  p && /^https?:\/\//i.test(p) ? p : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
+
+const imageSrc = resolve(img);
 ---
+
 <div class="container">
-  <div class="row">
-    <!-- LEFT: Poster Image -->
-    <div class="col-12 col-md-7 poster-layout">
-      <img
-        src={imageSrc}
-        alt={name || 'Poster Image'}
-        class="img-fluid poster-img"
-      />
+  <div class="row gy-4 align-items-start">
+    <!-- LEFT: Poster Image (flexible height/aspect) -->
+    <div class="col-12 col-md-7">
+      <figure class="poster-frame m-0">
+        <img
+          src={imageSrc}
+          alt={name || "Poster image"}
+          class="poster-img"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
     </div>
 
     <!-- RIGHT: Details -->
-    <div class="col-12 col-md-5 d-flex">
-      <div class="poster-details d-flex flex-column w-100">
-        <div>
-          <h2 class="mb-3">{name}</h2>
-          <p class="idea"><strong>Idea:</strong> {idea}</p>
-        </div>
-
-        <!-- Date sticks to bottom -->
-        <p class="date mt-auto"><strong>Date:</strong> {date}</p>
+    <div class="col-12 col-md-5">
+      <div class="poster-meta">
+        {name && <h2 class="poster-title mb-2">{name}</h2>}
+        {idea && <p class="poster-idea mb-3"><strong>Idea:</strong> {idea}</p>}
+        {date && <p class="poster-date mb-0"><strong>Date:</strong> {date}</p>}
       </div>
     </div>
   </div>
 </div>
 
 <style>
-.poster-layout { padding: 20px 0; }
+  /* Frame keeps a cohesive surface while allowing any aspect ratio */
+  .poster-frame {
+    background: #0a0a0a;                /* subtle backdrop for transparent PNGs */
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 8px;                       /* small mat/border feel */
+  }
 
-.poster-img {
-  width: 100%;
-  height: auto;
-  max-height: 640px;   /* adjust here */
-  object-fit: cover;
-  border-radius: 6px;
-}
+  /* Flexible image: no fixed height; natural aspect ratio; fits width */
+  .poster-img {
+    display: block;
+    width: 100%;
+    height: auto;                       /* key: let the poster decide its height */
+    border-radius: 6px;
+  }
 
-.poster-details { padding: 12px; }
+  .poster-meta {
+    padding-inline: 4px;
+  }
 
-.date { font-style: italic; }
+  .poster-title { line-height: 1.25; }
+  .poster-idea  { line-height: 1.6; }
+  .poster-date  { font-style: italic; color: #9aa1a6; }
 
-.idea { font-size: 16px; line-height: 1.6; }
+  /* Optional micro-interaction on hover without layout shift */
+  .poster-frame:hover .poster-img {
+    transform: translateY(-1px);
+  }
+  .poster-img { transition: transform .18s ease; }
 
-@media (max-width: 767.98px) {
-  .poster-img { max-height: 360px; }
-  .poster-details { padding-top: 12px; }
-  .date { text-align: left; }
-}
+  @media (max-width: 767.98px) {
+    .poster-meta { padding-top: .25rem; }
+  }
 </style>

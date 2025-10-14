@@ -1,0 +1,60 @@
+---
+const year = new Date().getFullYear();
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+---
+
+<footer class="site-footer border-top">
+  <div class="container py-5">
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-7">
+        <h6 class="text-uppercase text-muted mb-2" style="letter-spacing:.08em">The Gallery</h6>
+        <p class="mb-0 text-muted">
+          A quiet place for work and memories. Simple, calm, and intentional.
+        </p>
+      </div>
+      <div class="col-lg-5">
+        <div class="row">
+          <div class="col-6">
+            <ul class="list-unstyled m-0">
+              <li class="mb-1"><a class="f-link" href={url("/gallery/poster")}>Poster</a></li>
+              <li class="mb-1"><a class="f-link" href={url("/gallery/photography")}>Photography</a></li>
+              <li class="mb-1"><a class="f-link" href={url("/gallery/terrarium")}>Terrarium</a></li>
+            </ul>
+          </div>
+          <div class="col-6">
+            <ul class="list-unstyled m-0">
+              <li class="mb-1"><a class="f-link" href={url("/gallery/blender")}>Blender</a></li>
+              <li class="mb-1"><a class="f-link" href={url("/gallery/book")}>Book</a></li>
+              <li class="mb-1"><a class="f-link" href={url("/about")}>About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex justify-content-between flex-wrap gap-2 small text-muted">
+      <span>© {year} THE.GALLERY</span>
+      <span>Built with Astro · Deployed on GitHub Pages</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+.site-footer {
+  background: linear-gradient(180deg, #f4f5f6 0%, #ececec 100%);
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.f-link {
+  color: #2a2a2a;
+  opacity: 0.9;
+}
+.f-link:hover {
+  color: #0a5e47;
+  opacity: 1;
+}
+  hr { border-color: rgba(0,0,0,.08); }
+</style>
