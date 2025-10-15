@@ -158,3 +158,41 @@ img { max-width: 100%; height: auto; }
   transform: translateY(-1px);
   transition: all 0.25s ease;
 }
+
+/* ===== View switch (Singles ↔ Collections) smooth transition ===== */
+.view-shell {
+  position: relative;               /* keeps crossfade layers in the same flow */
+  min-height: 40vh;                 /* avoids layout snap on initial render */
+}
+.view-section {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.view-section.is-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  position: absolute;               /* overlap for crossfade */
+  inset: 0;                         /* fill parent width */
+}
+
+/* ===== Navbar polish: brand + dropdown active ===== */
+.navbar-minimal .navbar-brand,
+.navbar-minimal .navbar-brand:hover,
+.navbar-minimal .navbar-brand:focus {
+  color: var(--text-on-dark);       /* brand stays stable on hover */
+  text-decoration: none;
+}
+
+.navbar-minimal .dropdown-menu { z-index: 1050; }
+.navbar-minimal .dropdown-item.active,
+.navbar-minimal .dropdown-item:active {
+  color: var(--accent);
+  background: rgba(255,255,255,.06);
+}
+
+/* ===== Accessibility: Respect prefers-reduced-motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
