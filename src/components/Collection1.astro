@@ -1,6 +1,6 @@
 ---
 /**
- * Collection1.astro — same collage layout/animation with AVIF/WebP fallbacks
+ * Collection1.astro — reliable collage (single <img> per tile)
  * Props:
  *  - images: Array<{ src: string; title?: string }>
  *  - name?: string
@@ -8,19 +8,12 @@
  */
 const { images = [], name, info } = Astro.props;
 
+// Base-safe resolver (works on / and /the.gallery/)
 const base = import.meta.env.BASE_URL || "/";
 const resolve = (p?: string) =>
-  p && /^https?:\/\//i.test(p) ? p : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
-
-const fmt = (p?: string) => {
-  const fallback = resolve(p);
-  const noExt = fallback.replace(/\.(avif|webp|jpe?g|png)$/i, "");
-  return {
-    avif: `${noExt}.avif`,
-    webp: `${noExt}.webp`,
-    fallback,
-  };
-};
+  p && /^https?:\/\//i.test(p)
+    ? p
+    : `${base}${String(p || "img/blank.jpg").replace(/^\/+/, "")}`;
 ---
 
 <!-- Collage Section -->
@@ -28,20 +21,16 @@ const fmt = (p?: string) => {
   <div class="collage-wrapper">
     <div class="collage">
       {Array.from({ length: 9 }).map((_, i) => {
-        const cfg = fmt(images[i]?.src);
+        const src = resolve(images[i]?.src);
         const alt = images[i]?.title || `Image ${i + 1}`;
         return (
           <div class={`item item-${i + 1} fade-in`} style={{ animationDelay: `${i * 0.2}s` }}>
-            <picture>
-              <source srcset={cfg.avif} type="image/avif" />
-              <source srcset={cfg.webp} type="image/webp" />
-              <img
-                src={cfg.fallback}
-                alt={alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         );
       })}
