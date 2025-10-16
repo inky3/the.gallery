@@ -1,11 +1,18 @@
 ---
 const { head, description, image } = Astro.props;
+
+/** Base-safe resolver: prefixes BASE_URL unless it's an absolute URL */
+const base = import.meta.env.BASE_URL || "/";
+const resolve = (p) =>
+  p && /^https?:\/\//i.test(p)
+    ? p
+    : `${base}${String(p || "").replace(/^\/+/, "")}`;
 ---
 
 <header
   class="hero-section text-white text-center py-5"
   style={image
-    ? `background: url(${image}) center/cover no-repeat;`
+    ? `background: url(${resolve(image)}) center/cover no-repeat;`
     : "background-color: #1C1C1C;"}
 >
   <div class="container">
@@ -22,9 +29,10 @@ const { head, description, image } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-position: center;
+    background-size: cover;
   }
 
-  /* Optional soft overlay for readability */
   .hero-section::before {
     content: "";
     position: absolute;
@@ -32,13 +40,7 @@ const { head, description, image } = Astro.props;
     background: rgba(0, 0, 0, 0.3);
     z-index: 0;
   }
+  .hero-section .container { position: relative; z-index: 1; }
 
-  .hero-section .container {
-    position: relative;
-    z-index: 1;
-  }
-
-  .text-muted {
-    color: rgba(255, 255, 255, 0.8) !important;
-  }
+  .text-muted { color: rgba(255,255,255,0.8) !important; }
 </style>
