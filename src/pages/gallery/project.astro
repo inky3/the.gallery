@@ -1,0 +1,35 @@
+---
+import Main from '../../layouts/Main.astro';
+import Card from '../../components/Card.astro';
+// Remove this if Bootstrap is already loaded globally in your Layout:
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+const hero = {
+  head: "Poster Gallery",
+  description: "Explore our curated collection of stunning posters."
+};
+
+// Optional helpers if you ever use filenames with spaces
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
+---
+
+<Main head={hero.head} description={hero.description}>
+  <section class="container">
+    <div class="row g-4 position-relative" id="gallery">
+      <Card
+        title="Watch Advertisement"
+        image={encode("/img/poster/Watch-Advertisement.jpg")}
+        category="poster"
+        href="https://inky3.github.io/Memories-of-G"
+      />
+      <Card
+        title="Brand Identity & Typography"
+        image={encode("/img/poster/Brand-Identity-and-Typography.png")}
+        category="poster"
+        href="https://inky3.github.io/the-work-of-tanawat"
+      />
+    </div>
+  </section>
+</Main>

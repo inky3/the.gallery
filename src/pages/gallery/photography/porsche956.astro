@@ -2,28 +2,29 @@
 import Main from "../../../layouts/Main.astro";
 import Collection1 from "../../../components/Collection1.astro";
 
-/* ✅ Base-safe URL helper for GitHub Pages */
+/* ✅ Base-safe and space-safe URL helpers */
 const base = import.meta.env.BASE_URL || "/";
 const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
 
 /* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case!) */
 const collageImages = [
-  { src: "/img/photography/porsche956/IMG_9490.JPG", title: "One" },
-  { src: "/img/photography/porsche956/IMG_9524.JPG", title: "Two" },
-  { src: "/img/photography/porsche956/IMG_9504.JPG", title: "Three" },
-  { src: "/img/photography/porsche956/IMG_9571.JPG", title: "Four" },
-  { src: "/img/photography/porsche956/IMG_9496.JPG", title: "Five" },
-  { src: "/img/photography/porsche956/IMG_9527.JPG", title: "Six" },
-  { src: "/img/photography/porsche956/IMG_9552.JPG", title: "Seven" },
-  { src: "/img/photography/porsche956/IMG_9536.JPG", title: "Eight" },
-  { src: "/img/photography/porsche956/IMG_9488.JPG", title: "Nine" },
+  { src: encode("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
+  { src: encode("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
+  { src: encode("/img/photography/porsche956/IMG_9504.JPG"), title: "Three" },
+  { src: encode("/img/photography/porsche956/IMG_9571.JPG"), title: "Four" },
+  { src: encode("/img/photography/porsche956/IMG_9496.JPG"), title: "Five" },
+  { src: encode("/img/photography/porsche956/IMG_9527.JPG"), title: "Six" },
+  { src: encode("/img/photography/porsche956/IMG_9552.JPG"), title: "Seven" },
+  { src: encode("/img/photography/porsche956/IMG_9536.JPG"), title: "Eight" },
+  { src: encode("/img/photography/porsche956/IMG_9488.JPG"), title: "Nine" },
 ];
 
+/* ✅ Hero banner image also encoded */
 const hero = {
   head: "PORSCHE 956",
   description: "Collection of Porsche 956 photographs.",
-  /* ✅ Pass a base-safe URL to Main/Hero */
-  image: url("/img/photography/porsche956/IMG_9504.JPG"),
+  image: encode("/img/photography/porsche956/IMG_9504.JPG"),
 };
 ---
 

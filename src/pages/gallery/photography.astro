@@ -8,12 +8,10 @@ const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
 // Data — add your own
 const singles = [
   { title: "Casa Lapin Coffee Bean", src: "/img/photography/casa-lapin.jpg", alt: "Casa Lapin coffee beans on tray" },
-  // { title: "Another Single", src: "/img/photography/another.jpg", alt: "…" },
 ];
 
 const collections = [
-  { title: "Porsche 956", image: "/img/photography/porsche956/IMG_9504.JPG", href: "/gallery/photography/porsche956" },
-  // { title: "City Nights", image: "/img/photography/city-nights/cover.jpg", href: "/gallery/photography/city-nights" },
+  { title: "Porsche 956", image: "/img/photography/porsche956/IMG_9504.jpg", href: "/gallery/photography/porsche956" },
 ];
 
 const hero = {
@@ -36,18 +34,20 @@ const hero = {
     <div class="row g-4">
       {singles.map((p, i) => (
         <div class="col-12 col-sm-6 col-lg-4">
-          <figure class="single-tile" data-full={url(p.src)} tabindex="0" aria-label={`Open ${p.title}`}>
-            <picture>
-              <source srcset={url(p.src).replace(/\.(jpg|jpeg|png)$/i,'.avif')} type="image/avif" />
-              <source srcset={url(p.src).replace(/\.(jpg|jpeg|png)$/i,'.webp')} type="image/webp" />
-              <img
-                src={url(p.src)}
-                alt={p.alt || p.title}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-            <figcaption class="cap">{p.title}</figcaption>
+          <figure class="single-tile position-relative" data-full={url(p.src)} tabindex="0" aria-label={`Open ${p.title}`}>
+            <img
+              src={url(p.src)}
+              alt={p.alt || p.title}
+              loading="lazy"
+              decoding="async"
+              width="960"
+              height="960"
+              style="display:block;width:100%;height:auto;"
+            />
+            <!-- ✅ pill label added -->
+            <div class="label-wrap" aria-hidden="true">
+              <div class="label-pill"><span class="label-text">{p.title}</span></div>
+            </div>
           </figure>
         </div>
       ))}
@@ -71,7 +71,6 @@ const hero = {
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Toggle logic
       const btns = document.querySelectorAll(".toggle-btn");
       const singles = document.getElementById("grid-singles");
       const collections = document.getElementById("grid-collections");
@@ -88,7 +87,6 @@ const hero = {
         });
       });
 
-      // Lightbox for Singles (no Bootstrap)
       const dlg = document.getElementById("lightbox");
       const img = document.getElementById("lightbox-img");
       const closeBtn = dlg.querySelector(".close");
@@ -106,7 +104,6 @@ const hero = {
       dlg.addEventListener("click", (e) => { if (e.target === dlg) close(); });
       document.addEventListener("keydown", (e) => { if (e.key === "Escape" && dlg.open) close(); });
 
-      // Bind singles
       document.querySelectorAll(".single-tile").forEach(tile => {
         const full = tile.getAttribute("data-full");
         tile.addEventListener("click", () => open(full, tile.querySelector("img")?.alt));
@@ -142,7 +139,31 @@ const hero = {
       box-shadow: 0 6px 16px rgba(0,0,0,.10);
     }
     .single-tile img { display:block; width:100%; height:auto; aspect-ratio: 4/3; object-fit: cover; }
-    .single-tile .cap { padding: .6rem .75rem; font-size: .95rem; color: #444; }
+
+    /* ✅ Pill label style */
+    .label-wrap {
+      position: absolute; left: 0; right: 0; bottom: 20px;
+      display: grid; place-items: center; pointer-events: none;
+    }
+    .label-pill {
+      max-width: 86%;
+      background: rgba(0,0,0,.66);
+      color: #f1f1f1;
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 999px;
+      padding: .65rem 1.1rem;
+      transform: translateY(12px);
+      opacity: .92;
+      transition: transform .22s ease, opacity .22s ease, box-shadow .22s ease, border-color .22s ease;
+      backdrop-filter: saturate(120%) blur(4px);
+    }
+    .single-tile:hover .label-pill {
+      transform: translateY(0);
+      opacity: 1;
+      box-shadow: 0 6px 16px rgba(0,0,0,.22);
+      border-color: rgba(255,255,255,.55);
+    }
+    .label-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Dialog lightbox */
     dialog#lightbox {
@@ -157,21 +178,20 @@ const hero = {
       background: rgba(255,255,255,.1); color:#fff; border: 1px solid rgba(255,255,255,.25);
       border-radius: 10px; padding: .2rem .55rem; cursor: pointer;
     }
+
     /* Smooth cross-fade */
     section.container {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.45s ease, transform 0.45s ease;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.45s ease, transform 0.45s ease;
     }
-
     section.container.is-hidden {
-    opacity: 0;
-    transform: translateY(10px);
-    pointer-events: none;
-    position: absolute;
-    width: 100%;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
     }
-
 
     @media (max-width: 575.98px) {
       .single-tile img { aspect-ratio: 1 / 1; } /* square on small screens */

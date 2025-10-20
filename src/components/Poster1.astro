@@ -33,17 +33,13 @@ const src = deriveFormats(img);
     <!-- LEFT: Poster Image (flexible height/aspect) -->
     <div class="col-12 col-md-7">
       <figure class="poster-frame m-0">
-        <picture>
-          <source srcset={src.avif} type="image/avif" />
-          <source srcset={src.webp} type="image/webp" />
-          <img
-            src={src.fallback}
-            alt={name || "Poster image"}
-            class="poster-img"
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
+        <img
+          src={src.fallback}
+          alt={name || "Poster image"}
+          class="poster-img"
+          loading="lazy"
+          decoding="async"
+        />
       </figure>
     </div>
 

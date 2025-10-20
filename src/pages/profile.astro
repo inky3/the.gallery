@@ -1,0 +1,336 @@
+---
+import Main from '../layouts/Main.astro';
+
+/* Page meta */
+const hero = {
+  head: "Profile / Resume",
+  description: "A single-page overview of skills, education, experience, projects, and contact."
+};
+
+/* === Base-safe URL builder === */
+const base = import.meta.env.BASE_URL || "/";
+const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+/* === Summary === */
+const summary = `I'm a Graphic & UI/UX Designer who transforms ideas into clean, functional, and visually striking designs. With a strong focus on user experience and modern aesthetics, I craft interfaces that are intuitive, engaging, and aligned with brand vision.`;
+
+/* === Contact === */
+const contact = [
+  { icon: "👤", label: "Name", value: "Krittanan 'Boom' Atireglarp" },
+  { icon: "📧", label: "Email", value: "krittanan05b@gmail.com", href: "mailto:krittanan05b@gmail.com" },
+  { icon: "📱", label: "Phone", value: "+66 856 496 879", href: "tel:+66856496879" },
+  { icon: "🇹🇭", label: "Nationality", value: "Thai" },
+];
+
+/* === Interests === */
+const interests = ["Gaming", "Travelling", "Reading", "Music", "Photography", "Chess", "WEC", "F1"];
+
+/* === Skills & Tools === */
+const technical = ["Creativity", "Prototyping", "Wireframing", "Visual Design", "UX/UI", "HTML/CSS", "Astro Framework"];
+const social    = ["Communication", "Collaboration", "Problem-Solving", "Adaptability", "Time Management", "Attention to Detail"];
+
+const tools = [
+  { title: "Photoshop",        icon: "/img/icons/tools/photoshop.svg" },
+  { title: "Illustrator",      icon: "/img/icons/tools/illustrator.svg" },
+  { title: "Canva",            icon: "/img/icons/tools/canvas.svg" },  // <- fixed from canvas.svg
+  { title: "Figma",            icon: "/img/icons/tools/figma.svg" },
+  { title: "Blender",          icon: "/img/icons/tools/blender.svg" },
+  { title: "HTML",             icon: "/img/icons/tools/html.svg" },
+  { title: "CSS",              icon: "/img/icons/tools/css.svg" },
+  { title: "Notion",           icon: "/img/icons/tools/notion.svg" },
+];
+
+/* === Languages === */
+const languages = [
+  { name: "Thai", flag: "🇹🇭" },
+  { name: "US English", flag: "🇺🇸" },
+];
+
+/* === Education === */
+const education = [
+  { degree: "Graphic Designer", org: "Suan Sunandha Rajabhat University", dates: "since 2022" },
+];
+
+/* === Experience === */
+const experience = [
+  { role: "Graphic Design Associate", company: "Tasks Expert", dates: "Dec 24 – June 26" },
+];
+
+/* === Projects === */
+const projects = [
+  { name: "The.Gallery",  blurb: "My Own Portfolio Website", link: "https://1nky3.github.io/the.gallery" },
+  { name: "Good Health",    blurb: "Research Project in my collegem", link: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?node-id=0-1&t=MPyhV4oarvBOYBZA-1" },
+];
+
+/* === Portfolio === */
+const portfolio = [
+  { name: "The.Gallery", handle: "", link: "https://1nky3.github.io/the.gallery" },
+  { name: "Good Health", handle: "", link: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?node-id=0-1&t=MPyhV4oarvBOYBZA-1" },
+];
+---
+
+<Main head={hero.head} description={hero.description}>
+  <section>
+    <div class="resume container-fluid p-3 p-md-4 p-lg-5 rounded-4">
+      <div class="row g-4">
+
+        <!-- LEFT COLUMN -->
+        <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+
+          <!-- Photo + Summary -->
+          <div class="card p-3 p-md-4">
+            <div class="row g-3 align-items-start">
+              <div class="col-12 col-sm-5">
+                <img src={url("/img/profile.jpg")} alt="Profile photo" class="profile-photo" loading="lazy" decoding="async" />
+              </div>
+              <div class="col-12 col-sm-7">
+                <p class="summary">{summary}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Technical Skills (underline) -->
+          <div class="card p-3 p-md-4">
+            <h2 class="sec-title underline">Technical Skills</h2>
+            <div class="pill-rows">
+              {technical.map(t => <span class="pill">{t}</span>)}
+            </div>
+          </div>
+
+          <!-- Social Skills (underline) -->
+          <div class="card p-3 p-md-4">
+            <h2 class="sec-title underline">Social Skills</h2>
+            <div class="pill-rows">
+              {social.map(s => <span class="pill">{s}</span>)}
+            </div>
+          </div>
+
+          <!-- Tools (Title | icons, no underline) -->
+          <div class="card p-3 p-md-4">
+            <div class="section-head">
+              <h2 class="sec-title no-underline">Tools</h2>
+              <span class="vbar" aria-hidden="true"></span>
+              <ul class="icon-list">
+                {tools.map(t => (
+                  <li class="icon">
+                    {t.icon
+                      ? <img src={url(t.icon)} data-title={t.title} alt={t.title} loading="lazy" decoding="async" />
+                      : <span class="icon-fallback" title={t.title}>
+                          {t.title.split(/\s|\/|-/).map(w => w[0]).join("").slice(0,2)}
+                        </span>
+                    }
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <!-- Language (Title | chips, no underline) -->
+          <div class="card p-3 p-md-4">
+            <div class="section-head">
+              <h2 class="sec-title no-underline">Language</h2>
+              <span class="vbar" aria-hidden="true"></span>
+              <div class="lang-row">
+                {languages.map(l => (
+                  <div class="lang-item">
+                    <span class="flag">{l.flag}</span>
+                    <span>{l.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <!-- Portfolio (Title | chips, no underline) -->
+          <div class="card p-3 p-md-4">
+            <div class="section-head">
+              <h2 class="sec-title no-underline">Portfolio</h2>
+              <span class="vbar" aria-hidden="true"></span>
+              <div class="portfolio-row">
+                {portfolio.map(p => (
+                  <a class="portfolio-chip" href={p.link || "#"} target="_blank" aria-label={p.name}>
+                    <span class="dot"></span>
+                    <span class="platform">{p.name}</span>
+                    <span class="handle">{p.handle}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+
+          <!-- CONTACT -->
+          <div class="card p-3 p-md-4">
+            <h2 class="sec-title">Contact</h2>
+            <div class="contact-grid">
+              {contact.map(c => (
+                <div class="contact-chip">
+                  <span class="ic">{c.icon}</span>
+                  <strong>{c.label}</strong>
+                  {c.href ? <a href={c.href} target="_blank" rel="noreferrer">{c.value}</a> : <span>{c.value}</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="card p-3 p-md-4">
+            <h2 class="sec-title">Education</h2>
+            <ul class="timeline">
+              {education.map(e => (
+                <li>
+                  <div class="tl-head">
+                    <span class="tl-title">{e.degree}</span>
+                    <span class="tl-badge">{e.dates}</span>
+                  </div>
+                  <div class="tl-sub">{e.org}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Work Experience -->
+          <!-- <div class="card p-3 p-md-4">
+            <h2 class="sec-title">Work Experience</h2>
+            <ul class="timeline">
+              {experience.map(x => (
+                <li>
+                  <div class="tl-head">
+                    <span class="tl-title">{x.role}</span>
+                    <span class="tl-badge">{x.dates}</span>
+                  </div>
+                  <div class="tl-sub">{x.company}</div>
+                </li>
+              ))}
+            </ul>
+          </div> -->
+
+          <!-- Projects -->
+          <div class="card p-3 p-md-4">
+            <h2 class="sec-title">Projects</h2>
+            <ul class="project-list">
+              {projects.map(p => (
+                <li>
+                  <span class="project-dot"></span>
+                  <strong>{p.name}</strong>
+                  <span class="muted"> — {p.blurb}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Interests (Title | chips, no underline) -->
+          <div class="card p-3 p-md-4">
+            <div class="section-head">
+              <h2 class="sec-title no-underline">Interests</h2>
+              <span class="vbar" aria-hidden="true"></span>
+              <div class="pill-rows">
+                {interests.map(i => <span class="pill">{i}</span>)}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.icon img').forEach(img => {
+        img.addEventListener('error', () => {
+          const title = img.dataset.title || '';
+          const initials = (title.match(/\b\w/g) || []).join('').slice(0,2).toUpperCase();
+          const span = document.createElement('span');
+          span.className = 'icon-fallback';
+          span.title = title;
+          span.textContent = initials || '?';
+          img.replaceWith(span);
+        });
+      });
+    });
+  </script>
+
+  <style>
+    section { background: #E3E3E3; padding: 40px 0; }
+
+    .card {
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+    /* Base title (underline default) */
+    .sec-title {
+      font-weight: 700; font-size: 1.05rem; color: #1a1a1a;
+      margin-bottom: .75rem; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: .4rem;
+    }
+    /* Kill underline when used inside .section-head or with .no-underline */
+    .section-head .sec-title,
+    .sec-title.no-underline {
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .summary { color: #333; line-height: 1.65; }
+    .profile-photo { width: 100%; border-radius: 12px; object-fit: cover; aspect-ratio: 1/1; }
+
+    .pill-rows { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
+    .pill {
+      background:#d1d1d1; border:1px solid #bbb; color:#111;
+      padding:.4rem .8rem; border-radius:999px; font-size:.9rem; font-weight:500;
+    }
+
+    .contact-grid { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
+    .contact-chip {
+      background:#dcdcdc; border:1px solid rgba(0,0,0,0.1);
+      border-radius:999px; padding:.45rem .8rem; display:inline-flex; align-items:center;
+      gap:.5rem; color:#111; font-size:.92rem;
+    }
+    .contact-chip strong { font-weight:600; }
+
+    .timeline { list-style:none; padding:0; display:grid; gap:.9rem; }
+    .tl-head { display:flex; justify-content:space-between; align-items:center; }
+    .tl-badge {
+      background:#eee; color:#111; border:1px solid rgba(0,0,0,0.1);
+      padding:.25rem .6rem; border-radius:999px; font-size:.85rem;
+    }
+
+    .lang-row, .portfolio-row { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
+    .lang-item, .portfolio-chip {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:#dcdcdc; border:1px solid rgba(0,0,0,0.1);
+      border-radius:999px; padding:.45rem .8rem; color:#111; text-decoration:none; font-weight:500;
+    }
+    .portfolio-chip .dot { width:8px; height:8px; border-radius:50%; background:#ff3b3b; }
+
+    .project-list { list-style:none; padding:0; display:grid; gap:.5rem; color:#111; }
+    .project-dot { width:8px; height:8px; border-radius:50%; background:#4EA2FF; display:inline-block; margin-right:.45rem; }
+
+    a, a:hover, a:focus, a:visited { text-decoration:none !important; color:#111 !important; transition:opacity .2s; }
+    a:hover { opacity:0.7; }
+
+    /* Section-head layout + vertical bar */
+    .section-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .vbar { width:1px; height:22px; background:rgba(0,0,0,.35); border-radius:1px; }
+
+    /* Tools icons */
+    .icon-list { list-style:none; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:0; margin:0; }
+    .icon img { width:28px; height:28px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .icon-fallback {
+      width:28px; height:28px; display:grid; place-items:center;
+      border-radius:6px; background:#e0e0e0; color:#222; font-weight:700; font-size:.78rem;
+      letter-spacing:.2px; box-shadow:0 1px 2px rgba(0,0,0,.06);
+    }
+    .icon img:hover, .icon-fallback:hover { transform:translateY(-1px); transition:transform .15s ease; }
+
+    @media (max-width: 991.98px){ .summary{ font-size:.96rem; } }
+  </style>
+</Main>
