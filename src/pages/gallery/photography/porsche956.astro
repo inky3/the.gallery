@@ -1,57 +1,64 @@
 ---
 import Main from "../../../layouts/Main.astro";
 import Collection1 from "../../../components/Collection1.astro";
-import "bootstrap/dist/css/bootstrap.min.css";
 
+/* ✅ Base-safe URL builder only (encode removed) */
+const base = import.meta.env.BASE_URL || "/";
+const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+/* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case!) */
 const collageImages = [
-  { src: "../../../img/photography/porsche956/IMG_9490.JPG", title: "One" },
-  { src: "../../../img/photography/porsche956/IMG_9524.JPG", title: "Two" },
-  { src: "../../../img/photography/porsche956/IMG_9504.JPG", title: "Three" },
-  { src: "../../../img/photography/porsche956/IMG_9571.JPG", title: "Four" },
-  { src: "../../../img/photography/porsche956/IMG_9496.JPG", title: "Five" },
-  { src: "../../../img/photography/porsche956/IMG_9527.JPG", title: "Six" },
-  { src: "../../../img/photography/porsche956/IMG_9552.JPG", title: "Seven" },
-  { src: "../../../img/photography/porsche956/IMG_9536.JPG", title: "Eight" },
-  { src: "../../../img/photography/porsche956/IMG_9488.JPG", title: "Nine" },
+  { src: url("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
+  { src: url("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
+  { src: url("/img/photography/porsche956/IMG_9504.JPG"), title: "Three" },
+  { src: url("/img/photography/porsche956/IMG_9571.JPG"), title: "Four" },
+  { src: url("/img/photography/porsche956/IMG_9496.JPG"), title: "Five" },
+  { src: url("/img/photography/porsche956/IMG_9527.JPG"), title: "Six" },
+  { src: url("/img/photography/porsche956/IMG_9552.JPG"), title: "Seven" },
+  { src: url("/img/photography/porsche956/IMG_9536.JPG"), title: "Eight" },
+  { src: url("/img/photography/porsche956/IMG_9488.JPG"), title: "Nine" },
 ];
 
+/* ✅ Hero banner image */
 const hero = {
-    head: "PORSCHE 956",
-    description: "Collection of Porsche 956 photographs.",
-    image: "../../../img/photography/porsche956/IMG_9504.JPG"
-}
+  head: "PORSCHE 956",
+  description: "Collection of Porsche 956 photographs.",
+  image: url("/img/photography/porsche956/IMG_9504.JPG"),
+};
 ---
-<Main head={hero.head} description={hero.description} image={hero.image}>
-    <Collection1 images={collageImages} name="Porsche956" info="Porsche created the 956 for the World Endurance Championship in 1982. It represented a new generation of race cars with pioneering technology such as its fuel-efficient 2.6-litre turbo engine and fully synchronised five-speed gearbox. The new Group C regulations stipulated a specific ratio of overall length to wheelbase in order to prevent the use of massive long-tail designs. In response, the 956 boasted the longest wheelbase of any Porsche race car to date at 265 centimetres. For the first time, Porsche developed a monocoque chassis constructed of sheet aluminium. Diffusers generated low pressure under the car which suck the 966 to the track surface. This technology was new for sports prototypes and increased the cornering speeds considerably, giving Porsche a decisive advantage over the competitors. The debut at Le Mans yielded a triple victory, and factory driver Jacky Ickx went on to win the Sports Car World Championship. The 956 and its successor model the 962 C dominated the endurance racing field right through to the end of the 1980s" />
 
-<div class="container text-center my-5">
-     <table class="table table-striped table-borderless">
-  <tbody>
-    <tr>
-      <th>Model Year</th>
-      <td>1982</td>
-    </tr>
-    <tr>
-      <th>Engine</th>
-      <td>6-Cyl. Boxer Biturbo</td>
-    </tr>
-    <tr>
-      <th>Displacement</th>
-      <td>2649 cc</td>
-    </tr>
-    <tr>
-      <th>Power Output</th>
-      <td>456 kW (620 PS)</td>
-    </tr>
-    <tr>
-      <th>Top Speed</th>
-      <td>952 km/h</td>
-    </tr>
-    <tr>
-      <th>Weight</th>
-      <td>840 kg</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<Main head={hero.head} description={hero.description} image={hero.image}>
+  <Collection1
+    images={collageImages}
+    name="Porsche 956"
+    info="Porsche created the 956 for the World Endurance Championship in 1982. It represented a new generation of race cars with pioneering technology such as its fuel-efficient 2.6-litre turbo engine and fully synchronised five-speed gearbox. The new Group C regulations stipulated a specific ratio of overall length to wheelbase in order to prevent the use of massive long-tail designs. In response, the 956 boasted the longest wheelbase of any Porsche race car to date at 265 centimetres. For the first time, Porsche developed a monocoque chassis constructed of sheet aluminium. Diffusers generated low pressure under the car which sucked the 956 to the track surface. This technology was new for sports prototypes and increased the cornering speeds considerably, giving Porsche a decisive advantage over the competitors. The debut at Le Mans yielded a triple victory, and factory driver Jacky Ickx went on to win the Sports Car World Championship. The 956 and its successor model the 962 C dominated the endurance racing field right through to the end of the 1980s."
+  />
+
+  <div class="container my-5">
+    <div class="spec elev p-3 p-md-4 rounded-3">
+      <h3 class="h5 mb-3 text-center">Technical Specifications</h3>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <tbody>
+            <tr><th scope="row" class="fw-semibold">Model Year</th><td>1982</td></tr>
+            <tr><th scope="row" class="fw-semibold">Engine</th><td>6-Cyl. Boxer Biturbo</td></tr>
+            <tr><th scope="row" class="fw-semibold">Displacement</th><td>2,649 cc</td></tr>
+            <tr><th scope="row" class="fw-semibold">Power Output</th><td>456 kW (620 PS)</td></tr>
+            <tr><th scope="row" class="fw-semibold">Top Speed</th><td>352 km/h</td></tr>
+            <tr><th scope="row" class="fw-semibold">Weight</th><td>840 kg</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </Main>
+
+<style>
+  /* Light “card” surface for the spec table; matches your minimal theme */
+  .spec {
+    background: var(--bg-elev, #ffffff);
+    border: 1px solid var(--border-subtle, rgba(0,0,0,.08));
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  }
+  .table th { width: 40%; white-space: nowrap; }
+</style>
