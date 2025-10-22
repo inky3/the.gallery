@@ -2,11 +2,11 @@
 import Main from "../../../layouts/Main.astro";
 import Collection1 from "../../../components/Collection1.astro";
 
-/* ✅ Base-safe URL builder only (encode removed) */
-const base = import.meta.env.BASE_URL || "/";
-const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+/* ✅ GitHub Pages–safe URL helper (prevents double /the.gallery/) */
+const base = import.meta.env.BASE_URL?.replace(/\/+$/, "") || "";
+const url = (p = "/") => `${base}${p}`;
 
-/* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case!) */
+/* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case-sensitive) */
 const collageImages = [
   { src: url("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
   { src: url("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
