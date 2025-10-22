@@ -2,29 +2,28 @@
 import Main from "../../../layouts/Main.astro";
 import Collection1 from "../../../components/Collection1.astro";
 
-/* ✅ Base-safe and space-safe URL helpers */
+/* ✅ Base-safe URL builder only (encode removed) */
 const base = import.meta.env.BASE_URL || "/";
 const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-const encode = (p = "/") => url(p).replace(/ /g, "%20");
 
 /* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case!) */
 const collageImages = [
-  { src: encode("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
-  { src: encode("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
-  { src: encode("/img/photography/porsche956/IMG_9504.JPG"), title: "Three" },
-  { src: encode("/img/photography/porsche956/IMG_9571.JPG"), title: "Four" },
-  { src: encode("/img/photography/porsche956/IMG_9496.JPG"), title: "Five" },
-  { src: encode("/img/photography/porsche956/IMG_9527.JPG"), title: "Six" },
-  { src: encode("/img/photography/porsche956/IMG_9552.JPG"), title: "Seven" },
-  { src: encode("/img/photography/porsche956/IMG_9536.JPG"), title: "Eight" },
-  { src: encode("/img/photography/porsche956/IMG_9488.JPG"), title: "Nine" },
+  { src: url("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
+  { src: url("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
+  { src: url("/img/photography/porsche956/IMG_9504.JPG"), title: "Three" },
+  { src: url("/img/photography/porsche956/IMG_9571.JPG"), title: "Four" },
+  { src: url("/img/photography/porsche956/IMG_9496.JPG"), title: "Five" },
+  { src: url("/img/photography/porsche956/IMG_9527.JPG"), title: "Six" },
+  { src: url("/img/photography/porsche956/IMG_9552.JPG"), title: "Seven" },
+  { src: url("/img/photography/porsche956/IMG_9536.JPG"), title: "Eight" },
+  { src: url("/img/photography/porsche956/IMG_9488.JPG"), title: "Nine" },
 ];
 
-/* ✅ Hero banner image also encoded */
+/* ✅ Hero banner image */
 const hero = {
   head: "PORSCHE 956",
   description: "Collection of Porsche 956 photographs.",
-  image: encode("/img/photography/porsche956/IMG_9504.JPG"),
+  image: url("/img/photography/porsche956/IMG_9504.JPG"),
 };
 ---
 
@@ -41,30 +40,12 @@ const hero = {
       <div class="table-responsive">
         <table class="table table-sm align-middle mb-0">
           <tbody>
-            <tr>
-              <th scope="row" class="fw-semibold">Model Year</th>
-              <td>1982</td>
-            </tr>
-            <tr>
-              <th scope="row" class="fw-semibold">Engine</th>
-              <td>6-Cyl. Boxer Biturbo</td>
-            </tr>
-            <tr>
-              <th scope="row" class="fw-semibold">Displacement</th>
-              <td>2,649 cc</td>
-            </tr>
-            <tr>
-              <th scope="row" class="fw-semibold">Power Output</th>
-              <td>456 kW (620 PS)</td>
-            </tr>
-            <tr>
-              <th scope="row" class="fw-semibold">Top Speed</th>
-              <td>952 km/h</td>
-            </tr>
-            <tr>
-              <th scope="row" class="fw-semibold">Weight</th>
-              <td>840 kg</td>
-            </tr>
+            <tr><th scope="row" class="fw-semibold">Model Year</th><td>1982</td></tr>
+            <tr><th scope="row" class="fw-semibold">Engine</th><td>6-Cyl. Boxer Biturbo</td></tr>
+            <tr><th scope="row" class="fw-semibold">Displacement</th><td>2,649 cc</td></tr>
+            <tr><th scope="row" class="fw-semibold">Power Output</th><td>456 kW (620 PS)</td></tr>
+            <tr><th scope="row" class="fw-semibold">Top Speed</th><td>352 km/h</td></tr>
+            <tr><th scope="row" class="fw-semibold">Weight</th><td>840 kg</td></tr>
           </tbody>
         </table>
       </div>
