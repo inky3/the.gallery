@@ -2,28 +2,26 @@
 import Main from "../../../layouts/Main.astro";
 import Collection1 from "../../../components/Collection1.astro";
 
-/* ✅ GitHub Pages–safe URL helper (prevents double /the.gallery/) */
-const base = import.meta.env.BASE_URL?.replace(/\/+$/, "") || "";
-const url = (p = "/") => `${base}${p}`;
+/* ❌ Removed base & url builder — Astro already handles BASE_URL correctly */
 
 /* 🔎 Ensure these filenames EXACTLY match files in /public/img/... (case-sensitive) */
 const collageImages = [
-  { image: url("/img/photography/porsche956/IMG_9490.JPG"), title: "One" },
-  { image: url("/img/photography/porsche956/IMG_9524.JPG"), title: "Two" },
-  { image: url("/img/photography/porsche956/IMG_9504.JPG"), title: "Three" },
-  { image: url("/img/photography/porsche956/IMG_9571.JPG"), title: "Four" },
-  { image: url("/img/photography/porsche956/IMG_9496.JPG"), title: "Five" },
-  { image: url("/img/photography/porsche956/IMG_9527.JPG"), title: "Six" },
-  { image: url("/img/photography/porsche956/IMG_9552.JPG"), title: "Seven" },
-  { image: url("/img/photography/porsche956/IMG_9536.JPG"), title: "Eight" },
-  { image: url("/img/photography/porsche956/IMG_9488.JPG"), title: "Nine" },
+  { image: "/img/photography/porsche956/IMG_9490.JPG", title: "One" },
+  { image: "/img/photography/porsche956/IMG_9524.JPG", title: "Two" },
+  { image: "/img/photography/porsche956/IMG_9504.JPG", title: "Three" },
+  { image: "/img/photography/porsche956/IMG_9571.JPG", title: "Four" },
+  { image: "/img/photography/porsche956/IMG_9496.JPG", title: "Five" },
+  { image: "/img/photography/porsche956/IMG_9527.JPG", title: "Six" },
+  { image: "/img/photography/porsche956/IMG_9552.JPG", title: "Seven" },
+  { image: "/img/photography/porsche956/IMG_9536.JPG", title: "Eight" },
+  { image: "/img/photography/porsche956/IMG_9488.JPG", title: "Nine" },
 ];
 
 /* ✅ Hero banner image */
 const hero = {
   head: "PORSCHE 956",
   description: "Collection of Porsche 956 photographs.",
-  image: url("/img/photography/porsche956/IMG_9504.JPG"),
+  image: "/img/photography/porsche956/IMG_9504.JPG",
 };
 ---
 
