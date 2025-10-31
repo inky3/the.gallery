@@ -1,97 +1,268 @@
 ---
 /**
- * Card.astro
  * Props:
- *  - image: string (relative or absolute). Fallback: /img/blank.jpg
- *  - alt:   string (optional, falls back to title)
- *  - title: string (required)
- *  - category: string (used by your filter script via data-category)
- *  - href: string (defaults to '#')
+ * - title: string
+ * - image: string
+ * - href?: string
+ * - category?: string | string[]   ← now supports array
+ * - intro?: string
  */
-const { image, alt, title, category, href = "#" } = Astro.props;
+const {
+  title = "Untitled",
+  image = "/img/blank.jpg",
+  href = "#",
+  category = "",
+  intro = "View this project."
+} = Astro.props;
 
-/* ✅ Safe local + BASE_URL aware image encoder */
+// base-safe for GitHub Pages
 const base = import.meta.env.BASE_URL || "/";
 const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-const encode = (p = "/") => url(p).replace(/ /g, "%20");
+
+/* 
+  🔹 data-category must be a string
+  🔹 if user passed array: ["coding","ux/ui-design"] → "coding,ux/ui-design"
+  🔹 if user passed string: "coding" → "coding"
+*/
+const catLower = Array.isArray(category)
+  ? category.map((c) => c.toLowerCase()).join(",")
+  : (category || "").toLowerCase();
+
+/* for rendering pill(s) in overlay — keep original value */
+const catList = Array.isArray(category)
+  ? category
+  : category
+  ? [category]
+  : [];
 ---
 
-<div class="col-lg-4 col-sm-6 gallery-card" data-category={category}>
-  <a
-    href={href}
-    class="tile d-block position-relative focus-ring"
-    aria-label={`${title}${category ? ` — ${category}` : ""}`}
-  >
-    <figure class="stage m-0">
-      <img
-        class="cover"
-        src={encode(image)}
-        alt={alt || title}
-        loading="lazy"
-        decoding="async"
-        width="960"
-        height="960"
-      />
-    </figure>
+<div class="col-12 col-sm-6 col-lg-4 gallery-col">
+  <article class="gallery-card" data-category={catLower}>
+    <!-- MAIN CLICK AREA -->
+    <a
+      class="card-link"
+      href={href}
+      data-href={href}
+      target="_blank"
+      rel="noreferrer"
+    >
+      <figure class="card-figure">
+        <img
+          src={url(image)}
+          alt={title}
+          loading="lazy"
+          decoding="async"
+        />
 
-    <!-- Bottom pill label -->
-    <div class="label-wrap" aria-hidden="true">
-      <div class="label-pill"><span class="label-text">{title}</span></div>
-    </div>
-  </a>
+        <!-- bottom-center pill (your style) -->
+        <div class="card-pill">
+          <span class="pill-text">{title}</span>
+        </div>
+
+        <!-- hover / tap overlay -->
+        <div class="card-overlay">
+          <div class="overlay-text">
+            <h3 class="card-title">{title}</h3>
+            <p class="card-intro">{intro}</p>
+          </div>
+
+          {catList.length > 0 && (
+            <div class="tag-row">
+              {catList.map((cat) => (
+                <span class="card-tag">{cat}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </figure>
+    </a>
+  </article>
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const card = document.currentScript.closest(".gallery-card");
+    if (!card) return;
+
+    const figure = card.querySelector(".card-figure");
+    const link = card.querySelector(".card-link");
+
+    let armed = false;
+
+    // tap-to-preview for small screens
+    figure.addEventListener("click", (e) => {
+      // desktop → let hover handle it
+      if (window.innerWidth > 1024) return;
+
+      if (!armed) {
+        e.preventDefault();
+        figure.classList.add("show-info");
+        armed = true;
+
+        // auto-close after 2.5s so user isn’t stuck
+        setTimeout(() => {
+          figure.classList.remove("show-info");
+          armed = false;
+        }, 2500);
+      } else {
+        // second tap → follow link (let <a> work)
+        figure.classList.remove("show-info");
+        armed = false;
+      }
+    });
+  });
+</script>
+
 <style>
-  .gallery-card { transition: transform .24s ease, opacity .24s ease; }
-  .hide { opacity: 0; transform: translateX(-24px); pointer-events: none; position: absolute; }
-
-  .tile{
-    border-radius: 24px;
-    border: 1px solid rgba(0,0,0,.06);
-    background: #fff;
-    overflow: hidden;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    max-width: 360px;
-    margin-inline: auto;
+  .gallery-col {
+    position: relative;
   }
-  .tile:hover{
+
+  .gallery-card {
+    position: relative;
+    height: 100%;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .gallery-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(0,0,0,.10);
-    border-color: rgba(0,0,0,.10);
   }
 
-  .stage{ aspect-ratio: 1 / 1; background: #000; overflow: hidden; }
-  .cover{
+  .card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+  }
+
+  /* fixed box 406 x 304 */
+  .card-figure {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #111;
+    border: 1px solid rgba(0,0,0,.15);
+    width: 100%;
+    max-width: 406px;
+    height: 304px;
+    margin: 0 auto;
+  }
+  .card-figure img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    transition: transform .28s ease, opacity .28s ease;
   }
-  .tile:hover .cover{ transform: scale(1.03); opacity: .96; }
-  .tile{ transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-  .tile:hover{ transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.05); }
 
-  .label-wrap{ position: absolute; left: 0; right: 0; bottom: 45px; display: grid; place-items: center; pointer-events: none; }
-  .label-pill{
-    max-width: 86%;
-    background: rgba(0,0,0,.66);
-    color: #f1f1f1;
-    border: 1px solid rgba(255,255,255,.35);
+  /* bottom-center pill */
+  .card-pill {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    background: rgba(12, 12, 12, 0.88);
+    border: 1px solid rgba(255,255,255,.25);
     border-radius: 999px;
-    padding: .65rem 1.1rem;
-    transform: translateY(12px);
+    padding: .55rem 1.6rem .65rem;
+    min-width: 210px;
+    max-width: 92%;
+    text-align: center;
+    pointer-events: none;
+    box-shadow: 0 12px 22px rgba(0,0,0,.28);
+    backdrop-filter: saturate(130%) blur(4px);
+    transition: opacity .18s ease;
+  }
+  .pill-text {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* overlay */
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 10% 0%, rgba(0,0,0,.6) 0%, rgba(0,0,0,.9) 65%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: .25rem;
+    padding: 0 1rem 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+    transform: translateY(10px);
+  }
+
+  .overlay-text {
+    margin-bottom: .4rem;
+  }
+
+  .card-title {
+    font-size: .9rem;
+    font-weight: 600;
+    margin: 0 0 .15rem;
+  }
+  .card-intro {
+    font-size: .7rem;
+    margin: 0;
     opacity: .92;
-    transition: transform .22s ease, opacity .22s ease, box-shadow .22s ease, border-color .22s ease;
-    backdrop-filter: saturate(120%) blur(4px);
+    line-height: 1.35;
   }
-  .tile:hover .label-pill,
-  .tile:focus-visible .label-pill{
-    transform: translateY(0);
-    opacity: 1;
-    box-shadow: 0 6px 16px rgba(0,0,0,.22);
-    border-color: rgba(255,255,255,.55);
+
+  /* bottom-left tag(s) */
+  .tag-row {
+    display: flex;
+    gap: .35rem;
+    flex-wrap: wrap;
   }
-  .label-text{ white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .focus-ring:focus-visible{ outline: 2px solid #A4C3B2; outline-offset: 3px; border-radius: 26px; }
+
+  .card-tag {
+    background: rgba(0,0,0,.15);
+    border: 1px solid rgba(255,255,255,.4);
+    border-radius: 999px;
+    padding: .2rem .7rem .3rem;
+    font-size: .6rem;
+    text-transform: capitalize;
+  }
+
+  /* DESKTOP: hover shows overlay + hides pill */
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-card:hover .card-overlay {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .gallery-card:hover .card-pill {
+      opacity: 0;
+    }
+  }
+
+  /* TOUCH: hidden until tap (index / projects will toggle .show-info) */
+  @media (hover: none), (pointer: coarse) {
+    .card-overlay {
+      opacity: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.65) 50%, rgba(0,0,0,.9) 100%);
+      padding-bottom: 4.2rem;
+    }
+    .card-figure.show-info .card-overlay {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .card-figure.show-info .card-pill {
+      opacity: 0;
+    }
+  }
+
+  /* tiny screens */
+  @media (max-width: 575.98px) {
+    .card-figure {
+      max-width: 100%;
+      height: 304px;
+    }
+  }
 </style>

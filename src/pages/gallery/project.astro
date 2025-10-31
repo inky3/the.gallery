@@ -1,182 +1,205 @@
 ---
 import Main from '../../layouts/Main.astro';
+import Card from '../../components/Card.astro';
 
 const hero = {
-  head: 'Poster Gallery',
-  description: 'Explore our curated collection of stunning posters.'
+  head: "Projects",
+  description: "Explore my Website that I created myself."
 };
 
-/* BASE_URL-safe helper (works locally and on GitHub Pages) */
-const base = import.meta.env.BASE_URL || '/';
-const url  = (p = '/') => `${base}${String(p).replace(/^\/+/, '')}`;
-
-/* Catalog */
-const posters = [
-  {
-    title: 'The Memories Website',
-    image: '/img/project/thememories.jpg',
-    href: 'https://inky3.github.io/Memories-of-G',
-    category: 'Coding',
-  },
-  {
-    title: 'Wanawat Work Website',
-    image: '/img/project/tanawatwork.jpg',
-    href: 'https://inky3.github.io/the-work-of-tanawat',
-    category: ['Coding', 'UX/UI-Design'],
-  },
-  {
-    title: 'Good Health',
-    image: '/img/project/goodhealth.jpg',
-    href: 'https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?page-id=0%3A1&node-id=2151-2834&viewport=1268%2C222%2C0.16&t=xKEa81Rn4wNwnEgT-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2132%3A1714',
-    // NOTE: was "catagory" — fixed to "category"
-    category: 'UX/UI-Design',
-  },
-  {
-    title: 'MAD PIZZA',
-    image: '/img/project/madpizza.jpg',
-    href: 'https://www.figma.com/proto/XArrul0wbneI0hyZP4mntO/Madpizza?page-id=0%3A1&node-id=1-5&p=f&viewport=210%2C143%2C0.17&t=1VNQwdh78BC66g6O-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A5',
-    // NOTE: was "catagory" — fixed to "category"
-    category: 'UX/UI-Design',
-  }
+const filters = [
+  { key: "all", label: "All" },
+  { key: "coding", label: "Coding" },
+  { key: "ux/ui-design", label: "UX/UI Design" },
 ];
 
-/* Filter tabs */
-const tabs = ['All', 'Coding', 'UX/UI-Design'];
-
-/* Helper: normalize a card’s categories to a comma-joined string */
-const catString = (c) =>
-  Array.isArray(c) ? c.join(',') : (c ?? '');
+const items = [
+  {
+    title: "The Memories Website",
+    image: "/img/project/thememories.jpg",
+    category: "coding",
+    intro: "พอร์ตโฟลิโอเว็บไซต์แสดงผลงาน ที่มี concept เกี่ยวกับความทรงจำ พร้อมโทนสีส้มฟิลม์ววินเทจ โดยโปรเจคนี้ได้ถูกเขียนขึ้นมาโดยคนเดียวทั้งหมด",
+    href: "https://inky3.github.io/Memories-of-G"
+  },
+  {
+    title: "Wanawat Work Website",
+    image: "/img/project/tanawatwork.jpg",
+    // 👇 multi-category
+    category: ["coding", "ux/ui-design"],
+    intro: "พอร์ตโฟลิโอเว็บไซต์แสดงผลงาน ที่มี concept เกี่ยวกับ Warhammer เผ่า Necron โดยโปรเจคนี้ได้ถูกเขียนและออกแบบขึ้นมาโดยคนเดียวทั้งหมด",
+    href: "https://inky3.github.io/the-work-of-tanawat"
+  },
+  {
+    title: "Good Health",
+    image: "/img/project/goodhealth.jpg",
+    category: "ux/ui-design",
+    intro: " Project นี้ เป็นวิจัยเว็ปไซต์เกี่ยวกับการรวบรวมข้อมูลอาหารโดยเล็งไปให้ผู้ใช้ที่เป็นโรคเบาหวานที่ถูกทำขึ้นใน Figma",
+    href: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?page-id=0%3A1&node-id=2151-2834&viewport=1268%2C222%2C0.16&t=xKEa81Rn4wNwnEgT-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2132%3A1714"
+  },
+  {
+    title: "Mad Pizza",
+    image: "/img/project/madpizza.jpg",
+    category: "ux/ui-design",
+    intro: "Project นี้ เป็นการออแบบเมนูให้กับร้านพิซซ่า Mad Pizza ที่เน้นโทนสีแดงส้ม เพื่อให้เข้ากับบรรยากาศร้าน โดยโปรเจคนี้ได้ถูกทำขึ้นใน Figma",
+    href: "https://www.figma.com/proto/XArrul0wbneI0hyZP4mntO/Madpizza?page-id=0%3A1&node-id=1-5&p=f&viewport=210%2C143%2C0.17&t=1VNQwdh78BC66g6O-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A5"
+  }
+];
 ---
 
 <Main head={hero.head} description={hero.description}>
-  <!-- Toggle -->
-  <div class="container mb-4">
-    <div class="view-toggle" role="tablist" aria-label="Choose category">
-      {tabs.map((t, i) => (
-        <button
-          class={`toggle-btn ${i === 0 ? 'is-active' : ''}`}
-          role="tab"
-          aria-selected={i === 0 ? 'true' : 'false'}
-          data-category={t}
-        >
-          {t}
-        </button>
-      ))}
-    </div>
-  </div>
+  <section class="py-5">
+    <div class="container">
+      <!-- HEADER + FILTER PILLS -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+        <h2 class="mb-2">Projects</h2>
 
-  <!-- Grid -->
-  <section id="grid-posters" class="container" aria-label="Poster items">
-    <div class="row g-4">
-      {posters.map((p) => (
-        <div class="col-12 col-sm-6 col-lg-4">
-          <a class="card-link" href={p.href} target="_blank" rel="noreferrer">
-            <figure
-              class="single-tile position-relative"
-              data-category={catString(p.category)}
-              tabindex="0"
-              aria-label={`Open ${p.title}`}
+        <div class="pill-filter" id="projectFilterNav">
+          {filters.map((f, i) => (
+            <button
+              type="button"
+              class={`pill-btn ${i === 0 ? 'active' : ''}`}
+              data-filter={f.key}
             >
-              <img
-                src={url(p.image)}
-                alt={p.title}
-                loading="lazy"
-                decoding="async"
-                width="960"
-                height="960"
-                style="display:block;width:100%;height:auto;"
-              />
-              <div class="label-wrap" aria-hidden="true">
-                <div class="label-pill"><span class="label-text">{p.title}</span></div>
-              </div>
-            </figure>
-          </a>
+              {f.label}
+            </button>
+          ))}
         </div>
-      ))}
+      </div>
+
+      <!-- ONE mobile-only button (global) -->
+      <div class="text-center mb-4">
+        <button id="toggleDescriptions" class="desc-btn" type="button">
+          View Description
+        </button>
+      </div>
+
+      <!-- GALLERY -->
+      <div class="row g-4" id="gallery">
+        {items.map((item) => (
+          <Card
+            title={item.title}
+            image={item.image}
+            category={item.category}
+            intro={item.intro}
+            href={item.href}
+          />
+        ))}
+      </div>
     </div>
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const btns  = document.querySelectorAll('.toggle-btn');
-      const tiles = document.querySelectorAll('#grid-posters .single-tile');
+    // run ONLY in browser
+    window.addEventListener("DOMContentLoaded", () => {
+      const nav = document.getElementById("projectFilterNav");
+      const toggleBtn = document.getElementById("toggleDescriptions");
+      const cards = Array.from(document.querySelectorAll(".gallery-card"));
 
-      const applyFilter = (cat) => {
-        const want = (cat || 'All').toLowerCase();
-        tiles.forEach(tile => {
-          const raw = tile.getAttribute('data-category') || '';
-          const list = raw.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-          const match = (want === 'all') || list.includes(want);
-          tile.closest('.col-12').style.display = match ? '' : 'none';
+      // -------- FILTER LOGIC --------
+      if (nav && cards.length) {
+        nav.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!target || target.tagName !== "BUTTON") return;
+
+          // active UI
+          nav.querySelectorAll("button").forEach((btn) => btn.classList.remove("active"));
+          target.classList.add("active");
+
+          const filter = (target.dataset.filter || "all").toLowerCase();
+
+          cards.forEach((card) => {
+            const col = card.closest(".gallery-col");
+            if (!col) return;
+
+            // data-category may be: "coding" or "coding,ux/ui-design"
+            const raw = (card.dataset.category || "").toLowerCase();
+            const list = raw.split(",").map((x) => x.trim()).filter(Boolean);
+
+            const match = filter === "all" || list.includes(filter);
+            col.style.display = match ? "" : "none";
+          });
         });
-      };
+      }
 
-      btns.forEach((b) => {
-        b.addEventListener('click', () => {
-          btns.forEach(x => { x.classList.remove('is-active'); x.setAttribute('aria-selected','false'); });
-          b.classList.add('is-active'); b.setAttribute('aria-selected','true');
-          applyFilter(b.dataset.category);
+      // -------- MOBILE "VIEW DESCRIPTION" (one button) --------
+      if (toggleBtn) {
+        // show/hide only if screen < 770
+        const applyVisibility = () => {
+          if (window.innerWidth <= 770) {
+            toggleBtn.style.display = "inline-block";
+          } else {
+            toggleBtn.style.display = "none";
+            // also reset cards on desktop
+            document.querySelectorAll(".card-figure.show-info").forEach((fig) => {
+              fig.classList.remove("show-info");
+            });
+            toggleBtn.classList.remove("active");
+            toggleBtn.textContent = "View Description";
+          }
+        };
+
+        applyVisibility();
+        window.addEventListener("resize", applyVisibility);
+
+        toggleBtn.addEventListener("click", () => {
+          const willShow = !toggleBtn.classList.contains("active");
+          toggleBtn.classList.toggle("active", willShow);
+          toggleBtn.textContent = willShow ? "Hide Description" : "View Description";
+
+          document.querySelectorAll(".card-figure").forEach((fig) => {
+            if (willShow) fig.classList.add("show-info");
+            else fig.classList.remove("show-info");
+          });
         });
-      });
-
-      applyFilter('All');
+      }
     });
   </script>
 
   <style>
-    /* Toggle */
-    .view-toggle {
-      display: inline-flex; gap: 6px; padding: 4px;
-      background: #f2f4f5; border-radius: 999px; border: 1px solid rgba(0,0,0,.06);
-    }
-    .toggle-btn {
-      appearance: none; border: 0; background: transparent; padding: .4rem .85rem;
-      border-radius: 999px; cursor: pointer; color: #333; font-weight: 500;
-      transition: background .18s ease, color .18s ease;
-    }
-    .toggle-btn.is-active { background: #fff; color: #0b6b53; box-shadow: 0 1px 2px rgba(0,0,0,.05); }
-
-    /* Cards */
-    .card-link { text-decoration: none; }
-    .single-tile {
-      margin: 0; background: #fff; border: 1px solid rgba(0,0,0,.08);
-      border-radius: 12px; overflow: hidden; cursor: pointer;
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-    .single-tile:hover {
-      transform: translateY(-2px);
-      border-color: rgba(0,0,0,.12);
-      box-shadow: 0 6px 16px rgba(0,0,0,.10);
-    }
-    .single-tile img { display:block; width:100%; height:auto; aspect-ratio: 4/3; object-fit: cover; }
-
-    /* Pill label */
-    .label-wrap {
-      position: absolute; left: 0; right: 0; bottom: 20px;
-      display: grid; place-items: center; pointer-events: none;
-    }
-    .label-pill {
-      max-width: 86%;
-      background: rgba(0,0,0,.66);
-      color: #f1f1f1;
-      border: 1px solid rgba(255,255,255,.35);
+    /* --- FILTER PILLS --- */
+    .pill-filter {
+      display: inline-flex;
+      gap: .35rem;
+      background: #f6f7f7;
       border-radius: 999px;
-      padding: .65rem 1.1rem;
-      transform: translateY(12px);
-      opacity: .92;
-      transition: transform .22s ease, opacity .22s ease, box-shadow .22s ease, border-color .22s ease;
-      backdrop-filter: saturate(120%) blur(4px);
+      padding: 0.25rem;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
     }
-    .single-tile:hover .label-pill {
-      transform: translateY(0);
-      opacity: 1;
-      box-shadow: 0 6px 16px rgba(0,0,0,.22);
-      border-color: rgba(255,255,255,.55);
+    .pill-btn {
+      border: none;
+      background: transparent;
+      color: #333;
+      font-weight: 500;
+      padding: 0.45rem 1.2rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
     }
-    .label-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pill-btn.active {
+      background: #0f6657;
+      color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    }
+    .pill-btn:hover:not(.active) {
+      background: rgba(0,0,0,.05);
+    }
 
-    @media (max-width: 575.98px) {
-      .single-tile img { aspect-ratio: 1 / 1; }
+    /* --- MOBILE VIEW DESCRIPTION BTN --- */
+    .desc-btn {
+      background: #f5f5f5;
+      border: 1px solid rgba(0,0,0,0.1);
+      color: #333;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      display: none; /* default hidden, JS will show < 770px */
+    }
+    .desc-btn.active {
+      background: #0f6657;
+      color: #fff;
+      border-color: #0f6657;
     }
   </style>
 </Main>

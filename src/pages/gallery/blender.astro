@@ -1,21 +1,87 @@
 ---
 import Main from '../../layouts/Main.astro';
 import Card from '../../components/Card.astro';
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const hero = {
-    head: "Blender Gallery",
-    description: "Explore my 3D Blender creations."
-}
+  head: "Blender Gallery",
+  description: "Explore my 3D Blender creations."
+};
+
+const items = [
+  {
+    title: "Bed Room",
+    image: "/img/blender/Bedroom.jpg",
+    category: "blender",
+    intro: "ห้องนอนสไตล์มินิมอล พร้อมแสงธรรมชาติ",
+  },
+  {
+    title: "Magic Room",
+    image: "/img/blender/Room.jpg",
+    category: "blender",
+    intro: "ห้องเวทมนตร์ กับแสงไฟและบรรยากาศลึกลับ",
+  },
+  {
+    title: "Healing Potion",
+    image: "/img/blender/Healing-Potion.jpg",
+    category: "blender",
+    intro: "ขวดยารักษาแผลในโลกแฟนตาซี",
+  },
+  {
+    title: "BKitchen",
+    image: "/img/blender/Kitchen.jpg",
+    category: "blender",
+    intro: "ครัวสไตล์มินิมอล โทนสว่าง",
+  },
+  {
+    title: "Moon Potion",
+    image: "/img/blender/moon.jpg",
+    category: "blender",
+    intro: "ขวดยาแห่งดวงจันทร์ กับแสงเรืองรอง",
+  },
+  {
+    title: "Mushroom Bottle",
+    image: "/img/blender/Mushroom.jpg",
+    category: "blender",
+    intro: "ขวดยาวิเศษรูปเห็ด ในบรรยากาศมืด",
+  }
+];
 ---
 
 <Main head={hero.head} description={hero.description}>
-    <div class="row g-4 position-relative" id="gallery">   
-    <Card title="Bed Room" image="/img/blender/Bedroom.jpg" category="blender" href="#" />
-    <Card title="Magic Room" image="/img/blender/Room.jpg" category="blender" href="#" />
-    <Card title="Healing Potion" image="/img/blender/Healing-Potion.jpg" category="blender" href="#" />
-    <Card title="BKitchen" image="/img/blender/Kitchen.jpg" category="blender" href="#" />
-    <Card title="Moon Potion" image="/img/blender/moon.jpg" category="blender" href="#" />
-    <Card title="Mushroom Bottle" image="/img/blender/Mushroom.jpg" category="blender" href="#" />
+  <section class="py-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-3 gap-2">
+        <h2 class="mb-0">Blender Gallery</h2>
+        <!-- mobile-only button to show description on tap -->
+        <button id="toggleDescriptions" class="btn btn-sm btn-outline-dark d-inline-flex d-md-none">
+          View description
+        </button>
+      </div>
+
+      <div class="row g-4" id="gallery">
+        {items.map((item) => (
+          <Card
+            title={item.title}
+            image={item.image}
+            category={item.category}
+            intro={item.intro}
+            href={item.href}
+          />
+        ))}
+      </div>
     </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // same mechanism as index
+      const btn = document.getElementById("toggleDescriptions");
+      if (!btn) return;
+      btn.addEventListener("click", () => {
+        document
+          .querySelectorAll(".card-figure")
+          .forEach((fig) => fig.classList.toggle("show-info"));
+      });
+    });
+  </script>
 </Main>

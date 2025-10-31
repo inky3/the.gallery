@@ -13,6 +13,7 @@ const hero = {
     <div class="container">
       <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
         <h2 class="mb-3 mb-md-0">From Our Gallery</h2>
+
         <!-- Filter Nav -->
         <ul class="nav navline flex-wrap justify-content-center justify-content-md-start" id="filterNav">
           <li class="nav-item">
@@ -24,83 +25,144 @@ const hero = {
           <li class="nav-item">
             <a class="nav-link" data-filter="terrarium" href="#">Terrarium</a>
           </li>
+
+          <!-- moving underline -->
           <div class="indicator d-none d-md-block"></div>
         </ul>
+      </div>
+
+      <!-- ✅ mobile-only “show description” button -->
+      <div class="mb-3 d-md-none">
+        <button id="toggleDescriptions" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+          👀 Show descriptions
+        </button>
       </div>
 
       <!-- Gallery Cards -->
       <div class="container overflow-hidden text-center">
         <div class="row g-4 position-relative" id="gallery">
-          <Card title="Alone in the Grey" image="img/poster/alone-in-the-grey.png" category="poster" href="#" />
-          <Card title="Casa Lapin Coffee Bean" image="img/photography/casa-lapin.jpg" category="photography" href="/the.gallery/gallery/photography" />
-          <Card title="'Duck'" image="img/terrarium/Duck.jpg" category="terrarium" href="/the.gallery/gallery/terrarium" />
-          <Card title="Senimar Poster" image="img/poster/Brand-Identity-and-Typography.png" category="poster" href="/the.gallery/gallery/poster/brand-identity-and-typography" />
-          <Card title="Porsche956" image="img/photography/porsche956/IMG_9504.JPG" category="photography" href="/the.gallery/gallery/photography/porsche956" />
-          <Card title="Le Mans" image="img/book/le-mans-book.jpg" category="book" href="#" />
-          <Card title="Creativity of Aerodynamic" image="img/book/creativity-of-aerodynamic.jpg" category="book" href="#" />
+          <Card
+            title="Alone in the Grey"
+            image="img/poster/alone-in-the-grey.png"
+            category="poster"
+            intro="ภาพโปสเตอร์ Aline in the grey ที่แสดงให้เห็นถึงความเหงาในยามเย็น"
+            href="/the.gallery/gallery/poster/alone-in-the-grey"
+          />
+          <Card
+            title="Casa Lapin Coffee Bean"
+            image="img/photography/casa-lapin.jpg"
+            category="photography"
+            intro="Packaged เมล็ดกาแฟ คาเฟ่ Casa Lapin โทนอุ่น แสงนุ่ม"
+          />
+          <Card
+            title="Duck"
+            image="img/terrarium/Duck.jpg"
+            category="terrarium"
+            intro="สวนขวดแก้วมินิ พร้อมตุ๊กตาเป็ดน้อย"
+            href="/the.gallery/gallery/terrarium"
+          />
+          <Card
+            title="Alley 7"
+            image="/img/poster/Alley7.png"
+            category="poster"
+            intro="โปสเตอร์ Alley 7 ที่แสดงถึงซอยเล็กๆ ณ Siam Square"
+            href="/the.gallery/gallery/poster/alley7"
+          />
+          <Card
+            title="Porsche 956"
+            image="img/photography/porsche956/IMG_9504.JPG"
+            category="photography"
+            intro="ภาพ Collection ชุดรถแข่ง Le Mans Porsche 956"
+            href="/the.gallery/gallery/photography/porsche956"
+          />
+          <Card
+            title="Le Mans"
+            image="img/book/le-mans-book.jpg"
+            category="book"
+            intro="แมกซีนหนังสือปกแข็งจำลองสำหรับการแข่งรถ Endurance Racing"
+          />
+          <Card
+            title="Creativity of Aerodynamic"
+            image="img/book/creativity-of-aerodynamic.jpg"
+            category="book"
+            intro="หนังสือทดลองออกแบบเลย์เอาต์เกี่ยวกับหลักการอากาศพลศาสตร์"
+          />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Page-only JS (no Bootstrap here) -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // Filter logic
+      /* ====== FILTER ====== */
       const filterNav = document.getElementById("filterNav");
       const cards = document.querySelectorAll(".gallery-card");
+
       if (filterNav && cards.length) {
         filterNav.addEventListener("click", (e) => {
           const el = e.target;
           if (!(el instanceof HTMLElement) || el.tagName !== "A") return;
           e.preventDefault();
 
-          // Active state
+          // set active
           filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
           el.classList.add("active");
 
-          const filter = el.getAttribute("data-filter");
+          const filter = (el.getAttribute("data-filter") || "all").toLowerCase();
+
           cards.forEach((card) => {
-            const cat = card.dataset.category;
-            if (filter === "all" || cat === filter) card.classList.remove("hide");
-            else card.classList.add("hide");
+            const cat = (card.dataset.category || "").toLowerCase();
+            const col = card.closest(".gallery-col");
+            const match = filter === "all" || cat === filter;
+            if (col) {
+              col.style.display = match ? "" : "none";
+            }
           });
         });
       }
 
-      // Moving underline indicator (guarded)
+      /* ====== MOVING INDICATOR ====== */
       const navLinks = document.querySelectorAll(".navline a");
       const indicator = document.querySelector(".indicator");
       if (indicator && navLinks.length) {
         const moveIndicator = (link) => {
           const linkRect = link.getBoundingClientRect();
           const parentRect = link.closest(".navline").getBoundingClientRect();
-          indicator.style.width = `${linkRect.width}px`;
-          indicator.style.left = `${linkRect.left - parentRect.left}px`;
+          indicator.style.width = linkRect.width + "px";
+          indicator.style.left = linkRect.left - parentRect.left + "px";
         };
         const active = document.querySelector(".navline a.active");
         if (active) moveIndicator(active);
-        navLinks.forEach((link) =>
+
+        navLinks.forEach((link) => {
           link.addEventListener("click", (e) => {
             navLinks.forEach((l) => l.classList.remove("active"));
             e.currentTarget.classList.add("active");
             moveIndicator(e.currentTarget);
-          })
-        );
+          });
+        });
+
         window.addEventListener("resize", () => {
           const current = document.querySelector(".navline a.active");
           if (current) moveIndicator(current);
+        });
+      }
+
+      /* ====== MOBILE “SHOW DESCRIPTIONS” TOGGLE ====== */
+      const toggleBtn = document.getElementById("toggleDescriptions");
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+          document.body.classList.toggle("show-card-intro");
+          const isOn = document.body.classList.contains("show-card-intro");
+          toggleBtn.textContent = isOn ? "🙈 Hide descriptions" : "👀 Show descriptions";
         });
       }
     });
   </script>
 
   <style>
-    /* Animation for slide effect */
     .gallery-card { transition: transform 0.4s ease, opacity 0.4s ease; }
-    .hide { opacity: 0; transform: translateX(-50px); pointer-events: none; position: absolute; }
 
-    /* Filter nav visuals */
     .navline {
       display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
       position: relative; padding: 0.3rem 0; border-bottom: 2px solid #555; margin: 0;
@@ -112,6 +174,11 @@ const hero = {
     .indicator::before {
       content: ""; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
       width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 6px solid #000;
+    }
+
+    /* hide the mobile toggle on desktop */
+    @media (min-width: 768px) {
+      #toggleDescriptions { display: none !important; }
     }
   </style>
 </Main>
