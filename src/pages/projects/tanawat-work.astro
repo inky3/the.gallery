@@ -1,0 +1,311 @@
+---
+import Main from "../../layouts/Main.astro";
+
+/** Meta */
+const hero = {
+  head: "Tanawat Work",
+  description:
+    "พอร์ตโฟลิโอสไตล์ Necron จาก Warhammer 40k ที่ผมออกแบบ UX/UI, เขียนโค้ด และดีพลอยด้วยตนเองโดยใช้ Astro โปรเจกต์นี้เป็นเว็บไซต์จริงที่เจ้าของสามารถใช้งานได้ทันที (Finished Product) แต่ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเนื้อหา"
+};
+
+/** ช่วยจัดการ BASE_URL (รองรับ GitHub Pages) */
+const base = import.meta.env.BASE_URL || "/";
+const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+/** ลิงก์โปรเจกต์ (แก้ไขได้) */
+const links = {
+  live: "https://inky3.github.io/the-work-of-tanawat",
+  repo: "#" // ถ้ามี Git repo ใส่ได้
+};
+---
+
+<Main head={hero.head} description={hero.description}>
+  <!-- เมนูย่อยแบบติดตามการเลื่อน (เดสก์ท็อป/แท็บเล็ต) -->
+  <nav class="section-nav d-none d-md-flex" aria-label="Section navigator">
+    <a href="#overview" class="pill active">ภาพรวม</a>
+    <a href="#index" class="pill">หน้าแรก (Index)</a>
+    <a href="#artworks" class="pill">ผลงาน 3D</a>
+    <a href="#motion" class="pill">แอนิเมชัน & โมชัน</a>
+    <a href="#figures" class="pill">เพนต์ฟิกเกอร์</a>
+  </nav>
+
+  <!-- ภาพรวม -->
+  <section id="overview" class="container py-4 pb-1">
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-lg-7">
+        <figure class="frame">
+          <img
+            src={url("/img/project/tanawatwork/index.jpg")}
+            alt="หน้า Index ของ Wanawat Work"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-lg-5">
+        <h2 class="h4 mb-3">คอนเซ็ปต์และวัตถุประสงค์</h2>
+        <p class="lead-sm">
+          <strong>Tanawat Work</strong> คือเว็บไซต์พอร์ตโฟลิโอที่เน้นเอกลักษณ์ “กริดนีออน” ที่ได้แรงบันดาลใจจาก "Necron" 
+          เผ่าหุ่นยนต์โบราณในจักรวาล Warhammer 40k ดีไซน์สีเขียวเรืองแสง
+          ให้ความรู้สึกเทคนิค/อนาคต แต่คงความอ่านง่าย โครงสร้างนำเสนอเป็นบล็อกฮีโร่ขนาดใหญ่
+          พร้อมชิปนำทาง (chips) เพื่อพาผู้ชมเข้าสู่เนื้อหาหลักอย่างรวดเร็ว
+        </p>
+
+        <div class="meta mt-3">
+          <div><span class="k">บทบาท</span><span class="v">ออกแบบ UX/UI, เขียนโค้ด Front-End ด้วย Astro และดีพลอยขึ้น GitHub Pages ด้วยตนเองทั้งหมด 
+            เพื่อส่งมอบเป็นเว็บไซต์สำเร็จรูปให้เจ้าของสามารถใช้งานได้จริง 
+            (ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเว็บไซต์)</span></div>
+          <div><span class="k">เทคโนโลยี</span><span class="v">Astro, Bootstrap Utilities, CSS Grid และเอฟเฟกต์นีออนแบบกำหนดเอง</span></div>
+          <div><span class="k">ขอบเขต</span><span class="v">พัฒนาเว็บไซต์เต็มรูปแบบ ครอบคลุมหน้า Landing และหมวดหลัก 3 ส่วน ได้แก่ 3D Artworks, Animation & Motion, และ Painted Figures</span></div>
+          <div><span class="k">สถานะ</span><span class="v">ออนไลน์</span></div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+          <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
+          {links.repo !== "#" && <a href={links.repo} target="_blank" rel="noreferrer" class="btn-ghost">ดูซอร์สโค้ด</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- หน้า Index -->
+  <section id="index" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6">
+        <figure class="frame">
+          <img
+            src={url("/img/project/tanawatwork/index.jpg")}
+            alt="เลย์เอาต์หน้า Index"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-lg-6">
+        <h3 class="h4 mb-2">หน้าแรก (Index)</h3>
+        <p class="mb-2">
+          ส่วนเปิดเรื่องของแบรนด์ ใช้กริดเป็นพื้นหลัง + หัวข้อเรืองแสง เพื่อสร้างบุคลิกที่ชัดเจน
+          บล็อกแนะนำตัว (ชื่อ/บทบาท) และบรีฟสั้น ๆ ช่วยให้ผู้ชมเข้าใจทิศทางงานได้ทันที
+        </p>
+        <ul class="check">
+          <li>ฮีโร่การ์ดพร้อมภาพพอร์ตเทรตและไทโปเรืองแสง</li>
+          <li>ชิปข้อมูลย่อย เช่น ที่อยู่ติดต่อ ทักษะเด่น</li>
+          <li>ปุ่มหลัก: <em>View Abilities</em> และ <em>See Highlights</em></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Artworks -->
+  <section id="artworks" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6 order-lg-2">
+        <figure class="frame">
+          <img
+            src={url("/img/project/tanawatwork/3d.jpg")}
+            alt="หน้า 3D Artworks"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-lg-6 order-lg-1">
+        <h3 class="h4 mb-2">ผลงาน 3D</h3>
+        <p class="mb-2">
+          แกลเลอรีแบบโมดูลาร์ แยกตามประเภท <em>Character</em>, <em>Diorama</em>, <em>Objects</em>
+          ทุกการ์ดคุมสัดส่วนเท่ากันเพื่อให้กริดนิ่ง และใช้โอเวอร์เลย์บนโฮเวอร์/แตะเพื่อโชว์ข้อมูลสั้น ๆ
+        </p>
+        <ul class="check">
+          <li>ชิปฟิลเตอร์สำหรับสลับหมวดได้รวดเร็ว</li>
+          <li>ขนาดการ์ดคงที่ ให้จังหวะการไหลของกริดสม่ำเสมอ</li>
+          <li>โอเวอร์เลย์ชื่อ/คำอธิบายสั้น เน้นดูงานก่อนอ่านรายละเอียด</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animation & Motion -->
+  <section id="motion" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6">
+        <figure class="frame">
+          <img
+            src={url("/img/project/tanawatwork/animation.jpg")}
+            alt="หน้า Animation & Motion"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-lg-6">
+        <h3 class="h4 mb-2">แอนิเมชัน & โมชัน</h3>
+        <p class="mb-2">
+          ส่วนนี้เน้นความสามารถด้านโมชั่นกราฟิก (เช่น After Effects) ใช้ภาพฮีโร่ขนาดใหญ่สร้างจุดโฟกัส
+          คำอธิบายสั้น ๆ ให้อ่านเร็ว และลิงก์ไปยังงานตัวอย่าง
+        </p>
+        <ul class="check">
+          <li>วิชวลหลักชัดเจน สื่ออัตลักษณ์ด้านโมชัน</li>
+          <li>เนื้อหากระชับ พร้อมลิงก์ต่อยอด</li>
+          <li>ภาษาดีไซน์/ระยะห่างสอดคล้องกับส่วนอื่นของเว็บ</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Painted Figures -->
+  <section id="figures" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6 order-lg-2">
+        <figure class="frame">
+          <img
+            src={url("/img/project/tanawatwork/painted.jpg")}
+            alt="หน้า Painted Figures"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-lg-6 order-lg-1">
+        <h3 class="h4 mb-2">เพนต์ฟิกเกอร์</h3>
+        <p class="mb-2">
+          งานเพนต์โมเดลที่ได้แรงบันดาลใจจาก Warhammer จัดวางในกรอบกริดเดียวกับทั้งเว็บไซต์
+          มีชิปสลับหมวดย่อย เช่น Necron, Space Marine, Tyranids เพื่อค้นหางานได้เร็ว
+        </p>
+        <ul class="check">
+          <li>กรอบและสไตล์คงที่ สร้างความต่อเนื่องทั้งไซต์</li>
+          <li>ชิปหมวดช่วยนำทางเชิงคอนเทนต์</li>
+          <li>ภาพใหญ่ เน้นรายละเอียดของชิ้นงาน</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA ปิดท้าย -->
+  <section class="container py-4">
+    <div class="cta">
+      <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
+      <a href={url("/projects")} class="btn-ghost">กลับไปหน้า Projects</a>
+    </div>
+  </section>
+
+  <script>
+    // อัปเดตสถานะปุ่มเมนูย่อยตามการเลื่อน
+    document.addEventListener("DOMContentLoaded", () => {
+      const pills = document.querySelectorAll(".section-nav .pill");
+      const ids   = ["#overview","#index","#artworks","#motion","#figures"]
+        .map(id => document.querySelector(id))
+        .filter(Boolean);
+
+      const onScroll = () => {
+        const y = window.scrollY + 120;
+        let active = 0;
+        ids.forEach((sec, i) => { if (sec.offsetTop <= y) active = i; });
+        pills.forEach(p => p.classList.remove("active"));
+        if (pills[active]) pills[active].classList.add("active");
+      };
+
+      document.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    });
+  </script>
+
+  <style>
+    /* เมนูย่อยแบบ Pill */
+    .section-nav {
+      position: sticky;
+      top: 72px;
+      z-index: 5;
+      display: flex;
+      gap: .5rem;
+      margin: 0 auto 1rem;
+      padding: .35rem;
+      width: min(100%, 980px);
+      background: #f6f7f7;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .section-nav .pill {
+      text-decoration: none;
+      color: #333;
+      padding: .45rem 1rem;
+      border-radius: 999px;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+      white-space: nowrap;
+    }
+    .section-nav .pill.active {
+      background: #0f6657;
+      color: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
+    }
+
+    /* กรอบรูป */
+    .frame {
+      margin: 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow: 0 10px 24px rgba(0,0,0,.18);
+      background: #0e0e0e;
+    }
+    .frame img { display:block; width:100%; height:auto; }
+
+    /* --- Meta key/value layout --- */
+    .meta{
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr); /* label | value */
+    column-gap: 12px;
+    row-gap: .5rem;
+    font-size: .95rem;
+    }
+
+    /* Let each <div> hand its children directly to the grid */
+    .meta > div{ display: contents; }
+
+    .meta .k{
+    grid-column: 1;
+    color: #666;
+    font-weight: 600;
+    line-height: 1.55;
+    }
+
+    .meta .v{
+    grid-column: 2;
+    color: #111;
+    line-height: 1.55;
+    word-break: break-word;   /* safety for long URLs/words */
+    }
+
+    /* Tighter label column on small screens */
+    @media (max-width: 480px){
+    .meta{ grid-template-columns: 80px minmax(0,1fr); }
+    }
+
+    /* รายการเช็ค */
+    .check { padding-left: 1.1rem; margin: .35rem 0 0; }
+    .check li { margin:.2rem 0; }
+
+    /* ปุ่ม */
+    .btn-cta, .btn-ghost {
+      display:inline-block;
+      border-radius:999px;
+      padding:.6rem 1.2rem;
+      font-weight:600;
+      text-decoration:none;
+      transition:transform .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
+    }
+    .btn-cta {
+      background:#0f6657; color:#fff; border:1px solid #0f6657;
+      box-shadow:0 4px 12px rgba(0,0,0,.15);
+    }
+    .btn-cta:hover { transform:translateY(-1px); }
+    .btn-ghost {
+      background:#fff; color:#222; border:1px solid rgba(0,0,0,.12);
+    }
+    .cta { display:flex; gap:.6rem; justify-content:center; }
+
+    @media (max-width: 575.98px) {
+      .section-nav { top: 60px; }
+    }
+  </style>
+</Main>

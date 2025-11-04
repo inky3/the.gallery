@@ -1,0 +1,205 @@
+---
+import Main from "../../layouts/Main.astro";
+
+/** Meta */
+const hero = {
+  head: "GBTP3D",
+  description:
+    "โพรเจกต์ออกแบบ UX/UI สำหรับบริการออกแบบ-พิมพ์ชิ้นงาน 3 มิติ ครบวงจร โฟกัสการนำเสนอคุณค่า (Why us), เส้นทางเลือกบริการ (Service Flow) และประสบการณ์ใช้งานทั้งเดสก์ท็อปและมือถือ"
+};
+
+/** Base-safe for GitHub Pages */
+const base = import.meta.env.BASE_URL || "/";
+const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+/** Figma prototypes */
+const links = {
+  figmaDesktop: "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=116-848&t=5J8a9DvYhJEIwENw-1",
+  figmaMobile:  "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=113-67&t=5J8a9DvYhJEIwENw-1",
+};
+
+/** Images in /public/img/project/gbpt3d */
+const img = {
+  hero:        url("/img/project/gbpt3d/index.png"),          // ฮีโร่/ภาพรวมเดสก์ท็อป
+  services:    url("/img/project/gbpt3d/service.png"),         // หน้าบริการเดสก์ท็อป
+  register:    url("/img/project/gbpt3d/register.png"),        // สมัครสมาชิกเดสก์ท็อป
+  heroPhone:   url("/img/project/gbpt3d/index-phone.png"),     // ฮีโร่/ภาพรวมมือถือ
+  servicesPh:  url("/img/project/gbpt3d/service-phone.png"),   // บริการมือถือ
+  registerPh:  url("/img/project/gbpt3d/register-phone.png"),  // สมัครสมาชิกมือถือ
+};
+---
+
+<Main head={hero.head} description={hero.description}>
+  <!-- Sticky sub-nav -->
+  <nav class="section-nav d-none d-md-flex" aria-label="Section navigator">
+    <a href="#overview" class="pill active">ภาพรวม</a>
+    <a href="#services" class="pill">บริการ</a>
+    <a href="#onboarding" class="pill">สมัครสมาชิก</a>
+    <a href="#mobile" class="pill">Mobile Preview</a>
+    <a href="#links" class="pill">Prototype</a>
+  </nav>
+
+  <!-- Overview -->
+  <section id="overview" class="container py-4 pb-1">
+    <div class="row g-4 align-items-start">
+      <div class="col-12 col-lg-7">
+        <figure class="frame"><img src={img.hero} alt="GBTP3D — Overview (Desktop)" loading="lazy" decoding="async" /></figure>
+      </div>
+      <div class="col-12 col-lg-5">
+        <h2 class="h4 mb-3">ภาพรวม (Overview)</h2>
+        <p class="lead-sm">
+          <strong>GBTP3D</strong> วางโฟลว์การตัดสินใจแบบ “เลือกบริการ → ดูสเปก/ราคาโดยสังเขป → เริ่มสั่งงาน/ปรึกษา”
+          ใช้คอมโพเนนต์การ์ดโค้งมน โทนไล่สีฟ้า-เขียว เพื่อสร้างภาพลักษณ์มืออาชีพ-ทันสมัย และอ่านง่าย
+        </p>
+
+        <div class="meta mt-3">
+          <div class="row-meta"><span class="k">บทบาท</span><span class="v">UX Strategy • UX/UI Design • Component Spec</span></div>
+          <div class="row-meta"><span class="k">ขอบเขต</span><span class="v">หน้า Landing (Value Prop) + Services Catalog + Onboarding/Account</span></div>
+          <div class="row-meta"><span class="k">จุดเด่น</span><span class="v">สื่อสารความต่าง (USP) ชัดเจน, CTA ชัด, โครงสร้างพร้อมสเกลเป็น e-commerce/light CRM</span></div>
+          <div class="row-meta"><span class="k">สถานะ</span><span class="v">ต้นแบบพร้อมส่งมอบทีม Dev</span></div>
+        </div>
+
+        <div class="mt-4 d-flex gap-2 flex-wrap">
+          <a href={links.figmaDesktop} target="_blank" rel="noreferrer" class="btn-cta">Figma (Desktop)</a>
+          <a href={links.figmaMobile}  target="_blank" rel="noreferrer" class="btn-cta">Figma (Mobile)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6 order-lg-2">
+        <figure class="frame"><img src={img.services} alt="GBTP3D — Services (Desktop)" loading="lazy" decoding="async" /></figure>
+      </div>
+      <div class="col-12 col-lg-6 order-lg-1">
+        <h3 class="h4 mb-2">บริการ (Service Catalog)</h3>
+        <p class="mb-2">
+          โมดูลบริการถูกออกแบบเป็นการ์ดขนาดใหญ่พร้อมภาพอุปกรณ์จริง เพื่อย่นเวลา “ทำความเข้าใจบริการ”
+          และดัน Conversion ด้วย CTA ที่เด่น (รับปรึกษา/คุยราคา)
+        </p>
+        <ul class="check">
+          <li>กลุ่มบริการหลัก: ปริ้น 3D • ปริ้น Resin • 3D Scan • 3D Modeling</li>
+          <li>สเตตัส/ราคาเบื้องต้นในการ์ดเพื่อคัดกรองเร็ว</li>
+          <li>รองรับการแบนเนอร์เสนอโปรโมชัน/บริการเสริม</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Onboarding / Register -->
+  <section id="onboarding" class="container py-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-12 col-lg-6">
+        <figure class="frame"><img src={img.register} alt="GBTP3D — Register (Desktop)" loading="lazy" decoding="async" /></figure>
+      </div>
+      <div class="col-12 col-lg-6">
+        <h3 class="h4 mb-2">สมัครสมาชิก (Onboarding)</h3>
+        <p class="mb-2">
+          ฟอร์มถูกย่อให้อยู่ในหนึ่งจอ พร้อม SSO (Google/Apple) ลดแรงเสียดทาน และรองรับการเก็บข้อมูลเบื้องต้นที่จำเป็นต่อใบเสนอราคา
+        </p>
+        <ul class="check">
+          <li>SSO พร้อม—ลดขั้นตอนและ drop-off</li>
+          <li>โทนพื้นหลังมืออาชีพ เน้นความไว้วางใจ</li>
+          <li>สเกลต่อยอดสู่ระบบใบงาน/ติดตามสถานะได้ง่าย</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mobile preview -->
+  <section id="mobile" class="container py-5">
+    <h3 class="h4 mb-3">Mobile Preview</h3>
+    <div class="grid-phones">
+      <figure><img src={img.heroPhone} alt="Hero (Mobile)" loading="lazy" decoding="async" /><figcaption>Hero</figcaption></figure>
+      <figure><img src={img.servicesPh} alt="Services (Mobile)" loading="lazy" decoding="async" /><figcaption>Services</figcaption></figure>
+      <figure><img src={img.registerPh} alt="Register (Mobile)" loading="lazy" decoding="async" /><figcaption>Register</figcaption></figure>
+    </div>
+  </section>
+
+  <!-- Links / CTA -->
+  <section id="links" class="container py-4">
+    <div class="cta">
+      <a href={links.figmaDesktop} target="_blank" rel="noreferrer" class="btn-cta">ดูต้นแบบ (Desktop)</a>
+      <a href={links.figmaMobile}  target="_blank" rel="noreferrer" class="btn-cta">ดูต้นแบบ (Mobile)</a>
+      <a href={url("/projects")} class="btn-ghost">กลับไปหน้า Projects</a>
+    </div>
+  </section>
+
+  <script>
+    // Activate sticky pill on scroll
+    document.addEventListener("DOMContentLoaded", () => {
+      const pills = document.querySelectorAll(".section-nav .pill");
+      const secs  = ["#overview","#services","#onboarding","#mobile","#links"]
+        .map(id => document.querySelector(id)).filter(Boolean);
+
+      const onScroll = () => {
+        const y = window.scrollY + 120;
+        let idx = 0;
+        secs.forEach((el, i) => { if (el.offsetTop <= y) idx = i; });
+        pills.forEach(p => p.classList.remove("active"));
+        if (pills[idx]) pills[idx].classList.add("active");
+      };
+      document.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    });
+  </script>
+
+  <style>
+    /* Sticky pill nav */
+    .section-nav {
+      position: sticky; top: 72px; z-index: 5;
+      display: flex; gap: .5rem; margin: 0 auto 1rem; padding: .35rem;
+      width: min(100%, 980px); background: #f6f7f7;
+      border-radius: 999px; border: 1px solid rgba(0,0,0,.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .section-nav .pill {
+      text-decoration: none; color: #333;
+      padding: .45rem 1rem; border-radius: 999px;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+      white-space: nowrap;
+    }
+    .section-nav .pill.active { background: #0f6657; color: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+
+    /* Frames */
+    .frame { margin: 0; border-radius: 18px; overflow: hidden;
+      border: 1px solid rgba(0,0,0,.12); box-shadow: 0 10px 24px rgba(0,0,0,.18); background:#0e0e0e; }
+    .frame img { display:block; width:100%; height:auto; }
+
+    /* Meta grid */
+    .meta { display:grid; gap:.45rem; font-size:.95rem; }
+    .row-meta { display:grid; grid-template-columns: 110px 1fr; column-gap:.75rem; line-height:1.55; }
+    .meta .k { color:#666; } .meta .v { color:#111; }
+
+    /* Bullets */
+    .check { padding-left: 1.1rem; margin: .35rem 0 0; }
+    .check li { margin:.2rem 0; }
+
+    /* Mobile preview grid */
+    .grid-phones {
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: .9rem;
+    }
+    .grid-phones figure { margin:0; border:1px solid rgba(0,0,0,.08); border-radius:14px; overflow:hidden; background:#fff; }
+    .grid-phones figcaption { padding:.5rem .7rem; font-size:.9rem; color:#333; }
+
+    /* Buttons */
+    .btn-cta, .btn-ghost {
+      display:inline-block; border-radius:999px; padding:.6rem 1.2rem; font-weight:600;
+      text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
+    }
+    .btn-cta { background:#0f6657; color:#fff; border:1px solid #0f6657; box-shadow:0 4px 12px rgba(0,0,0,.15); }
+    .btn-cta:hover { transform: translateY(-1px); }
+    .btn-ghost { background:#fff; color:#222; border:1px solid rgba(0,0,0,.12); }
+    .cta { display:flex; gap:.6rem; justify-content:center; }
+
+    /* Responsive */
+    @media (max-width: 991.98px) { .grid-phones { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 575.98px) {
+      .section-nav { top: 60px; }
+      .grid-phones { grid-template-columns: 1fr; }
+      .row-meta { grid-template-columns: 96px 1fr; }
+    }
+  </style>
+</Main>

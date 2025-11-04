@@ -16,8 +16,16 @@ const {
 } = Astro.props;
 
 // base-safe for GitHub Pages
+/* ...your existing props... */
 const base = import.meta.env.BASE_URL || "/";
-const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+/* NEW: decide internal vs external */
+const isExternal = /^(https?:)?\/\//i.test(href);
+/* NEW: internal links get BASE_URL prefix; externals pass through */
+const finalHref = isExternal ? href : url(href);
+
+/* (keep the rest: catLower, catList, etc.) */
 
 /* 
   🔹 data-category must be a string
@@ -39,13 +47,13 @@ const catList = Array.isArray(category)
 <div class="col-12 col-sm-6 col-lg-4 gallery-col">
   <article class="gallery-card" data-category={catLower}>
     <!-- MAIN CLICK AREA -->
-    <a
-      class="card-link"
-      href={href}
-      data-href={href}
-      target="_blank"
-      rel="noreferrer"
-    >
+      <a
+        class="card-link"
+        href={finalHref}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noreferrer" : undefined}
+      >
+
       <figure class="card-figure">
         <img
           src={url(image)}
