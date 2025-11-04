@@ -32,9 +32,10 @@ const hero = {
       </div>
 
       <!-- ✅ mobile-only “show description” button -->
-      <div class="mb-3 d-md-none">
-        <button id="toggleDescriptions" class="btn btn-outline-dark btn-sm rounded-pill px-3">
-          👀 Show descriptions
+      <!-- Mobile-only View Description Button -->
+      <div class="text-center mb-4">
+        <button id="toggleDescriptions" class="desc-btn" type="button">
+          View Description
         </button>
       </div>
 
@@ -92,73 +93,106 @@ const hero = {
     </div>
   </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      /* ====== FILTER ====== */
-      const filterNav = document.getElementById("filterNav");
-      const cards = document.querySelectorAll(".gallery-card");
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    /* ====== FILTER ====== */
+    const filterNav = document.getElementById("filterNav");
+    const cards = document.querySelectorAll(".gallery-card");
 
-      if (filterNav && cards.length) {
-        filterNav.addEventListener("click", (e) => {
-          const el = e.target;
-          if (!(el instanceof HTMLElement) || el.tagName !== "A") return;
-          e.preventDefault();
+    if (filterNav && cards.length) {
+      filterNav.addEventListener("click", (e) => {
+        const el = e.target;
+        if (!(el instanceof HTMLElement) || el.tagName !== "A") return;
+        e.preventDefault();
 
-          // set active
-          filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-          el.classList.add("active");
+        // set active
+        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
+        el.classList.add("active");
 
-          const filter = (el.getAttribute("data-filter") || "all").toLowerCase();
+        const filter = (el.getAttribute("data-filter") || "all").toLowerCase();
 
-          cards.forEach((card) => {
-            const cat = (card.dataset.category || "").toLowerCase();
-            const col = card.closest(".gallery-col");
-            const match = filter === "all" || cat === filter;
-            if (col) {
-              col.style.display = match ? "" : "none";
-            }
+        cards.forEach((card) => {
+          const cat = (card.dataset.category || "").toLowerCase();
+          const col = card.closest(".gallery-col");
+          const match = filter === "all" || cat === filter;
+          if (col) col.style.display = match ? "" : "none";
+        });
+      });
+    }
+
+    /* ====== MOVING INDICATOR ====== */
+    const navLinks = document.querySelectorAll(".navline a");
+    const indicator = document.querySelector(".indicator");
+    if (indicator && navLinks.length) {
+      const moveIndicator = (link) => {
+        if (!link) return;
+        const navline = link.closest(".navline");
+        if (!navline) return;
+
+        const linkRect = link.getBoundingClientRect();
+        const parentRect = navline.getBoundingClientRect();
+        indicator.style.width = linkRect.width + "px";
+        indicator.style.left = (linkRect.left - parentRect.left) + "px";
+      };
+
+      const active = document.querySelector(".navline a.active");
+      if (active) moveIndicator(active);
+
+      navLinks.forEach((link) => {
+        link.addEventListener("click", (e) => {
+          navLinks.forEach((l) => l.classList.remove("active"));
+          const target = e.currentTarget;
+          if (target && target.classList) {
+            target.classList.add("active");
+            moveIndicator(target);
+          }
+        });
+      });
+
+      window.addEventListener("resize", () => {
+        const current = document.querySelector(".navline a.active");
+        if (current) moveIndicator(current);
+      });
+    }
+
+    /* ====== MOBILE “SHOW DESCRIPTIONS” TOGGLE ====== */
+    const btn = document.getElementById("toggleDescriptions");
+    if (btn) {
+      const mq = window.matchMedia("(max-width: 770px)");
+
+      function setBtnState() {
+        btn.style.display = mq.matches ? "inline-block" : "none";
+        // If leaving mobile mode, reset descriptions
+        if (!mq.matches) {
+          btn.classList.remove("active");
+          btn.textContent = "View Description";
+          document.querySelectorAll(".card-figure").forEach((fig) => {
+            fig.classList.remove("show-info");
           });
-        });
+        }
       }
 
-      /* ====== MOVING INDICATOR ====== */
-      const navLinks = document.querySelectorAll(".navline a");
-      const indicator = document.querySelector(".indicator");
-      if (indicator && navLinks.length) {
-        const moveIndicator = (link) => {
-          const linkRect = link.getBoundingClientRect();
-          const parentRect = link.closest(".navline").getBoundingClientRect();
-          indicator.style.width = linkRect.width + "px";
-          indicator.style.left = linkRect.left - parentRect.left + "px";
-        };
-        const active = document.querySelector(".navline a.active");
-        if (active) moveIndicator(active);
-
-        navLinks.forEach((link) => {
-          link.addEventListener("click", (e) => {
-            navLinks.forEach((l) => l.classList.remove("active"));
-            e.currentTarget.classList.add("active");
-            moveIndicator(e.currentTarget);
-          });
-        });
-
-        window.addEventListener("resize", () => {
-          const current = document.querySelector(".navline a.active");
-          if (current) moveIndicator(current);
-        });
+      // initial + reactive
+      setBtnState();
+      if (mq.addEventListener) {
+        mq.addEventListener("change", setBtnState);
+      } else {
+        // Safari fallback
+        mq.addListener(setBtnState);
       }
 
-      /* ====== MOBILE “SHOW DESCRIPTIONS” TOGGLE ====== */
-      const toggleBtn = document.getElementById("toggleDescriptions");
-      if (toggleBtn) {
-        toggleBtn.addEventListener("click", () => {
-          document.body.classList.toggle("show-card-intro");
-          const isOn = document.body.classList.contains("show-card-intro");
-          toggleBtn.textContent = isOn ? "🙈 Hide descriptions" : "👀 Show descriptions";
+      btn.addEventListener("click", () => {
+        const willShow = !btn.classList.contains("active");
+        btn.classList.toggle("active", willShow);
+        btn.textContent = willShow ? "Hide Description" : "View Description";
+        document.querySelectorAll(".card-figure").forEach((fig) => {
+          fig.classList.toggle("show-info", willShow);
         });
-      }
-    });
-  </script>
+      });
+    }
+  });
+</script>
+
 
   <style>
     .gallery-card { transition: transform 0.4s ease, opacity 0.4s ease; }
@@ -176,9 +210,25 @@ const hero = {
       width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 6px solid #000;
     }
 
-    /* hide the mobile toggle on desktop */
-    @media (min-width: 768px) {
-      #toggleDescriptions { display: none !important; }
+    .desc-btn {
+      display: none;
+      background: #f5f5f5;
+      border: 1px solid rgba(0,0,0,0.1);
+      color: #333;
+      border-radius: 999px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+    }
+    .desc-btn.active {
+      background: #0f6657;
+      color: #fff;
+      border-color: #0f6657;
+    }
+
+    /* Show only on phones/small tablets */
+    @media (max-width: 770px) {
+      .desc-btn { display: inline-block; }
     }
   </style>
 </Main>
