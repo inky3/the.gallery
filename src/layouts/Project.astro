@@ -1,0 +1,122 @@
+---
+import Main from "../layouts/Main.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Band from "../components/Band.astro";
+
+const {
+  title = "Untitled Project",
+  meta = "",
+  lead = "",
+  cover = "",
+  timeframe = "",
+  role = [],
+  stack = [],
+  links = [],
+
+  // forwarded hero controls
+  heroAlign = "left",
+  heroValign = "bottom",
+  heroOverlay = 0.60,
+  heroHeight = 420,
+} = Astro.props;
+---
+
+<Main head={`${title} — THE.GALLERY`} description={lead}>
+  <Fragment slot="nav"><Nav /></Fragment>
+
+  <Band
+    title={title}
+    lead={lead}
+    variant="dark"
+    align={heroAlign}
+    valign={heroValign}
+    bgImage={cover}
+    overlay={heroOverlay}
+    height={heroHeight}
+  />
+
+  <section class="section">
+    <div class="container-narrow project-content">
+      <slot />
+    </div>
+  </section>
+
+  <!-- Universal Back button -->
+  <section class="section back-wrap" aria-label="Back navigation">
+    <a class="back-btn" href="/projects">กลับไปหน้ารวม Projects</a>
+  </section>
+
+  <Fragment slot="footer"><Footer /></Fragment>
+</Main>
+
+<style>
+  .project-content { display:grid; gap:1.25rem; }
+
+  .case-block { padding:3.5rem 0; display:grid; gap:1.2rem; }
+  .case-head  { font-size:2rem; font-weight:700; margin:0 0 .8rem; }
+  .band-soft  { background:var(--bg-soft,#f5f7f3); border-radius:16px; padding:3.5rem; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
+
+  .highlight { background:#e8f6ef; padding:.8rem 1rem; border-radius:8px; border-left:4px solid var(--accent,#0f6657); }
+
+  .pill-list { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .pill { padding:.45rem 1rem; border-radius:999px; background:#e9ecee; font-weight:600; font-size:.9rem; }
+
+  .media-grid{ --cols:2; display:grid; gap:.9rem; grid-template-columns:repeat(var(--cols),minmax(0,1fr)); }
+  @media (max-width:900px){ .media-grid{ --cols:1; } }
+  .phone{ max-width:340px; margin-inline:auto; }
+
+  /* Back button */
+/* Back button container */
+.back-wrap {
+  padding: 2.2rem 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Back button style */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0.65rem 1.4rem;
+  border-radius: 12px;
+
+  background: #0f1113;          /* Dark brand neutral */
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+
+  transition: 
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+/* Hover/Active */
+.back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,.28);
+  background: #13171b;
+}
+.back-btn:active {
+  transform: translateY(0);
+}
+
+/* Add a nice arrow icon without importing anything */
+.back-btn::before {
+  content: "←";
+  font-size: 1rem;
+  opacity: .9;
+  transform: translateY(-1px);
+}
+
+</style>

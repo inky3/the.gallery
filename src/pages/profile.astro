@@ -1,20 +1,22 @@
 ---
-import Main from '../layouts/Main.astro';
+import Main from "../layouts/Main.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
 
-/* Page meta */
+/* === Page meta === */
 const hero = {
   head: "Profile / Resume",
-  description: "A single-page overview of skills, education, experience, projects, and contact."
+  description:
+    "A single-page overview of skills, education, experience, projects, and contact.",
 };
 
 /* === Base-safe URL builder === */
 const base = import.meta.env.BASE_URL || "/";
 const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
 
-/* === Summary === */
+/* === DATA (unchanged) === */
 const summary = `Krittanan Atireglarp, a Graphic design student since 2022 at Suan Sunandha Rajabhat University. In addition to my studies, I gained much experience in graphic design, and I also likes to learn what interests me in my free time, such as Coding and UX/UI Design, to develop and improve my skills. In some of my free time, I also like to play chess to improve my logical thinking. Additionally, I enjoy playing chess to enhance my logical thinking while constantly seeking new learning opportinities and challenge to improve myself.`;
 
-/* === Contact === */
 const contact = [
   { icon: "👤", label: "Name", value: "Krittanan 'Boom' Atireglarp" },
   { icon: "ⓕ", label: "Facebook", value: "Book Krittanan", href: "https://www.facebook.com/share/17YVG7Zhd2/" },
@@ -24,47 +26,39 @@ const contact = [
   { icon: "🇹🇭", label: "Nationality", value: "Thai" },
 ];
 
-/* === Interests === */
-const interests = ["Gaming", "Travelling", "Reading", "Music", "Photography", "Chess", "WEC", "F1"];
-
-/* === Skills & Tools === */
-const technical = ["Creativity", "Prototyping", "Wireframing", "Visual Design", "UX/UI", "HTML/CSS", "Astro Framework"];
-const social    = ["Communication", "Collaboration", "Problem-Solving", "Adaptability", "Time Management", "Attention to Detail"];
+const interests  = ["Gaming", "Travelling", "Reading", "Music", "Photography", "Chess", "WEC", "F1"];
+const technical  = ["Creativity", "Prototyping", "Wireframing", "Visual Design", "UX/UI", "HTML/CSS", "Astro Framework"];
+const social     = ["Communication", "Collaboration", "Problem-Solving", "Adaptability", "Time Management", "Attention to Detail"];
 
 const tools = [
-  { title: "Photoshop",        icon: "/img/icons/tools/photoshop.svg" },
-  { title: "Illustrator",      icon: "/img/icons/tools/illustrator.svg" },
-  { title: "Canva",            icon: "/img/icons/tools/canvas.svg" },
-  { title: "Figma",            icon: "/img/icons/tools/figma.svg" },
-  { title: "Blender",          icon: "/img/icons/tools/blender.svg" },
-  { title: "HTML",             icon: "/img/icons/tools/html.svg" },
-  { title: "CSS",              icon: "/img/icons/tools/css.svg" },
-  { title: "Notion",           icon: "/img/icons/tools/notion.svg" },
+  { title: "Photoshop",   icon: "/img/icons/tools/photoshop.svg" },
+  { title: "Illustrator", icon: "/img/icons/tools/illustrator.svg" },
+  { title: "Canva",       icon: "/img/icons/tools/canvas.svg" },
+  { title: "Figma",       icon: "/img/icons/tools/figma.svg" },
+  { title: "Blender",     icon: "/img/icons/tools/blender.svg" },
+  { title: "HTML",        icon: "/img/icons/tools/html.svg" },
+  { title: "CSS",         icon: "/img/icons/tools/css.svg" },
+  { title: "Notion",      icon: "/img/icons/tools/notion.svg" },
 ];
 
-/* === Languages === */
 const languages = [
   { name: "Thai", flag: "🇹🇭" },
   { name: "US English", flag: "🇺🇸" },
 ];
 
-/* === Education === */
 const education = [
   { degree: "Graphic Designer", org: "Suan Sunandha Rajabhat University", dates: "since 2022" },
 ];
 
-/* === Experience === */
 const experience = [
   { role: "Graphic Design Associate", company: "Tasks Expert", dates: "Dec 24 – June 26" },
 ];
 
-/* === Projects === */
 const projects = [
-  { name: "The.Gallery",  blurb: "My Own Portfolio Website", link: "https://1nky3.github.io/the.gallery" },
-  { name: "Good Health",    blurb: "Research Project in my collegem", link: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?node-id=0-1&t=MPyhV4oarvBOYBZA-1" },
+  { name: "The.Gallery", blurb: "My Own Portfolio Website", link: "https://1nky3.github.io/the.gallery" },
+  { name: "Good Health", blurb: "Research Project in my collegem", link: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?node-id=0-1&t=MPyhV4oarvBOYBZA-1" },
 ];
 
-/* === Portfolio === */
 const portfolio = [
   { name: "The.Gallery", handle: "", link: "https://1nky3.github.io/the.gallery" },
   { name: "Good Health", handle: "", link: "https://www.figma.com/proto/LmXawaOlg1a0YjpFD2dgxO/Good-Health-PC?node-id=0-1&t=MPyhV4oarvBOYBZA-1" },
@@ -72,182 +66,140 @@ const portfolio = [
 ---
 
 <Main head={hero.head} description={hero.description}>
-  <section>
-    <div class="resume container-fluid p-3 p-md-4 p-lg-5 rounded-4">
-      <div class="row g-4">
+  <!-- bring back the site chrome -->
+  <Fragment slot="nav"><Nav /></Fragment>
 
-        <!-- LEFT COLUMN -->
-        <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+  <section class="resume-wrap">
+    <div class="resume-grid container-narrow">
+      <!-- ===== Sticky Sidebar ===== -->
+      <aside class="side">
+        <div class="card photo-card">
+          <img src={url("/img/profile.jpg")} alt="Profile photo" class="photo" loading="lazy" decoding="async" />
+          <h1 class="name">Krittanan Atireglarp</h1>
+          <p class="tagline">Graphic Design Student • UX/UI Enthusiast</p>
+        </div>
 
-          <!-- Photo + Summary -->
-          <div class="card p-3 p-md-4">
-            <div class="row g-3 align-items-start">
-              <div class="col-12 col-sm-5">
-                <img src={url("/img/profile.jpg")} alt="Profile photo" class="profile-photo" loading="lazy" decoding="async" />
-              </div>
-              <div class="col-12 col-sm-7">
-                <p class="summary">{summary}</p>
-              </div>
-            </div>
+        <div class="card">
+          <h2 class="h2">Contact</h2>
+          <ul class="chips">
+            {contact.map(c => (
+              <li class="chip">
+                <span class="ic">{c.icon}</span>
+                <span class="lbl">{c.label}</span>
+                {c.href
+                  ? <a href={c.href} target="_blank" rel="noreferrer">{c.value}</a>
+                  : <span>{c.value}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="h2">Languages</h2>
+          <div class="pill-row">
+            {languages.map(l => <span class="pill"><span class="flag">{l.flag}</span>{l.name}</span>)}
           </div>
+        </div>
 
-          <!-- Technical Skills (underline) -->
-          <div class="card p-3 p-md-4">
-            <h2 class="sec-title underline">Technical Skills</h2>
-            <div class="pill-rows">
-              {technical.map(t => <span class="pill">{t}</span>)}
-            </div>
+        <div class="card">
+          <h2 class="h2">Portfolio</h2>
+          <div class="pill-row">
+            {portfolio.map(p => (
+              <a class="pill link" href={p.link || "#"} target="_blank" rel="noreferrer">
+                <span class="dot"></span>{p.name}
+              </a>
+            ))}
           </div>
+        </div>
+      </aside>
 
-          <!-- Social Skills (underline) -->
-          <div class="card p-3 p-md-4">
-            <h2 class="sec-title underline">Social Skills</h2>
-            <div class="pill-rows">
-              {social.map(s => <span class="pill">{s}</span>)}
+      <!-- ===== Main Column ===== -->
+      <main class="main">
+        <div class="card">
+          <h2 class="h2">Summary</h2>
+          <p class="summary">{summary}</p>
+        </div>
+
+        <div class="card">
+          <div class="split">
+            <div>
+              <h2 class="h2">Technical Skills</h2>
+              <div class="pill-row">{technical.map(t => <span class="pill">{t}</span>)}</div>
             </div>
-          </div>
-
-          <!-- Tools (Title | icons, no underline) -->
-          <div class="card p-3 p-md-4">
-            <div class="section-head">
-              <h2 class="sec-title no-underline">Tools</h2>
-              <span class="vbar" aria-hidden="true"></span>
-              <ul class="icon-list">
-                {tools.map(t => (
-                  <li class="icon">
-                    {t.icon
-                      ? <img src={url(t.icon)} data-title={t.title} alt={t.title} loading="lazy" decoding="async" />
-                      : <span class="icon-fallback" title={t.title}>
-                          {t.title.split(/\s|\/|-/).map(w => w[0]).join("").slice(0,2)}
-                        </span>
-                    }
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <!-- Language (Title | chips, no underline) -->
-          <div class="card p-3 p-md-4">
-            <div class="section-head">
-              <h2 class="sec-title no-underline">Language</h2>
-              <span class="vbar" aria-hidden="true"></span>
-              <div class="lang-row">
-                {languages.map(l => (
-                  <div class="lang-item">
-                    <span class="flag">{l.flag}</span>
-                    <span>{l.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <!-- Portfolio (Title | chips, no underline) -->
-          <div class="card p-3 p-md-4">
-            <div class="section-head">
-              <h2 class="sec-title no-underline">Portfolio</h2>
-              <span class="vbar" aria-hidden="true"></span>
-              <div class="portfolio-row">
-                {portfolio.map(p => (
-                  <a class="portfolio-chip" href={p.link || "#"} target="_blank" aria-label={p.name}>
-                    <span class="dot"></span>
-                    <span class="platform">{p.name}</span>
-                    <span class="handle">{p.handle}</span>
-                  </a>
-                ))}
-              </div>
+            <div>
+              <h2 class="h2">Social Skills</h2>
+              <div class="pill-row">{social.map(s => <span class="pill">{s}</span>)}</div>
             </div>
           </div>
         </div>
 
-        <!-- RIGHT COLUMN -->
-        <div class="col-12 col-lg-6 d-flex flex-column gap-4">
+        <div class="card">
+          <h2 class="h2">Tools</h2>
+          <ul class="tool-list">
+            {tools.map(t => (
+              <li class="tool">
+                {t.icon
+                  ? <img src={url(t.icon)} data-title={t.title} alt={t.title} loading="lazy" decoding="async" />
+                  : <span class="tool-fallback" title={t.title}>
+                      {t.title.split(/\s|\/|-/).map(w => w[0]).join("").slice(0,2)}
+                    </span>
+                }
+                <span class="tool-name">{t.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <!-- CONTACT -->
-          <div class="card p-3 p-md-4">
-            <h2 class="sec-title">Contact</h2>
-            <div class="contact-grid">
-              {contact.map(c => (
-                <div class="contact-chip">
-                  <span class="ic">{c.icon}</span>
-                  <strong>{c.label}</strong>
-                  {c.href ? <a href={c.href} target="_blank" rel="noreferrer">{c.value}</a> : <span>{c.value}</span>}
+        <div class="card">
+          <h2 class="h2">Education</h2>
+          <ul class="timeline">
+            {education.map(e => (
+              <li>
+                <div class="tl-head">
+                  <span class="tl-title">{e.degree}</span>
+                  <span class="tl-badge">{e.dates}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <!-- Education -->
-          <div class="card p-3 p-md-4">
-            <h2 class="sec-title">Education</h2>
-            <ul class="timeline">
-              {education.map(e => (
-                <li>
-                  <div class="tl-head">
-                    <span class="tl-title">{e.degree}</span>
-                    <span class="tl-badge">{e.dates}</span>
-                  </div>
-                  <div class="tl-sub">{e.org}</div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <!-- Work Experience -->
-          <!-- <div class="card p-3 p-md-4">
-            <h2 class="sec-title">Work Experience</h2>
-            <ul class="timeline">
-              {experience.map(x => (
-                <li>
-                  <div class="tl-head">
-                    <span class="tl-title">{x.role}</span>
-                    <span class="tl-badge">{x.dates}</span>
-                  </div>
-                  <div class="tl-sub">{x.company}</div>
-                </li>
-              ))}
-            </ul>
-          </div> -->
-
-          <!-- Projects -->
-          <div class="card p-3 p-md-4">
-            <h2 class="sec-title">Projects</h2>
-            <ul class="project-list">
-              {projects.map(p => (
-                <li>
-                  <span class="project-dot"></span>
-                  <strong>{p.name}</strong>
-                  <span class="muted"> — {p.blurb}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <!-- Interests (Title | chips, no underline) -->
-          <div class="card p-3 p-md-4">
-            <div class="section-head">
-              <h2 class="sec-title no-underline">Interests</h2>
-              <span class="vbar" aria-hidden="true"></span>
-              <div class="pill-rows">
-                {interests.map(i => <span class="pill">{i}</span>)}
-              </div>
-            </div>
-          </div>
-
+                <div class="tl-sub">{e.org}</div>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+
+        <!-- Work Experience (optional) -->
+
+        <div class="card">
+          <h2 class="h2">Projects</h2>
+          <ul class="projects">
+            {projects.map(p => (
+              <li>
+                <span class="p-dot"></span>
+                <strong>{p.name}</strong>
+                <span class="muted"> — {p.blurb}</span>
+                {p.link && <a class="p-link" href={p.link} target="_blank" rel="noreferrer">open</a>}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="h2">Interests</h2>
+          <div class="pill-row">{interests.map(i => <span class="pill">{i}</span>)}</div>
+        </div>
+      </main>
     </div>
   </section>
 
+  <Fragment slot="footer"><Footer /></Fragment>
+
   <script>
+    // Fallback initials for missing tool icons
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.icon img').forEach(img => {
+      document.querySelectorAll('.tool img').forEach(img => {
         img.addEventListener('error', () => {
           const title = img.dataset.title || '';
           const initials = (title.match(/\b\w/g) || []).join('').slice(0,2).toUpperCase();
           const span = document.createElement('span');
-          span.className = 'icon-fallback';
+          span.className = 'tool-fallback';
           span.title = title;
           span.textContent = initials || '?';
           img.replaceWith(span);
@@ -257,82 +209,94 @@ const portfolio = [
   </script>
 
   <style>
-    section { background: #E3E3E3; padding: 40px 0; }
+    /* Force light theme in this section so text never turns white */
+    .resume-wrap{ --ink:#101418; --muted:#444; --accent:var(--accent,#0f6657); background:#E3E3E3; padding:40px 0; color:var(--ink); }
+    .resume-wrap *{ color:inherit; }
+    .container-narrow{ max-width:1100px; margin:0 auto; padding:0 16px; }
 
-    .card {
-      background: #fff;
-      border: 1px solid rgba(0,0,0,0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      transition: transform .25s ease, box-shadow .25s ease;
+    /* Grid */
+    .resume-grid{ display:grid; grid-template-columns:320px 1fr; gap:1rem; }
+    @media (max-width: 900px){ .resume-grid{ grid-template-columns:1fr; } .side{ position:static; top:auto; } }
+
+    .side{ position:sticky; top:84px; align-self:start; display:grid; gap:1rem; }
+    .main{ display:grid; gap:1rem; }
+
+    /* Cards */
+    .card{
+      background:#fff; border:1px solid rgba(0,0,0,.08); border-radius:16px;
+      box-shadow:0 4px 16px rgba(0,0,0,.08);
+      padding:16px 18px;
+      transition:transform .2s ease, box-shadow .2s ease;
     }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+    .card:hover{ transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,.12); }
 
-    /* Base title (underline default) */
-    .sec-title {
-      font-weight: 700; font-size: 1.05rem; color: #1a1a1a;
-      margin-bottom: .75rem; border-bottom: 1px solid rgba(0,0,0,0.2); padding-bottom: .4rem;
+    /* Sidebar identity */
+    .photo-card{ text-align:center; padding-bottom:20px; }
+    .photo{ width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:12px; margin-bottom:10px; }
+    .name{ font-size:1.25rem; margin:.25rem 0 0; }
+    .tagline{ color:var(--muted); margin:.15rem 0 0; font-size:.95rem; }
+
+    /* Headings */
+    .h2{ font-size:1.05rem; font-weight:800; margin:0 0 .6rem; border-bottom:1px solid rgba(0,0,0,.12); padding-bottom:.4rem; }
+
+    /* Summary */
+    .summary{ color:var(--ink); line-height:1.65; }
+
+    /* Pills & chips */
+    .pill-row{ display:flex; flex-wrap:wrap; gap:.5rem .6rem; }
+    .pill{
+      display:inline-flex; align-items:center; gap:.4rem;
+      background:#e7e7e7; border:1px solid #d4d4d4; color:var(--ink);
+      padding:.4rem .8rem; border-radius:999px; font-size:.9rem; font-weight:600;
+      transition:transform .15s ease, box-shadow .15s ease;
     }
-    /* Kill underline when used inside .section-head or with .no-underline */
-    .section-head .sec-title,
-    .sec-title.no-underline {
-      border-bottom: none !important;
-      padding-bottom: 0 !important;
-      margin-bottom: 0 !important;
+    .pill.link{ text-decoration:none; }
+    .pill .flag{ font-size:1rem; }
+    .pill .dot{ width:8px; height:8px; border-radius:50%; background:#ff3b3b; }
+
+    .chips{ list-style:none; padding:0; margin:0; display:grid; gap:.5rem; }
+    .chip{
+      display:flex; align-items:center; gap:.5rem;
+      background:#f0f0f0; border:1px solid rgba(0,0,0,.1);
+      border-radius:12px; padding:.5rem .7rem; font-size:.95rem; color:var(--ink);
     }
+    .chip .ic{ width:1.25rem; text-align:center; }
+    .chip .lbl{ font-weight:700; }
+    .chip a{ color:var(--accent); text-decoration:none; font-weight:700; }
+    .chip a:hover{ opacity:.8; }
 
-    .summary { color: #333; line-height: 1.65; }
-    .profile-photo { width: 100%; border-radius: 12px; object-fit: cover; aspect-ratio: 1/1; }
+    /* Split rows */
+    .split{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media (max-width: 720px){ .split{ grid-template-columns:1fr; } }
 
-    .pill-rows { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
-    .pill {
-      background:#d1d1d1; border:1px solid #bbb; color:#111;
-      padding:.4rem .8rem; border-radius:999px; font-size:.9rem; font-weight:500;
+    /* Tools */
+    .tool-list{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:.6rem; }
+    @media (min-width:700px){ .tool-list{ grid-template-columns:repeat(3, minmax(0,1fr)); } }
+    .tool{
+      display:flex; align-items:center; gap:.6rem; background:#f8f8f8; border:1px solid rgba(0,0,0,.06);
+      border-radius:12px; padding:.45rem .6rem; color:var(--ink);
     }
-
-    .contact-grid { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
-    .contact-chip {
-      background:#dcdcdc; border:1px solid rgba(0,0,0,0.1);
-      border-radius:999px; padding:.45rem .8rem; display:inline-flex; align-items:center;
-      gap:.5rem; color:#111; font-size:.92rem;
+    .tool img{ width:28px; height:28px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .tool-fallback{
+      width:28px; height:28px; display:grid; place-items:center; border-radius:6px;
+      background:#e0e0e0; color:var(--ink); font-weight:800; font-size:.78rem;
     }
-    .contact-chip strong { font-weight:600; }
+    .tool-name{ font-weight:700; }
 
-    .timeline { list-style:none; padding:0; display:grid; gap:.9rem; }
-    .tl-head { display:flex; justify-content:space-between; align-items:center; }
-    .tl-badge {
-      background:#eee; color:#111; border:1px solid rgba(0,0,0,0.1);
-      padding:.25rem .6rem; border-radius:999px; font-size:.85rem;
-    }
+    /* Timeline */
+    .timeline{ list-style:none; padding:0; margin:0; display:grid; gap:.8rem; }
+    .tl-head{ display:flex; justify-content:space-between; align-items:center; gap:.5rem; }
+    .tl-title{ font-weight:800; }
+    .tl-badge{ background:#eee; border:1px solid rgba(0,0,0,.1); padding:.2rem .55rem; border-radius:999px; font-size:.82rem; }
+    .tl-sub{ color:var(--muted); }
 
-    .lang-row, .portfolio-row { display:flex; flex-wrap:wrap; gap:.6rem .7rem; }
-    .lang-item, .portfolio-chip {
-      display:inline-flex; align-items:center; gap:.5rem;
-      background:#dcdcdc; border:1px solid rgba(0,0,0,0.1);
-      border-radius:999px; padding:.45rem .8rem; color:#111; text-decoration:none; font-weight:500;
-    }
-    .portfolio-chip .dot { width:8px; height:8px; border-radius:50%; background:#ff3b3b; }
+    /* Projects */
+    .projects{ list-style:none; padding:0; margin:0; display:grid; gap:.5rem; }
+    .projects li{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; color:var(--ink); }
+    .p-dot{ width:8px; height:8px; border-radius:50%; background:#4EA2FF; display:inline-block; }
+    .p-link{ margin-left:auto; font-weight:800; text-transform:uppercase; font-size:.75rem; color:var(--accent); }
 
-    .project-list { list-style:none; padding:0; display:grid; gap:.5rem; color:#111; }
-    .project-dot { width:8px; height:8px; border-radius:50%; background:#4EA2FF; display:inline-block; margin-right:.45rem; }
-
-    a, a:hover, a:focus, a:visited { text-decoration:none !important; color:#111 !important; transition:opacity .2s; }
-    a:hover { opacity:0.7; }
-
-    /* Section-head layout + vertical bar */
-    .section-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    .vbar { width:1px; height:22px; background:rgba(0,0,0,.35); border-radius:1px; }
-
-    /* Tools icons */
-    .icon-list { list-style:none; display:flex; align-items:center; gap:14px; flex-wrap:wrap; padding:0; margin:0; }
-    .icon img { width:28px; height:28px; border-radius:6px; box-shadow:0 1px 2px rgba(0,0,0,.06); }
-    .icon-fallback {
-      width:28px; height:28px; display:grid; place-items:center;
-      border-radius:6px; background:#e0e0e0; color:#222; font-weight:700; font-size:.78rem;
-      letter-spacing:.2px; box-shadow:0 1px 2px rgba(0,0,0,.06);
-    }
-    .icon img:hover, .icon-fallback:hover { transform:translateY(-1px); transition:transform .15s ease; }
-
-    @media (max-width: 991.98px){ .summary{ font-size:.96rem; } }
+    /* Motion */
+    .pill:hover, .tool:hover{ transform:translateY(-1px); box-shadow:0 8px 16px rgba(0,0,0,.08); }
   </style>
 </Main>

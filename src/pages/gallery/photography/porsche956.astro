@@ -1,60 +1,129 @@
 ---
-import Main from "../../../layouts/Main.astro";
+/* Porsche 956 – Collection Page */
+import Main   from "../../../layouts/Main.astro";
+import Nav    from "../../../components/Nav.astro";
+import Footer from "../../../components/Footer.astro";
+import Band   from "../../../components/Band.astro";
 import Collection1 from "../../../components/Collection1.astro";
 
-/* Use clean direct paths — Astro will handle BASE_URL automatically on GitHub Pages */
+/* BASE_URL-safe helpers (GitHub Pages ready) */
+const base   = import.meta.env.BASE_URL || "/";
+const url    = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const encode = (p = "/") => url(p).replace(/ /g, "%20");
+
+/* Collage */
 const collageImages = [
-  { src: "/img/photography/porsche956/IMG_9490.JPG", title: "One" },
-  { src: "/img/photography/porsche956/IMG_9524.JPG", title: "Two" },
-  { src: "/img/photography/porsche956/IMG_9504.JPG", title: "Three" },
-  { src: "/img/photography/porsche956/IMG_9571.JPG", title: "Four" },
-  { src: "/img/photography/porsche956/IMG_9496.JPG", title: "Five" },
-  { src: "/img/photography/porsche956/IMG_9527.JPG", title: "Six" },
-  { src: "/img/photography/porsche956/IMG_9552.JPG", title: "Seven" },
-  { src: "/img/photography/porsche956/IMG_9536.JPG", title: "Eight" },
-  { src: "/img/photography/porsche956/IMG_9488.JPG", title: "Nine" },
+  { src: encode("/img/photography/porsche956/IMG_9490.jpg"), title: "One" },
+  { src: encode("/img/photography/porsche956/IMG_9524.jpg"), title: "Two" },
+  { src: encode("/img/photography/porsche956/IMG_9504.jpg"), title: "Three" },
+  { src: encode("/img/photography/porsche956/IMG_9571.jpg"), title: "Four" },
+  { src: encode("/img/photography/porsche956/IMG_9496.jpg"), title: "Five" },
+  { src: encode("/img/photography/porsche956/IMG_9527.jpg"), title: "Six" },
+  { src: encode("/img/photography/porsche956/IMG_9552.jpg"), title: "Seven" },
+  { src: encode("/img/photography/porsche956/IMG_9536.jpg"), title: "Eight" },
+  { src: encode("/img/photography/porsche956/IMG_9488.jpg"), title: "Nine" },
 ];
 
-/* Hero section content */
+/* Page meta */
 const hero = {
-  head: "PORSCHE 956",
-  description: "Collection of Porsche 956 photographs.",
-  image: "/img/photography/porsche956/IMG_9504.JPG",
+  head: "Porsche 956",
+  description: "World Endurance Championship icon — photography collection and quick specs.",
+  image: encode("/img/photography/porsche956/IMG_9504.jpg"),
 };
+
+/* Blurb used under the collage hero */
+const info =
+  "Porsche created the 956 for the World Endurance Championship in 1982. It pioneered a fuel-efficient 2.6-litre turbo engine, a fully synchronised five-speed gearbox, and an aluminium monocoque. With powerful ground-effect diffusers and the longest wheelbase of any Porsche race car of its time, the 956 dominated endurance racing through the 1980s, including a triple victory on debut at Le Mans.";
 ---
 
 <Main head={hero.head} description={hero.description} image={hero.image}>
-  <Collection1
-    images={collageImages}
-    name="Porsche 956"
-    info="Porsche created the 956 for the World Endurance Championship in 1982. It represented a new generation of race cars with pioneering technology such as its fuel-efficient 2.6-litre turbo engine and fully synchronised five-speed gearbox. The new Group C regulations stipulated a specific ratio of overall length to wheelbase to prevent the use of massive long-tail designs. In response, the 956 boasted the longest wheelbase of any Porsche race car to date at 265 cm. For the first time, Porsche developed a monocoque chassis constructed of sheet aluminium. Diffusers generated low pressure under the car, sucking the 956 to the track surface — a new technology for sports prototypes that dramatically increased cornering speeds and gave Porsche a decisive advantage. Its debut at Le Mans yielded a triple victory, and factory driver Jacky Ickx went on to win the Sports Car World Championship. The 956 and its successor 962 C dominated endurance racing throughout the 1980s."
+  <!-- Global Nav -->
+  <Fragment slot="nav"><Nav /></Fragment>
+
+  <!-- Cinematic band -->
+  <Band
+    title="Porsche 956"
+    lead="Le Mans-bred legend — a study in speed, aero, and endurance."
+    variant="dark"
+    align="center"
+    valign="center"
+    bgImage={hero.image}
+    overlay={0.35}
+    height={320}
   />
 
-  <div class="container my-5">
-    <div class="spec elev p-3 p-md-4 rounded-3">
-      <h3 class="h5 mb-3 text-center">Technical Specifications</h3>
-      <div class="table-responsive">
-        <table class="table table-sm align-middle mb-0">
-          <tbody>
-            <tr><th scope="row" class="fw-semibold">Model Year</th><td>1982</td></tr>
-            <tr><th scope="row" class="fw-semibold">Engine</th><td>6-Cyl. Boxer Biturbo</td></tr>
-            <tr><th scope="row" class="fw-semibold">Displacement</th><td>2 649 cc</td></tr>
-            <tr><th scope="row" class="fw-semibold">Power Output</th><td>456 kW (620 PS)</td></tr>
-            <tr><th scope="row" class="fw-semibold">Top Speed</th><td>352 km/h</td></tr>
-            <tr><th scope="row" class="fw-semibold">Weight</th><td>840 kg</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</Main>
+  <!-- Back crumb -->
+  <nav class="crumb container-narrow">
+    <a href={url("/gallery/photography")} class="crumb__back" aria-label="Back to Photography">
+      <span aria-hidden="true">←</span> Back to Photography
+    </a>
+  </nav>
 
-<style>
-  /* Polished minimalist surface for spec table */
-  .spec {
-    background: var(--bg-elev, #fff);
-    border: 1px solid var(--border-subtle, rgba(0,0,0,.08));
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
-  }
-  .table th { width: 40%; white-space: nowrap; }
-</style>
+  <!-- Collage + narrative -->
+  <Collection1 images={collageImages} name="Porsche 956" info={info} />
+
+  <!-- Quick specs -->
+  <section class="container-narrow section">
+    <div class="spec">
+      <h3 class="spec__head">Technical Specifications</h3>
+      <dl class="spec__grid">
+        <div><dt>Model Year</dt><dd>1982</dd></div>
+        <div><dt>Engine</dt><dd>6-cyl boxer, biturbo</dd></div>
+        <div><dt>Displacement</dt><dd>2,649 cc</dd></div>
+        <div><dt>Power</dt><dd>456 kW (620 PS)</dd></div>
+        <div><dt>Top Speed</dt><dd>352 km/h</dd></div>
+        <div><dt>Weight</dt><dd>840 kg</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Global Footer -->
+  <Fragment slot="footer"><Footer /></Fragment>
+
+  <style>
+    .container-narrow{ max-width:1100px; margin:0 auto; padding:0 16px; }
+    .section{ padding:1.5rem 0 2.25rem; }
+
+    .crumb{ margin:1rem 0 .5rem; }
+    .crumb__back{
+      display:inline-flex; align-items:center; gap:.45rem;
+      font-weight:800; color:var(--text-strong,#101418); text-decoration:none; opacity:.85;
+    }
+    .crumb__back:hover{ opacity:1; }
+
+    /* Spec card */
+    .spec{
+      background:var(--bg-elev,#fff);
+      border:1px solid var(--border-subtle,rgba(0,0,0,.08));
+      border-radius:16px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+      padding:1.2rem 1.25rem;
+    }
+    .spec__head{
+      margin:.25rem 0 1rem;
+      text-align:center;
+      font-size:1.05rem;
+      font-weight:900;
+    }
+    .spec__grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:.65rem 1rem;
+      margin:0;
+    }
+    .spec__grid > div{
+      display:grid; grid-template-columns: 1fr 1fr; gap:.6rem;
+      padding:.55rem .6rem;
+      background:var(--bg-soft,#f5f7f3);
+      border:1px solid rgba(0,0,0,.05);
+      border-radius:12px;
+    }
+    .spec__grid dt{ font-weight:800; color:var(--text-strong,#101418); }
+    .spec__grid dd{ margin:0; color:var(--text-muted,#5c6670); font-weight:600; text-align:right; }
+    @media (max-width:640px){
+      .spec__grid{ grid-template-columns:1fr; }
+      .spec__grid > div{ grid-template-columns: 1fr; }
+      .spec__grid dd{ text-align:left; }
+    }
+  </style>
+</Main>

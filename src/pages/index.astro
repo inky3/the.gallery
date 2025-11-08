@@ -1,234 +1,198 @@
 ---
 import Main from "../layouts/Main.astro";
-import Card from "../components/Card.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import FeaturedShowcase from "../components/FeaturedShowcase.astro";
 
+// BASE URL helper for local + GitHub Pages safety
+const base = import.meta.env.BASE_URL || "/";
+const href = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
+// Page copy
 const hero = {
-  head: "The.Gallery",
-  description: "Exploring our highlighted work"
+  title: "A Personal Gallery of Work & Memory",
+  lead: "A quiet space for design, imagery, and exploration.",
 };
+
+const caps = [
+  { h: "UX / UI",   p: "Accessible, component-driven design systems." },
+  { h: "Front-End", p: "Astro & React builds with clean CSS utilities." },
+  { h: "Graphics",  p: "Visual identities and product imagery." }
+];
 ---
 
-<Main head={hero.head} description={hero.description}>
-  <section class="py-5">
-    <div class="container">
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-        <h2 class="mb-3 mb-md-0">From Our Gallery</h2>
+<Main head="THE.GALLERY — Home" description={hero.lead}>
+  <Fragment slot="nav"><Nav /></Fragment>
 
-        <!-- Filter Nav -->
-        <ul class="nav navline flex-wrap justify-content-center justify-content-md-start" id="filterNav">
-          <li class="nav-item">
-            <a class="nav-link active" data-filter="all" >Highlight</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-filter="photography" >Photography</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-filter="terrarium" >Terrarium</a>
-          </li>
+  <!-- MUSEUM HERO -->
+  <Hero
+    images={[
+      "/img/photography/porsche956/IMG_9504.jpg",
+      "/img/photography/porsche956/IMG_9496.jpg",
+      "/img/photography/porsche956/IMG_9531.jpg",
+    ]}
+    title={hero.title}
+    label="Studio Archive"
+    lead={hero.lead}
+    actions={[
+      { label: "Explore Gallery", href: href("projects") },
+      { label: "About the Artist", href: href("about") },
+    ]}
+  />
 
-          <!-- moving underline -->
-          <div class="indicator d-none d-md-block"></div>
-        </ul>
-      </div>
+  <!-- AREAS OF FOCUS -->
+  <section class="band-soft section" data-anim>
+    <div class="container-narrow">
+      <h2 class="section-headline">Areas of Focus</h2>
+      <p class="section-subhead">Core disciplines I design and build within.</p>
 
-      <!-- ✅ mobile-only “show description” button -->
-      <!-- Mobile-only View Description Button -->
-      <div class="text-center mb-4">
-        <button id="toggleDescriptions" class="desc-btn" type="button">
-          View Description
-        </button>
-      </div>
-
-      <!-- Gallery Cards -->
-      <div class="container overflow-hidden text-center">
-        <div class="row g-4 position-relative" id="gallery">
-          <Card
-            title="Alone in the Grey"
-            image="img/poster/alone-in-the-grey.png"
-            category="poster"
-            intro="ภาพโปสเตอร์ Aline in the grey ที่แสดงให้เห็นถึงความเหงาในยามเย็น"
-            href="/the.gallery/gallery/poster/alone-in-the-grey"
-          />
-          <Card
-            title="Casa Lapin Coffee Bean"
-            image="img/photography/casa-lapin.jpg"
-            category="photography"
-            intro="Packaged เมล็ดกาแฟ คาเฟ่ Casa Lapin โทนอุ่น แสงนุ่ม"
-          />
-          <Card
-            title="Duck"
-            image="img/terrarium/Duck.jpg"
-            category="terrarium"
-            intro="สวนขวดแก้วมินิ พร้อมตุ๊กตาเป็ดน้อย"
-            href="/the.gallery/gallery/terrarium"
-          />
-          <Card
-            title="Alley 7"
-            image="/img/poster/Alley7.png"
-            category="poster"
-            intro="โปสเตอร์ Alley 7 ที่แสดงถึงซอยเล็กๆ ณ Siam Square"
-            href="/the.gallery/gallery/poster/alley7"
-          />
-          <Card
-            title="Porsche 956"
-            image="img/photography/porsche956/IMG_9504.JPG"
-            category="photography"
-            intro="ภาพ Collection ชุดรถแข่ง Le Mans Porsche 956"
-            href="/the.gallery/gallery/photography/porsche956"
-          />
-          <Card
-            title="Le Mans"
-            image="img/book/le-mans-book.jpg"
-            category="book"
-            intro="แมกซีนหนังสือปกแข็งจำลองสำหรับการแข่งรถ Endurance Racing"
-          />
-          <Card
-            title="Creativity of Aerodynamic"
-            image="img/book/creativity-of-aerodynamic.jpg"
-            category="book"
-            intro="หนังสือทดลองออกแบบเลย์เอาต์เกี่ยวกับหลักการอากาศพลศาสตร์"
-          />
-        </div>
+      <div class="grid-3">
+        {caps.map((c) => (
+          <article class="surface tile">
+            <h3>{c.h}</h3>
+            <p>{c.p}</p>
+          </article>
+        ))}
       </div>
     </div>
   </section>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    /* ====== FILTER ====== */
-    const filterNav = document.getElementById("filterNav");
-    const cards = document.querySelectorAll(".gallery-card");
+  <!-- FEATURED WORK -->
+  <section class="band-dark section" data-anim>
+    <div class="container-narrow">
+      <h2 class="section-headline">Featured Work</h2>
+      <p class="section-subhead">Editorial highlights with a slow, cinematic switch.</p>
 
-    if (filterNav && cards.length) {
-      filterNav.addEventListener("click", (e) => {
-        const el = e.target;
-        if (!(el instanceof HTMLElement) || el.tagName !== "A") return;
-        e.preventDefault();
+      <FeaturedShowcase
+        id="featured-showcase"
+        items={[
+          {
+            title: "Good Health — Diabetes-friendly UX",
+            meta: "UX/UI • Health",
+            intro: "Research-led IA and UI kit for clear, trustworthy health flows.",
+            image: "/img/project/goodhealth/index.jpg",
+            href: "/projects/goodhealth",
+          },
+          {
+            title: "Mad Pizza — Digital Menu (iPad)",
+            meta: "UX/UI • Restaurant",
+            intro: "Thumb-friendly ordering, fast category switching, micro-interactions.",
+            image: "/img/project/madpizza.jpg",
+            href: "/projects/madpizza",
+          },
+        ]}
+      />
+    </div>
+  </section>
 
-        // set active
-        filterNav.querySelectorAll("a").forEach((link) => link.classList.remove("active"));
-        el.classList.add("active");
+  <!-- CTA -->
+  <section class="container-narrow section" data-anim>
+    <div class="surface cta">
+      <div>
+        <h3 class="h2" style="margin:0 0 .4rem">Like what you see?</h3>
+        <p class="lead" style="margin:0">Let’s collaborate on a clean, accessible interface.</p>
+      </div>
+      <a class="btn" href={href("about")}>Get in touch</a>
+    </div>
+  </section>
 
-        const filter = (el.getAttribute("data-filter") || "all").toLowerCase();
+  <Fragment slot="footer"><Footer /></Fragment>
 
-        cards.forEach((card) => {
-          const cat = (card.dataset.category || "").toLowerCase();
-          const col = card.closest(".gallery-col");
-          const match = filter === "all" || cat === filter;
-          if (col) col.style.display = match ? "" : "none";
+  <!-- Slider logic -->
+  <script is:inline>
+    (() => {
+      const root = document.getElementById('featured-showcase');
+      if (!root) return;
+
+      const viewport = root.querySelector('[data-stack]');
+      const slides = Array.from(root.querySelectorAll('.fscope__slide'));
+      const dots   = Array.from(root.querySelectorAll('.fscope__dot'));
+      const prev   = root.querySelector('[data-prev]');
+      const next   = root.querySelector('[data-next]');
+
+      if (!slides.length || !viewport) return;
+
+      let i = 0, timer = null;
+      const AUTOPLAY = true;
+      const INTERVAL = 7000;
+
+      const setHeight = (el) => { if (el) viewport.style.height = el.offsetHeight + 'px'; };
+      const active = () => slides[i];
+
+      const go = (n) => {
+        const from = slides[i];
+        i = (n + slides.length) % slides.length;
+        const to = slides[i];
+        if (from === to) return;
+
+        from.classList.remove('is-active');
+        to.classList.add('is-active');
+
+        dots.forEach((d, idx) => {
+          const on = idx === i;
+          d.classList.toggle('is-active', on);
+          d.setAttribute('aria-selected', on ? 'true' : 'false');
         });
-      });
-    }
 
-    /* ====== MOVING INDICATOR ====== */
-    const navLinks = document.querySelectorAll(".navline a");
-    const indicator = document.querySelector(".indicator");
-    if (indicator && navLinks.length) {
-      const moveIndicator = (link) => {
-        if (!link) return;
-        const navline = link.closest(".navline");
-        if (!navline) return;
-
-        const linkRect = link.getBoundingClientRect();
-        const parentRect = navline.getBoundingClientRect();
-        indicator.style.width = linkRect.width + "px";
-        indicator.style.left = (linkRect.left - parentRect.left) + "px";
+        setHeight(to);
       };
 
-      const active = document.querySelector(".navline a.active");
-      if (active) moveIndicator(active);
+      requestAnimationFrame(() => setHeight(active()));
 
-      navLinks.forEach((link) => {
-        link.addEventListener("click", (e) => {
-          navLinks.forEach((l) => l.classList.remove("active"));
-          const target = e.currentTarget;
-          if (target && target.classList) {
-            target.classList.add("active");
-            moveIndicator(target);
-          }
-        });
-      });
+      prev?.addEventListener('click', () => go(i - 1));
+      next?.addEventListener('click', () => go(i + 1));
+      dots.forEach((d, idx) => d.addEventListener('click', () => go(idx)));
 
-      window.addEventListener("resize", () => {
-        const current = document.querySelector(".navline a.active");
-        if (current) moveIndicator(current);
-      });
-    }
+      const start = () => { if (!timer && AUTOPLAY) timer = setInterval(() => go(i + 1), INTERVAL); };
+      const stop  = () => { clearInterval(timer); timer = null; };
 
-    /* ====== MOBILE “SHOW DESCRIPTIONS” TOGGLE ====== */
-    const btn = document.getElementById("toggleDescriptions");
-    if (btn) {
-      const mq = window.matchMedia("(max-width: 770px)");
+      start();
+      root.addEventListener('mouseenter', stop);
+      root.addEventListener('mouseleave', start);
+    })();
+  </script>
 
-      function setBtnState() {
-        btn.style.display = mq.matches ? "inline-block" : "none";
-        // If leaving mobile mode, reset descriptions
-        if (!mq.matches) {
-          btn.classList.remove("active");
-          btn.textContent = "View Description";
-          document.querySelectorAll(".card-figure").forEach((fig) => {
-            fig.classList.remove("show-info");
+  <!-- Reveal [data-anim] sections when they enter the viewport -->
+  <script is:inline>
+    (() => {
+      const els = Array.from(document.querySelectorAll('[data-anim]'));
+      if (!els.length) return;
+
+      const show = (el) => el.classList.add('is-inview');
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              show(e.target);
+              io.unobserve(e.target);
+            }
           });
-        }
-      }
+        }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
 
-      // initial + reactive
-      setBtnState();
-      if (mq.addEventListener) {
-        mq.addEventListener("change", setBtnState);
+        els.forEach(el => io.observe(el));
       } else {
-        // Safari fallback
-        mq.addListener(setBtnState);
+        els.forEach(show); // no IO support → just show
       }
+    })();
+  </script>
 
-      btn.addEventListener("click", () => {
-        const willShow = !btn.classList.contains("active");
-        btn.classList.toggle("active", willShow);
-        btn.textContent = willShow ? "Hide Description" : "View Description";
-        document.querySelectorAll(".card-figure").forEach((fig) => {
-          fig.classList.toggle("show-info", willShow);
-        });
-      });
+  <!-- Minimal global styles for the reveal -->
+  <style is:global>
+    [data-anim]{
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .4s ease, transform .4s ease;
     }
-  });
-</script>
-
-
-  <style>
-    .gallery-card { transition: transform 0.4s ease, opacity 0.4s ease; }
-
-    .navline {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
-      position: relative; padding: 0.3rem 0; border-bottom: 2px solid #555; margin: 0;
+    [data-anim].is-inview{
+      opacity: 1;
+      transform: none;
     }
-    @media (max-width: 767.98px) { .navline { justify-content: center; } }
-    .navline a { text-decoration: none; font-size: 1rem; color: #888; position: relative; padding-bottom: .5rem; transition: color .3s; }
-    .navline a.active { color: #000; font-weight: 600; }
-    .indicator { position: absolute; bottom: -2px; height: 2px; background: #000; transition: all .3s; }
-    .indicator::before {
-      content: ""; position: absolute; top: -5px; left: 50%; transform: translateX(-50%);
-      width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 6px solid #000;
+    @media (prefers-reduced-motion: reduce){
+      [data-anim]{ opacity:1 !important; transform:none !important; }
     }
-
-    .desc-btn {
-      display: none;
-      background: #f5f5f5;
-      border: 1px solid rgba(0,0,0,0.1);
-      color: #333;
-      border-radius: 999px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 500;
-      transition: all 0.25s ease;
-    }
-    .desc-btn.active {
-      background: #0f6657;
-      color: #fff;
-      border-color: #0f6657;
-    }
-
-    /* Show only on phones/small tablets */
-    @media (max-width: 770px) {
-      .desc-btn { display: inline-block; }
-    }
+    /* No-JS safeguard */
+    noscript [data-anim]{ opacity:1; transform:none; }
   </style>
 </Main>

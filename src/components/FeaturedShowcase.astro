@@ -1,0 +1,94 @@
+---
+/**
+ * FeaturedShowcase (markup-only)
+ * The page (index.astro) will attach JS behavior.
+ *
+ * Props:
+ *  - id: string (required) unique id on page, e.g. "featured-showcase"
+ *  - items: Array<{ title, intro?, image, href, meta? }>
+ */
+
+const { id = "featured-showcase", items = [] } = Astro.props;
+
+const base = import.meta.env.BASE_URL || "/";
+const resolve = (p="") => /^https?:\/\//i.test(p) ? p : `${base}${p.replace(/^\/+/, "")}`;
+const slides = items.map(s => ({ ...s, image: resolve(s.image), href: resolve(s.href) }));
+---
+
+<section id={id} class="fscope" aria-label="Featured projects" data-autoplay="true" data-interval="7000">
+  <div class="fscope__viewport" data-stack>
+    {slides.map((s, i) => (
+      <article
+        class={`fscope__slide ${i === 0 ? "is-active" : ""}`}
+        aria-roledescription="slide"
+        aria-label={`${i + 1} of ${slides.length}`}
+        data-index={i}
+      >
+        <a class="fscope__media" href={s.href} aria-label={`Open ${s.title}`}>
+          <img src={s.image} alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+        </a>
+
+        <div class="fscope__copy">
+          {s.meta && <p class="kicker">{s.meta}</p>}
+          <h3 class="h2">{s.title}</h3>
+          {s.intro && <p class="fscope__lede">{s.intro}</p>}
+          <div class="fscope__cta">
+            <a class="btn-ghost" href={s.href}>View case study</a>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="fscope__controls">
+    <button class="fscope__ctrl" data-prev aria-label="Previous project" type="button">‹</button>
+    <div class="fscope__dots" role="tablist" aria-label="Featured project selector">
+      {slides.map((_, i) => (
+        <button
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          class={`fscope__dot ${i === 0 ? "is-active" : ""}`}
+          data-go={i}
+          type="button"
+        />
+      ))}
+    </div>
+    <button class="fscope__ctrl" data-next aria-label="Next project" type="button">›</button>
+  </div>
+</section>
+
+<style>
+.fscope { display:grid; gap:1rem; }
+.fscope__viewport { position:relative; transition:height 380ms cubic-bezier(.2,.7,.2,1); }
+.fscope__slide {
+  position:absolute; inset:0; display:grid; gap:1.1rem; align-items:center;
+  grid-template-columns: 1.05fr .95fr;
+  opacity:0; transform:translateY(8px); pointer-events:none;
+  transition: opacity 520ms cubic-bezier(.2,.7,.2,1), transform 520ms cubic-bezier(.2,.7,.2,1);
+}
+.fscope__slide.is-active { position:relative; opacity:1; transform:none; pointer-events:auto; }
+@media (max-width:960px){ .fscope__slide{ grid-template-columns:1fr; } }
+
+.fscope__media { display:block; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.14); background:#000; aspect-ratio:16/9; }
+.fscope__media img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.fscope__copy { color:var(--text-on-dark, #e7ecea); }
+.fscope__lede { color:#cfd4d6; margin:.35rem 0 1rem; }
+.fscope__cta { display:flex; gap:.6rem; align-items:center; }
+
+.fscope__controls { display:flex; gap:.6rem; align-items:center; justify-content:center; }
+.fscope__ctrl {
+  appearance:none; background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.2);
+  width:40px; height:40px; border-radius:999px; font-size:20px; line-height:1;
+  display:grid; place-items:center; cursor:pointer; transition:background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.fscope__ctrl:hover { background:rgba(255,255,255,.14); transform:translateY(-1px); }
+.fscope__dots { display:flex; gap:.35rem; }
+.fscope__dot { width:9px; height:9px; border-radius:999px; border:none; cursor:pointer; background:rgba(255,255,255,.28); transition:transform .18s ease, background .18s ease; }
+.fscope__dot.is-active { background:#fff; transform:scale(1.2); }
+
+@media (prefers-reduced-motion:reduce){
+  .fscope__viewport { transition:none!important; }
+  .fscope__slide { transition:none!important; }
+}
+</style>

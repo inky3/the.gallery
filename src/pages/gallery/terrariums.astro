@@ -1,0 +1,109 @@
+---
+import Main   from "../../layouts/Main.astro";
+import Nav    from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Band   from "../../components/Band.astro";
+import Card   from "../../components/Card.astro";
+
+/* Meta */
+const hero = {
+  head: "Terrariums",
+  description: "Moss jars, mini-ecosystems, and tiny scenes.",
+};
+
+/* BASE-URL helpers (GitHub Pages safe) */
+const base = import.meta.env.BASE_URL || "/";
+const href = (p="/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const enc  = (p="/") => href(p).replace(/ /g, "%20");
+
+/* Data (no categories here) */
+const items = [
+  {
+    title: "Duck",
+    image: enc("/img/terrarium/Duck.jpg"),
+    intro: "เป็ดตัวเล็กในสวนมอสขวด ใบเขียวชื้นๆ",
+  },
+  {
+    title: "Mini Terrarium",
+    image: enc("/img/terrarium/MiniTerrarium.jpg"),
+    intro: "ขวดแก้วใบจิ๋ว เลี้ยงมอสและกรวดขาว",
+  },
+];
+---
+
+<Main head={hero.head} description={hero.description}>
+  <Fragment slot="nav"><Nav /></Fragment>
+
+  <Band
+    title="Terrariums"
+    lead={hero.description}
+    variant="dark"
+    align="center"
+    valign="center"
+    height={180}
+    overlay={0.18}
+  />
+
+  <section class="wrap">
+    <div class="container-narrow">
+      <!-- Mobile only: View description -->
+      <div class="tools">
+        <button id="toggleDesc" class="toggle" type="button">View Description</button>
+      </div>
+
+      <div class="grid" aria-live="polite">
+        {items.map((it) => (
+          <Card title={it.title} image={it.image} intro={it.intro} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer"><Footer /></Fragment>
+
+  <script is:inline>
+    (() => {
+      const btn = document.getElementById("toggleDesc");
+      const figs = () => Array.from(document.querySelectorAll("[data-fig]"));
+      const sync = () => {
+        if (window.innerWidth <= 770) {
+          btn.style.display = "inline-flex";
+        } else {
+          btn.style.display = "none";
+          btn.classList.remove("is-on");
+          btn.textContent = "View Description";
+          figs().forEach(f => f.classList.remove("show-info"));
+        }
+      };
+      btn?.addEventListener("click", () => {
+        const on = !btn.classList.contains("is-on");
+        btn.classList.toggle("is-on", on);
+        btn.textContent = on ? "Hide Description" : "View Description";
+        figs().forEach(f => f.classList.toggle("show-info", on));
+      });
+      sync();
+      window.addEventListener("resize", sync);
+    })();
+  </script>
+
+  <style>
+    .wrap{ padding:1.25rem 0 3rem; }
+    .container-narrow{ max-width:1140px; margin:0 auto; padding:0 16px; }
+
+    .tools{ display:flex; justify-content:center; margin:.75rem 0 1rem; }
+    .toggle{
+      display:none; padding:.52rem 1rem; border-radius:999px; font-weight:700;
+      border:1px solid rgba(0,0,0,.12); background:#fff; cursor:pointer;
+    }
+    .toggle.is-on{ background:var(--accent,#0f6657); color:#fff; border-color:transparent; }
+    @media (max-width:770px){ .toggle{ display:inline-flex; } }
+
+    .grid{
+      --cols:2;
+      display:grid; gap:1.15rem;
+      grid-template-columns:repeat(var(--cols), minmax(0,1fr));
+    }
+    @media (max-width:1000px){ .grid{ --cols:2; } }
+    @media (max-width:640px){  .grid{ --cols:1; } }
+  </style>
+</Main>

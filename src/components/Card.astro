@@ -1,279 +1,110 @@
 ---
-/**
- * Props:
- * - title: string
- * - image: string
- * - href?: string
- * - category?: string | string[]   ← now supports array
- * - intro?: string
- */
-const {
-  title = "Untitled",
-  image = "/img/blank.jpg",
-  href = "#",
-  category = "",
-  intro = "View this project."
-} = Astro.props;
-
-// base-safe for GitHub Pages
-/* ...your existing props... */
-const base = import.meta.env.BASE_URL || "/";
-const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-
-/* NEW: decide internal vs external */
-const isExternal = /^(https?:)?\/\//i.test(href);
-/* NEW: internal links get BASE_URL prefix; externals pass through */
-const finalHref = isExternal ? href : url(href);
-
-/* (keep the rest: catLower, catList, etc.) */
-
-/* 
-  🔹 data-category must be a string
-  🔹 if user passed array: ["coding","ux/ui-design"] → "coding,ux/ui-design"
-  🔹 if user passed string: "coding" → "coding"
-*/
-const catLower = Array.isArray(category)
-  ? category.map((c) => c.toLowerCase()).join(",")
-  : (category || "").toLowerCase();
-
-/* for rendering pill(s) in overlay — keep original value */
-const catList = Array.isArray(category)
-  ? category
-  : category
-  ? [category]
-  : [];
+// Props
+const { title, image, href = "#", intro = "", type = "" } = Astro.props;
 ---
 
-<div class="col-12 col-sm-6 col-lg-4 gallery-col">
-  <article class="gallery-card" data-category={catLower}>
-    <!-- MAIN CLICK AREA -->
-      <a
-        class="card-link"
-        href={finalHref}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noreferrer" : undefined}
-      >
+<a class="gcard" href={href} aria-label={title}>
+  <figure class="gcard__fig" data-fig>
+    <img class="gcard__img" src={image} alt={title} loading="lazy" decoding="async" />
 
-      <figure class="card-figure">
-        <img
-          src={url(image)}
-          alt={title}
-          loading="lazy"
-          decoding="async"
-        />
+    <!-- Dark veil (only visible on hover / show-info) -->
+    <div class="gcard__veil" aria-hidden="true"></div>
 
-        <!-- bottom-center pill (your style) -->
-        <div class="card-pill">
-          <span class="pill-text">{title}</span>
-        </div>
+    <!-- IDLE: bottom-centered title pill -->
+    <div class="gcard__idle">
+      <span class="gcard__idlePill">{title}</span>
+    </div>
 
-        <!-- hover / tap overlay -->
-        <div class="card-overlay">
-          <div class="overlay-text">
-            <h3 class="card-title">{title}</h3>
-            <p class="card-intro">{intro}</p>
-          </div>
-
-          {catList.length > 0 && (
-            <div class="tag-row">
-              {catList.map((cat) => (
-                <span class="card-tag">{cat}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      </figure>
-    </a>
-  </article>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const card = document.currentScript.closest(".gallery-card");
-    if (!card) return;
-
-    const figure = card.querySelector(".card-figure");
-    const link = card.querySelector(".card-link");
-
-    let armed = false;
-
-    // tap-to-preview for small screens
-    figure.addEventListener("click", (e) => {
-      // desktop → let hover handle it
-      if (window.innerWidth > 1024) return;
-
-      if (!armed) {
-        e.preventDefault();
-        figure.classList.add("show-info");
-        armed = true;
-
-        // auto-close after 2.5s so user isn’t stuck
-        setTimeout(() => {
-          figure.classList.remove("show-info");
-          armed = false;
-        }, 2500);
-      } else {
-        // second tap → follow link (let <a> work)
-        figure.classList.remove("show-info");
-        armed = false;
-      }
-    });
-  });
-</script>
+    <!-- HOVER/MOBILE: full caption -->
+    <figcaption class="gcard__cap">
+      <strong class="gcard__capTitle">{title}</strong>
+      {intro && <p class="gcard__capIntro">{intro}</p>}
+      {type && <span class="gcard__chip">{type}</span>}
+    </figcaption>
+  </figure>
+</a>
 
 <style>
-  .gallery-col {
-    position: relative;
+  .gcard{ display:block; text-decoration:none; color:inherit; }
+
+  .gcard__fig{
+    position:relative; overflow:hidden; border-radius:18px;
+    aspect-ratio:16/10; background:#000; box-shadow:0 10px 26px rgba(16,20,24,.12);
+
+    /* ============ THEME KNOBS (edit these) ============ */
+    --veil-idle-opacity: 0;                 /* overlay at rest */
+    --veil-hover-opacity: .85;              /* overlay on hover/show */
+    --idle-pill-bg: rgba(20,22,24,.86);     /* pill bg (idle) */
+    --idle-pill-color: #fff;                /* pill text color */
+    --idle-pill-pad: .58rem 1.15rem;        /* pill padding (size) */
+    --idle-pill-radius: 999px;              /* pill roundness */
+    --cap-text: #fff;                       /* caption text color */
+    --cap-shadow: 0 2px 4px rgba(0,0,0,.55);/* caption text shadow */
   }
 
-  .gallery-card {
-    position: relative;
-    height: 100%;
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  .gallery-card:hover {
-    transform: translateY(-3px);
+  .gcard__img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform:scale(1.02);
+    transition:transform .35s ease, opacity .35s ease;
   }
 
-  .card-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
+  .gcard__veil{
+    position:absolute; inset:0; border-radius:inherit;
+    background:linear-gradient(to top,
+      rgba(0,0,0,.65) 0%,
+      rgba(0,0,0,.28) 45%,
+      rgba(0,0,0,0) 100%);
+    opacity:var(--veil-idle-opacity);
+    transition:opacity .28s ease;
+    pointer-events:none;
   }
 
-  /* fixed box 406 x 304 */
-  .card-figure {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-    background: #111;
-    border: 1px solid rgba(0,0,0,.15);
-    width: 100%;
-    max-width: 406px;
-    height: 304px;
-    margin: 0 auto;
+  /* IDLE pill (always visible at rest) */
+  .gcard__idle{
+    position:absolute; left:0; right:0; bottom:18px;
+    display:grid; place-items:center;
+    transition:opacity .22s ease, transform .22s ease;
+    opacity:1 !important;             /* keep visible */
+    transform:translateY(0) !important;
   }
-  .card-figure img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* bottom-center pill */
-  .card-pill {
-    position: absolute;
-    left: 50%;
-    bottom: 16px;
-    transform: translateX(-50%);
-    background: rgba(12, 12, 12, 0.88);
-    border: 1px solid rgba(255,255,255,.25);
-    border-radius: 999px;
-    padding: .55rem 1.6rem .65rem;
-    min-width: 210px;
-    max-width: 92%;
-    text-align: center;
-    pointer-events: none;
-    box-shadow: 0 12px 22px rgba(0,0,0,.28);
-    backdrop-filter: saturate(130%) blur(4px);
-    transition: opacity .18s ease;
-  }
-  .pill-text {
-    color: #fff;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .gcard__idlePill{
+    max-width:calc(100% - 32px);
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    color:var(--idle-pill-color); background:var(--idle-pill-bg);
+    padding:var(--idle-pill-pad); border-radius:var(--idle-pill-radius);
+    font-weight:900; letter-spacing:.2px;
+    text-shadow:0 1px 2px rgba(0,0,0,.35);
+    box-shadow:0 4px 16px rgba(0,0,0,.18), inset 0 0 0 1px rgba(255,255,255,.06);
   }
 
-  /* overlay */
-  .card-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 10% 0%, rgba(0,0,0,.6) 0%, rgba(0,0,0,.9) 65%);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: .25rem;
-    padding: 0 1rem 1rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .22s ease, transform .22s ease;
-    transform: translateY(10px);
+  /* CAPTION (hidden at rest) */
+  .gcard__cap{
+    position:absolute; left:16px; right:16px; bottom:16px;
+    display:grid; gap:.4rem;
+    color:var(--cap-text);
+    text-shadow:var(--cap-shadow);
+    transform:translateY(12px);
+    opacity:0 !important;             /* hidden idle */
+    transition:transform .28s ease, opacity .28s ease;
+  }
+  .gcard__capTitle{ font-weight:900; }
+  .gcard__capIntro{ margin:0; opacity:.95; line-height:1.28; }
+
+  .gcard__chip{
+    display:inline-block; padding:.38rem .8rem; font-weight:800; font-size:.8rem;
+    border-radius:999px; color:#fff; backdrop-filter:blur(4px);
+    background:rgba(255,255,255,.18);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);
   }
 
-  .overlay-text {
-    margin-bottom: .4rem;
-  }
+  /* Desktop hover reveal */
+  .gcard__fig:hover .gcard__img{ transform:scale(1.06); }
+  .gcard__fig:hover .gcard__veil{ opacity:var(--veil-hover-opacity) !important; }
+  .gcard__fig:hover .gcard__cap{ transform:translateY(0); opacity:1 !important; }
+  .gcard__fig:hover .gcard__idle{ opacity:0 !important; transform:translateY(6px) !important; }
 
-  .card-title {
-    font-size: .9rem;
-    font-weight: 600;
-    margin: 0 0 .15rem;
-  }
-  .card-intro {
-    font-size: .7rem;
-    margin: 0;
-    opacity: .92;
-    line-height: 1.35;
-  }
-
-  /* bottom-left tag(s) */
-  .tag-row {
-    display: flex;
-    gap: .35rem;
-    flex-wrap: wrap;
-  }
-
-  .card-tag {
-    background: rgba(0,0,0,.15);
-    border: 1px solid rgba(255,255,255,.4);
-    border-radius: 999px;
-    padding: .2rem .7rem .3rem;
-    font-size: .6rem;
-    text-transform: capitalize;
-  }
-
-  /* DESKTOP: hover shows overlay + hides pill */
-  @media (hover: hover) and (pointer: fine) {
-    .gallery-card:hover .card-overlay {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-    .gallery-card:hover .card-pill {
-      opacity: 0;
-    }
-  }
-
-  /* TOUCH: hidden until tap (index / projects will toggle .show-info) */
-  @media (hover: none), (pointer: coarse) {
-    .card-overlay {
-      opacity: 0;
-      pointer-events: none;
-      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,.65) 50%, rgba(0,0,0,.9) 100%);
-      padding-bottom: 4.2rem;
-    }
-    /* Force overlay on when parent adds .show-info */
-    .card-figure.show-info .card-overlay {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    /* Hide the pill while overlay is visible */
-    .card-figure.show-info .card-pill {
-      opacity: 0;
-    }
-  }
-
-  /* tiny screens */
-  @media (max-width: 575.98px) {
-    .card-figure {
-      max-width: 100%;
-      height: 304px;
-    }
-  }
+  /* Mobile: .show-info toggled from page script */
+  .gcard__fig.show-info .gcard__veil{ opacity:var(--veil-hover-opacity) !important; }
+  .gcard__fig.show-info .gcard__cap{ transform:translateY(0); opacity:1 !important; }
+  .gcard__fig.show-info .gcard__idle{ opacity:0 !important; transform:translateY(6px) !important; }
 </style>

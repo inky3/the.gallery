@@ -1,0 +1,140 @@
+---
+import Main   from "../../layouts/Main.astro";
+import Nav    from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Band   from "../../components/Band.astro";
+import Card   from "../../components/Card.astro";
+
+/* Meta */
+const hero = {
+  head: "Poster Gallery",
+  description: "Print & digital poster explorations.",
+};
+
+/* BASE-URL helpers */
+const base = import.meta.env.BASE_URL || "/";
+const url  = (p="/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const enc  = (p="/") => url(p).replace(/ /g, "%20");
+
+/* Data */
+const items = [
+  {
+    title: "Alone in the Grey",
+    image: enc("/img/poster/alone-in-the-grey.png"),
+    intro: "ภาพโปสเตอร์ ‘Alone in the Grey’ สื่อความเหงายามเย็น",
+    href: url("/gallery/poster/alone-in-the-grey"),
+  },
+  {
+    title: "Alley 7",
+    image: enc("/img/poster/Alley7.png"),
+    intro: "โปสเตอร์ Alley 7 ที่บันทึกซอยเล็กในสยามสแควร์",
+    href: url("/gallery/poster/alley7"),
+  },
+  {
+    title: "Brand Identity & Typography",
+    image: enc("/img/poster/Brand-Identity-and-Typography.png"),
+    intro: "โปสเตอร์สำหรับสัมมนาเรื่องอัตลักษณ์แบรนด์และตัวพิมพ์",
+    href: url("/gallery/poster/brand-identity-and-typography"),
+  },
+  {
+    title: "Watch Advertisement",
+    image: enc("/img/poster/Watch-Advertisement.jpg"),
+    intro: "โปสเตอร์โฆษณา Realme Watch",
+    href: url("/gallery/poster/watch-advertisement"),
+  },
+  {
+    title: "Art Nouveau Poster",
+    image: enc("/img/poster/Art-Nouveau-Poster.png"),
+    intro: "โปสเตอร์สไตล์อาร์ตนูโว รายละเอียดแน่น ๆ",
+  },
+];
+---
+
+<Main head={hero.head} description={hero.description}>
+  <Fragment slot="nav"><Nav /></Fragment>
+
+  <Band
+    title="Poster Gallery"
+    lead={hero.description}
+    variant="dark"
+    align="center"
+    valign="center"
+    height={160}
+    overlay={0.18}
+  />
+
+  <section class="wrap">
+    <div class="container-narrow">
+      <div class="tools">
+        <button id="toggleDesc" class="toggle" type="button">View Description</button>
+      </div>
+
+      <div class="grid" aria-live="polite">
+        {items.map((it) => (
+          <Card title={it.title} image={it.image} intro={it.intro} href={it.href} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer"><Footer /></Fragment>
+
+  <script is:inline>
+    (() => {
+      const btn = document.getElementById("toggleDesc");
+      const figs = () => Array.from(document.querySelectorAll("[data-fig]"));
+      const sync = () => {
+        if (window.innerWidth <= 770) { btn.style.display = "inline-flex"; }
+        else {
+          btn.style.display = "none";
+          btn.classList.remove("is-on"); btn.textContent = "View Description";
+          figs().forEach(f => f.classList.remove("show-info"));
+        }
+      };
+      btn?.addEventListener("click", () => {
+        const on = !btn.classList.contains("is-on");
+        btn.classList.toggle("is-on", on);
+        btn.textContent = on ? "Hide Description" : "View Description";
+        figs().forEach(f => f.classList.toggle("show-info", on));
+      });
+      sync(); window.addEventListener("resize", sync);
+    })();
+  </script>
+
+  <style>
+    .wrap{
+      padding: 1rem 0 2rem; /* ↓ was too large */
+    }
+    .container-narrow{
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 12px; /* ↓ reduce side whitespace */
+    }
+
+    /* GRID: reduce space between cards */
+    .grid{
+      --cols: 3;
+      display: grid;
+      gap: 0rem;   /* ↓ was 1.15rem, now tighter */
+      grid-template-columns: repeat(var(--cols), minmax(0,1fr));
+    }
+
+    @media (max-width: 1000px){
+      .grid{ --cols: 2; }
+    }
+    @media (max-width: 640px){
+      .grid{ --cols: 1; gap: 0.9rem; } /* slightly roomier for mobile readability */
+    }
+
+
+    .tools{ display:flex; justify-content:center; margin:.75rem 0 1rem; }
+    .toggle{
+      display:none; padding:.52rem 1rem; border-radius:999px; font-weight:700;
+      border:1px solid rgba(0,0,0,.12); background:#fff; cursor:pointer;
+    }
+    .toggle.is-on{ background:var(--accent,#0f6657); color:#fff; border-color:transparent; }
+    @media (max-width:770px){ .toggle{ display:inline-flex; } }
+    @media (max-width:1200px){ .grid{ --cols:2; } }
+    @media (max-width:640px){  .grid{ --cols:1; } }
+  </style>
+</Main>

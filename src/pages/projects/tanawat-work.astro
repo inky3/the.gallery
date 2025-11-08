@@ -1,311 +1,155 @@
 ---
-import Main from "../../layouts/Main.astro";
+import Project from "../../layouts/Project.astro";
+import CaseMedia from "../../components/CaseMedia.astro";
 
-/** Meta */
-const hero = {
-  head: "Tanawat Work",
-  description:
-    "พอร์ตโฟลิโอสไตล์ Necron จาก Warhammer 40k ที่ผมออกแบบ UX/UI, เขียนโค้ด และดีพลอยด้วยตนเองโดยใช้ Astro โปรเจกต์นี้เป็นเว็บไซต์จริงที่เจ้าของสามารถใช้งานได้ทันที (Finished Product) แต่ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเนื้อหา"
+/* ===== Page Meta ===== */
+const page = {
+  title: "Tanawat Work",
+  meta: "Portfolio • UX/UI + Front-End",
+  lead:
+    "พอร์ตโฟลิโอธีม Necron (Warhammer 40,000) — โทนดาร์ก เทคโนโลยีลี้ลับ เขียวเนโครน • ออกแบบและพัฒนาโดยผมทั้งหมด ตั้งแต่ระบบกริดจนถึงโมชั่นเล็ก ๆ",
+  cover: "/img/project/tanawatwork/hero.jpg", // ใช้ภาพเบา ๆ; ถ้าไม่มีปล่อยว่างได้
+  timeframe: "2024–2025",
+  role: ["UX/UI Design", "Frontend Development", "Interaction Design"],
+  stack: ["Astro", "CSS Utility/Grid/Flex", "Vanilla JS (เฉพาะจุด)", "Design Tokens"],
+  links: [],
 };
 
-/** ช่วยจัดการ BASE_URL (รองรับ GitHub Pages) */
-const base = import.meta.env.BASE_URL || "/";
-const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-
-/** ลิงก์โปรเจกต์ (แก้ไขได้) */
+/* ===== External Links ===== */
 const links = {
   live: "https://inky3.github.io/the-work-of-tanawat",
-  repo: "#" // ถ้ามี Git repo ใส่ได้
 };
 ---
 
-<Main head={hero.head} description={hero.description}>
-  <!-- เมนูย่อยแบบติดตามการเลื่อน (เดสก์ท็อป/แท็บเล็ต) -->
-  <nav class="section-nav d-none d-md-flex" aria-label="Section navigator">
-    <a href="#overview" class="pill active">ภาพรวม</a>
-    <a href="#index" class="pill">หน้าแรก (Index)</a>
-    <a href="#artworks" class="pill">ผลงาน 3D</a>
-    <a href="#motion" class="pill">แอนิเมชัน & โมชัน</a>
-    <a href="#figures" class="pill">เพนต์ฟิกเกอร์</a>
-  </nav>
-
-  <!-- ภาพรวม -->
-  <section id="overview" class="container py-4 pb-1">
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-lg-7">
-        <figure class="frame">
-          <img
-            src={url("/img/project/tanawatwork/index.jpg")}
-            alt="หน้า Index ของ Wanawat Work"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-      <div class="col-12 col-lg-5">
-        <h2 class="h4 mb-3">คอนเซ็ปต์และวัตถุประสงค์</h2>
-        <p class="lead-sm">
-          <strong>Tanawat Work</strong> คือเว็บไซต์พอร์ตโฟลิโอที่เน้นเอกลักษณ์ “กริดนีออน” ที่ได้แรงบันดาลใจจาก "Necron" 
-          เผ่าหุ่นยนต์โบราณในจักรวาล Warhammer 40k ดีไซน์สีเขียวเรืองแสง
-          ให้ความรู้สึกเทคนิค/อนาคต แต่คงความอ่านง่าย โครงสร้างนำเสนอเป็นบล็อกฮีโร่ขนาดใหญ่
-          พร้อมชิปนำทาง (chips) เพื่อพาผู้ชมเข้าสู่เนื้อหาหลักอย่างรวดเร็ว
-        </p>
-
-        <div class="meta mt-3">
-          <div><span class="k">บทบาท</span><span class="v">ออกแบบ UX/UI, เขียนโค้ด Front-End ด้วย Astro และดีพลอยขึ้น GitHub Pages ด้วยตนเองทั้งหมด 
-            เพื่อส่งมอบเป็นเว็บไซต์สำเร็จรูปให้เจ้าของสามารถใช้งานได้จริง 
-            (ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเว็บไซต์)</span></div>
-          <div><span class="k">เทคโนโลยี</span><span class="v">Astro, Bootstrap Utilities, CSS Grid และเอฟเฟกต์นีออนแบบกำหนดเอง</span></div>
-          <div><span class="k">ขอบเขต</span><span class="v">พัฒนาเว็บไซต์เต็มรูปแบบ ครอบคลุมหน้า Landing และหมวดหลัก 3 ส่วน ได้แก่ 3D Artworks, Animation & Motion, และ Painted Figures</span></div>
-          <div><span class="k">สถานะ</span><span class="v">ออนไลน์</span></div>
-        </div>
-
-        <div class="mt-4 d-flex gap-2 flex-wrap">
-          <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
-          {links.repo !== "#" && <a href={links.repo} target="_blank" rel="noreferrer" class="btn-ghost">ดูซอร์สโค้ด</a>}
-        </div>
-      </div>
-    </div>
+<Project
+  {...page}
+  heroTitleColor="#ffffff"
+  heroLeadColor="#ffffff"
+  heroAlign="center"
+  heroValign="center"
+  heroOverlay={0.14}
+  heroHeight={200}
+>
+  <!-- ===== Overview ===== -->
+  <section class="case-block">
+    <h2 class="case-head">ภาพรวมโครงการ (Overview)</h2>
+    <p>
+      <b>Tanawat Work</b> คือเว็บไซต์พอร์ตโฟลิโอที่ตีความเอกลักษณ์ของ <b>Necron</b> จาก WH40k
+      มาเป็นระบบ UI: โทนดำ/เทาเข้ม, ไฮไลต์สีเขียวเรือง, เส้นสายเรขาคณิต และกลิ่นอายเทคโบราณ
+      ผมออกแบบและเขียนโค้ดเองทั้งหมด เพื่อทดลองการควบคุมธีมที่เข้มข้น
+      แต่ยังรักษา <b>ความอ่านง่าย ความเร็ว และลำดับข้อมูล</b> ให้ชัดเจน
+    </p>
+    <ul class="bullets">
+      <li>จุดขาย: Branding แข็งแรง + อ่านไว + โหลดเร็ว</li>
+      <li>บทบาท: UX/UI, สร้างระบบคอมโพเนนต์, เขียน Astro + CSS + JS บางส่วน</li>
+      <li>ขอบเขต: หน้า Home/Portfolio/Detail/Contact พร้อมเอฟเฟกต์เรืองแสงเบา ๆ</li>
+    </ul>
   </section>
 
-  <!-- หน้า Index -->
-  <section id="index" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6">
-        <figure class="frame">
-          <img
-            src={url("/img/project/tanawatwork/index.jpg")}
-            alt="เลย์เอาต์หน้า Index"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
+  <!-- ===== IA & Flow ===== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">สถาปัตยกรรมข้อมูล (IA) & โฟลว์</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="h3">โครงหน้าและการนำทาง</h3>
+        <ul class="bullets">
+          <li><b>Home</b> — ฮีโร่ธีม Necron + โมชันแสง, ลิงก์ไปหมวดเด่น</li>
+          <li><b>Portfolio</b> — กริดการ์ด 3→2→1, การ์ดมาตรฐานเดียว (ภาพนำ + ชื่อ + Tag)</li>
+          <li><b>Detail</b> — โครงเรื่องสั้น “ปัญหา → วิธี → ผลลัพธ์”, ภาพ/วิดีโอแยกบล็อก</li>
+          <li><b>Contact</b> — ปุ่ม CTA ชัด, โทนเข้าธีมแต่ยังคอนทราสต์สูง</li>
+        </ul>
       </div>
-      <div class="col-12 col-lg-6">
-        <h3 class="h4 mb-2">หน้าแรก (Index)</h3>
-        <p class="mb-2">
-          ส่วนเปิดเรื่องของแบรนด์ ใช้กริดเป็นพื้นหลัง + หัวข้อเรืองแสง เพื่อสร้างบุคลิกที่ชัดเจน
-          บล็อกแนะนำตัว (ชื่อ/บทบาท) และบรีฟสั้น ๆ ช่วยให้ผู้ชมเข้าใจทิศทางงานได้ทันที
-        </p>
-        <ul class="check">
-          <li>ฮีโร่การ์ดพร้อมภาพพอร์ตเทรตและไทโปเรืองแสง</li>
-          <li>ชิปข้อมูลย่อย เช่น ที่อยู่ติดต่อ ทักษะเด่น</li>
-          <li>ปุ่มหลัก: <em>View Abilities</em> และ <em>See Highlights</em></li>
+      <div>
+        <h3 class="h3">หลักคิด UX</h3>
+        <ul class="bullets">
+          <li>ธีมเข้ม แต่ตัวอักษรใช้ <b>คอนทราสต์/ขนาด</b> ผ่านเกณฑ์ WCAG</li>
+          <li>ลด JS — ใช้ CSS/HTML เป็นหลักเพื่อความเร็วและเสถียร</li>
+          <li>โครงกริดคาดเดาได้: สม่ำเสมอระหว่างหน้า/บล็อก</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- 3D Artworks -->
-  <section id="artworks" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6 order-lg-2">
-        <figure class="frame">
-          <img
-            src={url("/img/project/tanawatwork/3d.jpg")}
-            alt="หน้า 3D Artworks"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-      <div class="col-12 col-lg-6 order-lg-1">
-        <h3 class="h4 mb-2">ผลงาน 3D</h3>
-        <p class="mb-2">
-          แกลเลอรีแบบโมดูลาร์ แยกตามประเภท <em>Character</em>, <em>Diorama</em>, <em>Objects</em>
-          ทุกการ์ดคุมสัดส่วนเท่ากันเพื่อให้กริดนิ่ง และใช้โอเวอร์เลย์บนโฮเวอร์/แตะเพื่อโชว์ข้อมูลสั้น ๆ
-        </p>
-        <ul class="check">
-          <li>ชิปฟิลเตอร์สำหรับสลับหมวดได้รวดเร็ว</li>
-          <li>ขนาดการ์ดคงที่ ให้จังหวะการไหลของกริดสม่ำเสมอ</li>
-          <li>โอเวอร์เลย์ชื่อ/คำอธิบายสั้น เน้นดูงานก่อนอ่านรายละเอียด</li>
-        </ul>
-      </div>
+  <!-- ===== Visual System ===== -->
+  <section class="case-block">
+    <h2 class="case-head">ระบบภาพ & ส่วนประกอบ (Visual System)</h2>
+    <ul class="bullets">
+      <li><b>Palette:</b> #0b0f0d / #121614 / #1b221e + เขียวเนโครน #00d38a (เน้นเฉพาะจุด)</li>
+      <li><b>Typography:</b> Headline หนา/กว้าง, Body อ่านง่าย, letter-spacing เล็กน้อย</li>
+      <li><b>Components:</b> การ์ด/ปุ่ม/ชิปสอดคล้องกัน, โครงเส้นและกรอบเรขาคณิต</li>
+      <li><b>Motion:</b> glow/pulse นุ่ม ๆ (200ms) ไม่บดบังการอ่าน</li>
+    </ul>
+
+    <!-- ภาพเดโม (ย่อและจัดกึ่งกลาง) -->
+    <div class="media sm">
+      <CaseMedia image="/img/project/tanawatwork/index.jpg" caption="กริดผลงาน 3→2→1 ภายใต้ธีม Necron" />
     </div>
   </section>
 
-  <!-- Animation & Motion -->
-  <section id="motion" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6">
-        <figure class="frame">
-          <img
-            src={url("/img/project/tanawatwork/animation.jpg")}
-            alt="หน้า Animation & Motion"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-      <div class="col-12 col-lg-6">
-        <h3 class="h4 mb-2">แอนิเมชัน & โมชัน</h3>
-        <p class="mb-2">
-          ส่วนนี้เน้นความสามารถด้านโมชั่นกราฟิก (เช่น After Effects) ใช้ภาพฮีโร่ขนาดใหญ่สร้างจุดโฟกัส
-          คำอธิบายสั้น ๆ ให้อ่านเร็ว และลิงก์ไปยังงานตัวอย่าง
-        </p>
-        <ul class="check">
-          <li>วิชวลหลักชัดเจน สื่ออัตลักษณ์ด้านโมชัน</li>
-          <li>เนื้อหากระชับ พร้อมลิงก์ต่อยอด</li>
-          <li>ภาษาดีไซน์/ระยะห่างสอดคล้องกับส่วนอื่นของเว็บ</li>
-        </ul>
+  <!-- ===== Performance & A11y ===== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">ประสิทธิภาพ & การเข้าถึง (Performance / A11y)</h2>
+    <ul class="bullets">
+      <li>Astro ลด JS ฝั่งไคลเอนต์, ใช้ภาพบีบอัด/ตั้งขนาดชัดเจน ป้องกัน CLS</li>
+      <li>สี/คอนทราสต์ตรวจด้วยเครื่องมือ (WCAG AA) + โซนแตะ ≥ 44px</li>
+      <li>เลย์เอาต์ตอบสนองครบ: Desktop / Tablet / Mobile</li>
+    </ul>
+  </section>
+
+  <!-- ===== Lessons & Next ===== -->
+  <section class="case-block">
+    <h2 class="case-head">สิ่งที่ได้เรียนรู้ & ขั้นถัดไป</h2>
+    <ul class="bullets">
+      <li>ธีมจัดจ้านสามารถอยู่ร่วมกับ usability ได้ หากวาง <b>hierarchy</b> และ <b>contrast</b> ดีพอ</li>
+      <li>Motion เล็ก ๆ ให้บรรยากาศ แต่ต้องรักษาเฟรมเรตและเวลาตอบสนอง</li>
+      <li>ถัดไป: เพิ่มหน้ารายละเอียดผลงานแบบ Case Study เต็มรูป และระบบภาพแบบ Srcset</li>
+    </ul>
+  </section>
+
+  <!-- ===== CTA (only live site) ===== -->
+  <section class="section">
+    <div class="container-narrow">
+      <div class="deliver">
+        <a class="cta big" href={links.live} target="_blank" rel="noreferrer">
+          ⚡ เปิดดูเว็บไซต์ Tanawat Work
+        </a>
       </div>
     </div>
   </section>
+</Project>
 
-  <!-- Painted Figures -->
-  <section id="figures" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6 order-lg-2">
-        <figure class="frame">
-          <img
-            src={url("/img/project/tanawatwork/painted.jpg")}
-            alt="หน้า Painted Figures"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-      <div class="col-12 col-lg-6 order-lg-1">
-        <h3 class="h4 mb-2">เพนต์ฟิกเกอร์</h3>
-        <p class="mb-2">
-          งานเพนต์โมเดลที่ได้แรงบันดาลใจจาก Warhammer จัดวางในกรอบกริดเดียวกับทั้งเว็บไซต์
-          มีชิปสลับหมวดย่อย เช่น Necron, Space Marine, Tyranids เพื่อค้นหางานได้เร็ว
-        </p>
-        <ul class="check">
-          <li>กรอบและสไตล์คงที่ สร้างความต่อเนื่องทั้งไซต์</li>
-          <li>ชิปหมวดช่วยนำทางเชิงคอนเทนต์</li>
-          <li>ภาพใหญ่ เน้นรายละเอียดของชิ้นงาน</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+<style is:global>
+  /* ===== Blocks ===== */
+  .case-block { padding: 3rem 0; display: grid; gap: 1rem; }
+  .case-head  { font-size: 2rem; font-weight: 800; margin: 0 0 .6rem; }
+  .band-soft  { background: var(--bg-soft,#f5f7f3); border-radius: 16px; padding: 3rem; }
+  .bullets    { margin:.35rem 0 0; padding-left: 1.1rem; }
+  .bullets li { margin:.25rem 0; }
 
-  <!-- CTA ปิดท้าย -->
-  <section class="container py-4">
-    <div class="cta">
-      <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
-      <a href={url("/projects")} class="btn-ghost">กลับไปหน้า Projects</a>
-    </div>
-  </section>
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
 
-  <script>
-    // อัปเดตสถานะปุ่มเมนูย่อยตามการเลื่อน
-    document.addEventListener("DOMContentLoaded", () => {
-      const pills = document.querySelectorAll(".section-nav .pill");
-      const ids   = ["#overview","#index","#artworks","#motion","#figures"]
-        .map(id => document.querySelector(id))
-        .filter(Boolean);
+  /* Lightweight media (ลดขนาดและจัดกึ่งกลาง) */
+  .media.sm :global(.frame),
+  .media.sm :where(img,video){
+    max-width: 720px; width: 100%; margin-inline:auto;
+    border-radius: 14px; overflow: hidden;
+  }
+  @media (max-width:600px){
+    .media.sm :global(.frame),
+    .media.sm :where(img,video){ max-width: 540px; }
+  }
 
-      const onScroll = () => {
-        const y = window.scrollY + 120;
-        let active = 0;
-        ids.forEach((sec, i) => { if (sec.offsetTop <= y) active = i; });
-        pills.forEach(p => p.classList.remove("active"));
-        if (pills[active]) pills[active].classList.add("active");
-      };
-
-      document.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-    });
-  </script>
-
-  <style>
-    /* เมนูย่อยแบบ Pill */
-    .section-nav {
-      position: sticky;
-      top: 72px;
-      z-index: 5;
-      display: flex;
-      gap: .5rem;
-      margin: 0 auto 1rem;
-      padding: .35rem;
-      width: min(100%, 980px);
-      background: #f6f7f7;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-    .section-nav .pill {
-      text-decoration: none;
-      color: #333;
-      padding: .45rem 1rem;
-      border-radius: 999px;
-      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
-      white-space: nowrap;
-    }
-    .section-nav .pill.active {
-      background: #0f6657;
-      color: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,.15);
-    }
-
-    /* กรอบรูป */
-    .frame {
-      margin: 0;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(0,0,0,.12);
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
-      background: #0e0e0e;
-    }
-    .frame img { display:block; width:100%; height:auto; }
-
-    /* --- Meta key/value layout --- */
-    .meta{
-    display: grid;
-    grid-template-columns: 92px minmax(0, 1fr); /* label | value */
-    column-gap: 12px;
-    row-gap: .5rem;
-    font-size: .95rem;
-    }
-
-    /* Let each <div> hand its children directly to the grid */
-    .meta > div{ display: contents; }
-
-    .meta .k{
-    grid-column: 1;
-    color: #666;
-    font-weight: 600;
-    line-height: 1.55;
-    }
-
-    .meta .v{
-    grid-column: 2;
-    color: #111;
-    line-height: 1.55;
-    word-break: break-word;   /* safety for long URLs/words */
-    }
-
-    /* Tighter label column on small screens */
-    @media (max-width: 480px){
-    .meta{ grid-template-columns: 80px minmax(0,1fr); }
-    }
-
-    /* รายการเช็ค */
-    .check { padding-left: 1.1rem; margin: .35rem 0 0; }
-    .check li { margin:.2rem 0; }
-
-    /* ปุ่ม */
-    .btn-cta, .btn-ghost {
-      display:inline-block;
-      border-radius:999px;
-      padding:.6rem 1.2rem;
-      font-weight:600;
-      text-decoration:none;
-      transition:transform .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
-    }
-    .btn-cta {
-      background:#0f6657; color:#fff; border:1px solid #0f6657;
-      box-shadow:0 4px 12px rgba(0,0,0,.15);
-    }
-    .btn-cta:hover { transform:translateY(-1px); }
-    .btn-ghost {
-      background:#fff; color:#222; border:1px solid rgba(0,0,0,.12);
-    }
-    .cta { display:flex; gap:.6rem; justify-content:center; }
-
-    @media (max-width: 575.98px) {
-      .section-nav { top: 60px; }
-    }
-  </style>
-</Main>
+  /* CTA */
+  .deliver{
+    margin:1.1rem 0 0;
+    display:flex; flex-wrap:wrap; gap:.65rem; justify-content:center;
+  }
+  .cta{
+    display:inline-block; padding:.7rem 1.1rem; border-radius:999px;
+    font-weight:800; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+  }
+  .cta.big{ background:#00d38a; color:#0b0f0d; border:1px solid rgba(0,0,0,.06); }
+  .cta.big:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,211,138,.25); }
+</style>

@@ -1,211 +1,167 @@
 ---
-import Main from '../layouts/Main.astro';
-import Card from '../components/Card.astro';
+import Main from "../layouts/Main.astro";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import GlassCard from "../components/GlassCard.astro";
+import Band from "../components/Band.astro";
 
-const hero = {
-  head: "Projects",
-  description: "Explore my Website that I created myself."
-};
-
-const filters = [
-  { key: "all", label: "All" },
-  { key: "coding", label: "Coding" },
-  { key: "ux/ui-design", label: "UX/UI Design" },
-];
-
-const items = [
-  {
-    title: "The Memories Website",
-    image: "/img/project/thememories.jpg",
-    category: "coding",
-    intro: "พอร์ตโฟลิโอเว็บไซต์แสดงผลงาน ที่มี concept เกี่ยวกับความทรงจำ พร้อมโทนสีส้มฟิลม์ววินเทจ โดยโปรเจคนี้ได้ถูกเขียนขึ้นมาโดยคนเดียวทั้งหมด",
-    href: "projects/the-memories"
-  },
-  {
-    title: "Tanawat Work Website",
-    image: "/img/project/tanawatwork.jpg",
-    category: ["coding", "ux/ui-design"],
-    intro: "พอร์ตโฟลิโอเว็บไซต์แสดงผลงาน ที่มี concept เกี่ยวกับ Warhammer เผ่า Necron โดยโปรเจคนี้ได้ถูกเขียนและออกแบบขึ้นมาโดยคนเดียวทั้งหมด",
-    href: "projects/tanawat-work"
-  },
+const projects = [
   {
     title: "Good Health",
-    image: "/img/project/goodhealth.jpg",
-    category: "ux/ui-design",
-    intro: " Project นี้ เป็นวิจัยเว็ปไซต์เกี่ยวกับการรวบรวมข้อมูลอาหารโดยเล็งไปให้ผู้ใช้ที่เป็นโรคเบาหวานที่ถูกทำขึ้นใน Figma",
-    href: "projects/goodhealth"
+    meta: "UX/UI • Health",
+    image: "/img/project/goodhealth/index.jpg",
+    href: "/projects/goodhealth",
+    intro: "วิจัย + ออกแบบ UX/UI สำหรับผู้ใช้ควบคุมน้ำตาล ต้นแบบบน Figma (Desktop/Mobile)",
+    tags: ["uxui"]
   },
   {
     title: "Mad Pizza",
+    meta: "UX/UI • Restaurant",
     image: "/img/project/madpizza.jpg",
-    category: "ux/ui-design",
-    intro: "Project นี้ เป็นการออแบบเมนูให้กับร้านพิซซ่า Mad Pizza ที่เน้นโทนสีแดงส้ม เพื่อให้เข้ากับบรรยากาศร้าน โดยโปรเจคนี้ได้ถูกทำขึ้นใน Figma",
-    href: "projects/madpizza"
+    href: "/projects/madpizza",
+    intro: "Digital iPad menu โทนแดงส้ม มาพร้อม micro-interactions ต้นแบบใน Figma",
+    tags: ["uxui","coding"]
   },
   {
-    title: "GBTP3D",
+    title: "GBPT3D",
+    meta: "Web App • Services",
     image: "/img/project/GBTP3D.jpg",
-    category: "ux/ui-design",
-    intro: "Project นี้ ผมได้เป็นส่วนร่วมในการออกแบบเว็บไซต์สำหรับบริการพิมพ์งาน 3 มิติ ที่เน้นโทนสีฟ้า-ขาว เพื่อให้ดูสะอาดตาและน่าเชื่อถือ โดยโปรเจคนี้ได้ถูกทำขึ้นใน Figma",
-    href: "projects/gbpt3d"
-  }
+    href: "/projects/gbpt3d",
+    intro: "คอนเซ็ปต์เว็บบริการพิมพ์ 3D โทนฟ้า-ขาว เน้นความน่าเชื่อถือและอ่านง่าย ออกแบบใน Figma",
+    tags: ["uxui"]
+  },
+  {
+    title: "Tanawat Work",
+    meta: "Portfolio • Mixed Media",
+    image: "/img/project/tanawatwork.jpg",
+    href: "/projects/tanawat-work",
+    intro: "พอร์ตโฟลิโอสไตล์ Necron (Warhammer 40k) ออกแบบ UX/UI และพัฒนา Astro เองทั้งหมด",
+    tags: ["uxui","coding"]
+  },
+  {
+    title: "The Memories",
+    meta: "Photography • Identity",
+    image: "/img/project/thememories.jpg",
+    href: "/projects/the-memories",
+    intro: "พอร์ตโฟลิโอภาพถ่าย โทนส้ม-ฟิล์มวินเทจ เล่าแนวคิดความทรงจำ",
+    tags: ["uxui"]
+  },
 ];
 ---
 
-<Main head={hero.head} description={hero.description}>
-  <section class="py-5">
-    <div class="container">
-      <!-- HEADER + FILTER PILLS -->
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
-        <h2 class="mb-2">Projects</h2>
+<Main head="Projects — THE.GALLERY" description="Selected works in a glossy, glass-framed grid.">
+  <Fragment slot="nav"><Nav /></Fragment>
 
-        <div class="pill-filter" id="projectFilterNav">
-          {filters.map((f, i) => (
-            <button
-              type="button"
-              class={`pill-btn ${i === 0 ? 'active' : ''}`}
-              data-filter={f.key}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+  <!-- Compact dark band (fixed height + white copy) -->
+ <Band
+  title="Projects"
+  lead="Explore my Website that I created myself."
+  variant="dark"
+  align="center"
+  height={180}
+  overlay={0.15}
+/>
+
+<section class="intro-text">
+  <div class="container-narrow">
+</section>
+
+  <section class="section section-tight">
+    <div class="container-narrow">
+      <!-- Category slider -->
+      <div class="filter-rail" role="tablist" aria-label="Filter projects">
+        <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">All</button>
+        <button class="chip" data-filter="uxui" role="tab" aria-selected="false">UX/UI Design</button>
+        <button class="chip" data-filter="coding" role="tab" aria-selected="false">Coding</button>
       </div>
 
-      <!-- ONE mobile-only button (global) -->
-      <div class="text-center mb-4">
-        <button id="toggleDescriptions" class="desc-btn" type="button">
-          View Description
-        </button>
-      </div>
-
-      <!-- GALLERY -->
-      <div class="row g-4" id="gallery">
-        {items.map((item) => (
-          <Card
-            title={item.title}
-            image={item.image}
-            category={item.category}
-            intro={item.intro}
-            href={item.href}
+      <div class="ggrid" id="projects-grid">
+        {projects.map(p => (
+          <GlassCard
+            href={p.href}
+            title={p.title}
+            meta={p.meta}
+            image={p.image}
+            intro={p.intro}
+            tags={p.tags}
+            ratio="16/9"
           />
         ))}
       </div>
     </div>
   </section>
 
-  <script>
-    // run ONLY in browser
-    window.addEventListener("DOMContentLoaded", () => {
-      const nav = document.getElementById("projectFilterNav");
-      const toggleBtn = document.getElementById("toggleDescriptions");
-      const cards = Array.from(document.querySelectorAll(".gallery-card"));
-
-      // -------- FILTER LOGIC --------
-      if (nav && cards.length) {
-        nav.addEventListener("click", (event) => {
-          const target = event.target;
-          if (!target || target.tagName !== "BUTTON") return;
-
-          // active UI
-          nav.querySelectorAll("button").forEach((btn) => btn.classList.remove("active"));
-          target.classList.add("active");
-
-          const filter = (target.dataset.filter || "all").toLowerCase();
-
-          cards.forEach((card) => {
-            const col = card.closest(".gallery-col");
-            if (!col) return;
-
-            // data-category may be: "coding" or "coding,ux/ui-design"
-            const raw = (card.dataset.category || "").toLowerCase();
-            const list = raw.split(",").map((x) => x.trim()).filter(Boolean);
-
-            const match = filter === "all" || list.includes(filter);
-            col.style.display = match ? "" : "none";
-          });
-        });
-      }
-
-      // -------- MOBILE "VIEW DESCRIPTION" (one button) --------
-      if (toggleBtn) {
-        // show/hide only if screen < 770
-        const applyVisibility = () => {
-          if (window.innerWidth <= 770) {
-            toggleBtn.style.display = "inline-block";
-          } else {
-            toggleBtn.style.display = "none";
-            // also reset cards on desktop
-            document.querySelectorAll(".card-figure.show-info").forEach((fig) => {
-              fig.classList.remove("show-info");
-            });
-            toggleBtn.classList.remove("active");
-            toggleBtn.textContent = "View Description";
-          }
-        };
-
-        applyVisibility();
-        window.addEventListener("resize", applyVisibility);
-
-        toggleBtn.addEventListener("click", () => {
-          const willShow = !toggleBtn.classList.contains("active");
-          toggleBtn.classList.toggle("active", willShow);
-          toggleBtn.textContent = willShow ? "Hide Description" : "View Description";
-
-          document.querySelectorAll(".card-figure").forEach((fig) => {
-            if (willShow) fig.classList.add("show-info");
-            else fig.classList.remove("show-info");
-          });
-        });
-      }
-    });
-  </script>
+  <Fragment slot="footer"><Footer /></Fragment>
 
   <style>
-    /* --- FILTER PILLS --- */
-    .pill-filter {
-      display: inline-flex;
-      gap: .35rem;
-      background: #f6f7f7;
-      border-radius: 999px;
-      padding: 0.25rem;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
-    }
-    .pill-btn {
-      border: none;
-      background: transparent;
-      color: #333;
-      font-weight: 500;
-      padding: 0.45rem 1.2rem;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-    }
-    .pill-btn.active {
-      background: #0f6657;
-      color: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,.15);
-    }
-    .pill-btn:hover:not(.active) {
-      background: rgba(0,0,0,.05);
-    }
+    /* tighten spacing under the compact hero */
+    .section-tight { padding-top: 1.25rem; }
 
-    /* --- MOBILE VIEW DESCRIPTION BTN --- */
-    .desc-btn {
-      background: #f5f5f5;
-      border: 1px solid rgba(0,0,0,0.1);
-      color: #333;
-      border-radius: 999px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 500;
-      transition: all 0.25s ease;
-      display: none; /* default hidden, JS will show < 770px */
+    .filter-rail{
+      display:flex; gap:.5rem; padding:.4rem; border-radius:999px;
+      background:var(--bg-soft,#eef1f4); border:1px solid var(--border-subtle,rgba(0,0,0,.06));
+      width:max-content; margin: 0 auto 1.1rem;
     }
-    .desc-btn.active {
-      background: #0f6657;
-      color: #fff;
-      border-color: #0f6657;
+    .chip{
+      appearance:none; border:none; background:transparent; cursor:pointer;
+      padding:.5rem 1rem; border-radius:999px; font-weight:700;
+      color:var(--text-strong,#101418); opacity:.85; transition:background .18s, color .18s, transform .1s, opacity .18s;
     }
+    .chip:hover{ transform:translateY(-1px); opacity:1; }
+    .chip.is-active{ background: var(--accent,#0f6657); color:#fff; opacity:1; }
+
+    .ggrid{
+      --cols:3;
+      display:grid; gap:1.1rem;
+      grid-template-columns:repeat(var(--cols), minmax(0,1fr));
+    }
+    @media (max-width:1000px){ .ggrid{ --cols:2; } }
+    @media (max-width:640px){ .ggrid{ --cols:1; } }
   </style>
+
+  <!-- Behavior: filter + tap-to-open + desktop hover safety -->
+  <script is:inline>
+    (() => {
+      const grid  = document.getElementById('projects-grid');
+      const chips = Array.from(document.querySelectorAll('.filter-rail .chip'));
+      const cards = Array.from(grid.querySelectorAll('.gcard'));
+
+      const apply = (key) => {
+        cards.forEach(c => {
+          const tags = (c.dataset.tags || "").split(',').filter(Boolean);
+          const hit = key === 'all' || tags.includes(key);
+          c.style.display = hit ? '' : 'none';
+        });
+      };
+
+      chips.forEach(btn => {
+        btn.addEventListener('click', () => {
+          chips.forEach(b => {
+            const active = b === btn;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-selected', active ? 'true' : 'false');
+          });
+          apply(btn.dataset.filter);
+        });
+      });
+
+      // Touch-friendly: tap to open glass panel, second tap navigates
+      grid.addEventListener('click', (e) => {
+        const a = e.target.closest('.gcard');
+        if (!a) return;
+        if (!a.classList.contains('is-open')) {
+          e.preventDefault();
+          Array.from(grid.querySelectorAll('.gcard.is-open')).forEach(x => x.classList.remove('is-open'));
+          a.classList.add('is-open');
+          setTimeout(() => a.classList.remove('is-open'), 4000);
+        }
+      });
+
+      // Desktop hover safety
+      cards.forEach(a => {
+        a.addEventListener('pointerenter', () => a.classList.add('is-open'));
+        a.addEventListener('pointerleave', () => a.classList.remove('is-open'));
+      });
+    })();
+  </script>
 </Main>

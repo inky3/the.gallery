@@ -1,311 +1,154 @@
 ---
-import Main from "../../layouts/Main.astro";
+import Project from "../../layouts/Project.astro";
+import CaseMedia from "../../components/CaseMedia.astro";
 
-/** Meta */
-const hero = {
-  head: "The Memories",
-  description:
-    "เว็บไซต์พอร์ตโฟลิโอที่เจ้าของงานออกแบบเอง โดยได้แรงบันดาลใจจาก The.Gallery และส่งแบบให้ผมพัฒนาเป็นเว็บไซต์จริงด้วย Astro หน้านี้สรุปแนวคิด เลย์เอาต์หลัก และอธิบายแต่ละส่วนของเว็บไซต์"
+/* ===== Page Meta ===== */
+const page = {
+  title: "The Memories",
+  meta: "Portfolio • Front-End Build",
+  lead:
+    "เว็บไซต์พอร์ตโฟลิโอที่เจ้าของออกแบบเอง และอ้างอิงแนวคิดการจัดเลย์เอาต์จาก THE.GALLERY — โฟกัสอ่านง่าย โหลดไว และแยกหมวดชัดเจน",
+  cover: "/img/project/thememories/hero.jpg", // ใช้ภาพบาง เบา ถ้ายังไม่มีทิ้งไว้ได้
+  timeframe: "2024–2025",
+  role: ["Frontend Development", "Performance Tuning", "UI Assembly"],
+  stack: ["Astro", "CSS Utility (Grid/Flex/Radius/Shadow)", "Vanilla JS (เล็กน้อย)"],
+  links: [],
 };
 
-/** BASE_URL helper (GitHub Pages safe) */
-const base = import.meta.env.BASE_URL || "/";
-const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-
-/** Project links */
+/* ===== External Links ===== */
 const links = {
   live: "https://inky3.github.io/Memories-of-G",
-  repo: "#" // ใส่ลิงก์ Git repo ได้หากต้องการ
+  projectNote: "https://inky3.github.io/the.gallery/projects/the-memories",
 };
 ---
 
-<Main head={hero.head} description={hero.description}>
-  <!-- Sticky section pills -->
-  <nav class="section-nav d-none d-md-flex" aria-label="Section navigator">
-    <a href="#overview"  class="pill active">ภาพรวม</a>
-    <a href="#home"      class="pill">หน้า Home</a>
-    <a href="#portfolio" class="pill">หน้า Portfolio</a>
-    <a href="#about"     class="pill">หน้า About</a>
-  </nav>
-
-  <!-- Overview -->
-  <section id="overview" class="container py-4 pb-1">
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-lg-7">
-        <figure class="frame">
-          <img
-            src={url("/img/project/thememories/index.jpg")}
-            alt="หน้าหลักของ The Memories"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-
-      <div class="col-12 col-lg-5">
-        <h2 class="h4 mb-3">คอนเซ็ปต์และวัตถุประสงค์</h2>
-        <p class="lead-sm">
-          <strong>The Memories</strong> เป็นเว็บไซต์พอร์ตโฟลิโอที่เจ้าของงานออกแบบ UX/UI เอง
-          โดยได้แรงบันดาลใจจากงานออกแบบของ <em>The.Gallery</em> แล้วส่งดีไซน์มาให้ผมพัฒนาเป็น
-          <em>Finished Product</em> ที่ใช้งานจริงและดีพลอยบน GitHub Pages
-          โทนภาพรวมเน้นฟิล์ม/ความทรงจำ ใช้กรอบการ์ดโค้งมน ไล่เฉดส้ม—ทอง และการจัดวางที่อ่านง่ายบนเดสก์ท็อปและมือถือ
-        </p>
-
-        <div class="meta mt-3">
-          <div>
-            <span class="k">บทบาท</span>
-            <span class="v">
-              พัฒนา Front-End ด้วย Astro ตามไฟล์ดีไซน์ (ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเว็บไซต์/เนื้อหา)
-            </span>
-          </div>
-          <div>
-            <span class="k">เทคโนโลยี</span>
-            <span class="v">Astro, Bootstrap Utilities, CSS Grid/Flex, Asset Optimization</span>
-          </div>
-          <div>
-            <span class="k">ขอบเขต</span>
-            <span class="v">หน้า Home + Portfolio + About พร้อมองค์ประกอบการ์ดและภาพหน้าปก</span>
-          </div>
-          <div>
-            <span class="k">สถานะ</span>
-            <span class="v">ออนไลน์</span>
-          </div>
-        </div>
-
-        <div class="mt-4 d-flex gap-2 flex-wrap">
-          <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
-          {links.repo !== "#" && (
-            <a href={links.repo} target="_blank" rel="noreferrer" class="btn-ghost">ดูซอร์สโค้ด</a>
-          )}
-        </div>
-      </div>
-    </div>
+<Project
+  {...page}
+  heroTitleColor="#ffffff"
+  heroLeadColor="#ffffff"
+  heroAlign="center"
+  heroValign="center"
+  heroOverlay={0.12}
+  heroHeight={200}
+>
+  <!-- ===== Overview ===== -->
+  <section class="case-block">
+    <h2 class="case-head">ภาพรวมโครงการ (Overview)</h2>
+    <p>
+      <b>The Memories</b> คือเว็บไซต์พอร์ตโฟลิโอที่เจ้าของงานออกแบบเอง
+      โดยยึดแนวคิด “อ่านไว + ช่องว่างสูง” และขอยืมไอเดียการจัดหมวดและคอมโพเนนต์บางส่วนจาก
+      <b>THE.GALLERY</b> ของผม — ผมรับผิดชอบฝั่ง <b>Front-End</b> ทั้งหมด
+      (เซ็ต Astro, ประกอบ UI, ปรับภาพ และจูนความเร็ว)
+    </p>
+    <ul class="bullets">
+      <li>โครงสร้างหน้า: <b>Home</b> (ฮีโร่ + แนะนำ) → <b>Portfolio</b> (Grid 3→2→1) → <b>About</b></li>
+      <li>เป้าหมาย: เน้นเลย์เอาต์สะอาด, การ์ดอ่านชัด, ภาพโหลดไว, และตอบสนองมือถือ</li>
+      <li>แรงบันดาลใจ: ระบบส่วนหัว/ชิปหมวด/ระยะหายใจจาก THE.GALLERY (ปรับใช้ให้เข้ากับแบรนด์)</li>
+    </ul>
   </section>
 
-  <!-- Home -->
-  <section id="home" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6">
-        <figure class="frame">
-          <img
-            src={url("/img/project/thememories/index.jpg")}
-            alt="เลย์เอาต์หน้า Home ของ The Memories"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
+  <!-- ===== Information Architecture ===== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">สถาปัตยกรรมข้อมูล (IA) & โฟลว์</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="h3">ไหลการใช้งาน</h3>
+        <ul class="bullets">
+          <li>Landing → Hook ด้วยคำโปรย/ภาพ และแถบเลื่อนสู่คอนเทนต์เด่น</li>
+          <li>Portfolio → Grid การ์ดแบบ “ภาพนำ + Title + หมวด” คลิกเพื่อดูรายละเอียด</li>
+          <li>About → โครงเรื่องสั้น กระชับ จุดขาย/ทักษะที่ชัดเจน</li>
+        </ul>
       </div>
-      <div class="col-12 col-lg-6">
-        <h3 class="h4 mb-2">หน้า Home</h3>
-        <p class="mb-2">
-          โครงสร้างฮีโร่ขนาดใหญ่พร้อมองค์ประกอบฟิล์มให้บรรยากาศ “ความทรงจำ”
-          ใช้เฮดไลน์ตัวหนาและพื้นที่ขาว (white space) กว้างเพื่อความเด่นชัด
-          ด้านล่างเป็นการ์ดแนะนำงานหมวด UX/UI และ Graphic ที่จัดวางด้วยกริด 3 คอลัมน์บนเดสก์ท็อป
-          และสลับเป็น 1–2 คอลัมน์บนจอเล็กโดยอัตโนมัติ
-        </p>
-        <ul class="check">
-          <li>ภาพฮีโร่ไล่เฉดส้ม—ทอง สอดคล้องธีมความทรงจำ</li>
-          <li>การ์ดโค้งมนพร้อมป้ายชื่อ (pill) ตรงกลางล่าง เหมือนที่ใช้ใน The.Gallery</li>
-          <li>Responsive grid: 3 → 2 → 1 คอลัมน์</li>
+      <div>
+        <h3 class="h3">การตัดสินใจเชิง UX</h3>
+        <ul class="bullets">
+          <li>เน้น <b>Whitespace</b> สูงเพื่อลด Cognitive Load</li>
+          <li>ขนาดตัวอักษร/คอนทราสต์ผ่านเกณฑ์ WCAG (อ่านได้ในหลายสภาพแสง)</li>
+          <li>Interactive ขั้นต่ำ — รักษาความเร็วเป็นอันดับแรก</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- Portfolio -->
-  <section id="portfolio" class="container py-5">
-    <div class="row g-4 align-items-center">
-      <div class="col-12 col-lg-6 order-lg-2">
-        <figure class="frame">
-          <img
-            src={url("/img/project/thememories/port.jpg")}
-            alt="หน้า Portfolio ของ The Memories"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
-      <div class="col-12 col-lg-6 order-lg-1">
-        <h3 class="h4 mb-2">หน้า Portfolio</h3>
-        <p class="mb-2">
-          หน้ารวมผลงานที่ดึงสไตล์การ์ดและโอเวอร์เลย์จาก The.Gallery มาปรับใช้
-          เมื่อโฮเวอร์/แตะ จะแสดงชื่อผลงานและคำอธิบายย่อ พร้อมป้ายหมวดด้านซ้ายล่าง
-          ทั้งหมดถูกคุมสัดส่วนการ์ดเดียวกันเพื่อให้กริดนิ่งและสแกนง่าย
-        </p>
-        <ul class="check">
-          <li>Overlay แสดง <em>Title + Description + Category Tag</em></li>
-          <li>สั่งงานแตะสองครั้งบนแท็บเล็ต/มือถือ: แตะครั้งแรกเพื่อดูคำอธิบาย แตะอีกครั้งเพื่อเข้าหน้างาน</li>
-          <li>คุมขนาดการ์ดคงที่ เพื่อความสอดคล้องด้านสายตา</li>
-        </ul>
-      </div>
+  <!-- ===== Visual System (Lightweight) ===== -->
+  <section class="case-block">
+    <h2 class="case-head">ระบบภาพ & ส่วนประกอบ (Visual System)</h2>
+    <ul class="bullets">
+      <li><b>Brand Motif:</b> ฟิล์มสีส้ม-ทอง (มาจากดีไซน์ของเจ้าของงาน)</li>
+      <li><b>Type & Grid:</b> Headline หนา/ใหญ่, กริด 3→2→1, รัศมีมุม/เงาเบา</li>
+      <li><b>ภาพ:</b> ลดขนาดและบีบอัด, Lazy-load เฉพาะส่วนที่จำเป็น</li>
+    </ul>
+
+    <!-- รูปตัวอย่างหนึ่งภาพ (ย่อขนาดและจัดกึ่งกลาง) -->
+    <div class="media sm">
+      <CaseMedia image="/img/project/thememories/index.jpg" caption="การ์ดผลงานแบบภาพนำ + Title + Tag" />
     </div>
   </section>
 
-  <!-- About -->
-  <section id="about" class="container py-5">
-<div class="meta mt-3">
-  <div>
-    <span class="k">บทบาท</span>
-    <span class="v">
-      พัฒนาเว็บไซต์ Front-End ด้วย Astro ตามไฟล์ดีไซน์ที่เจ้าของเว็บไซต์ออกแบบเอง
-      (ผมเป็นผู้พัฒนา ไม่ใช่เจ้าของเว็บไซต์หรือเนื้อหา)
-      โดยเน้นความถูกต้องของการจัดวาง องค์ประกอบ และการตอบสนองในทุกขนาดหน้าจอ
-    </span>
-  </div>
-  <div>
-    <span class="k">เทคโนโลยี</span>
-    <span class="v">
-      Astro, Bootstrap Utilities, CSS Grid/Flex, Asset Optimization และเทคนิคการจัดโครงสร้างคอนเทนต์ให้โหลดเร็ว
-    </span>
-  </div>
-  <div>
-    <span class="k">ขอบเขต</span>
-    <span class="v">
-      พัฒนาและเชื่อมต่อหน้า Home, Portfolio และ About ให้สมบูรณ์
-      ครอบคลุมองค์ประกอบการ์ด ภาพหน้าปก และระบบนำทางแบบ Responsive
-    </span>
-  </div>
-  <div>
-    <span class="k">หน้าปก</span>
-    <span class="v">
-      ใช้ภาพฟิล์มสีส้มเป็นธีมหลัก แสดงอัตลักษณ์ “ความทรงจำ” ของโปรเจกต์
-      พร้อมเลย์เอาต์เรียบง่ายในโทนอบอุ่น
-    </span>
-  </div>
-  <div>
-    <span class="k">สถานะ</span>
-    <span class="v">ออนไลน์</span>
-  </div>
-</div>
-
+  <!-- ===== Performance & Accessibility ===== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">ประสิทธิภาพ & การเข้าถึง (Perf & A11y)</h2>
+    <ul class="bullets">
+      <li>Astro ลด JavaScript ฝั่งไคลเอนต์ — โหลดเร็วบนเครือข่ายมือถือ</li>
+      <li>รูปภาพกำหนดขนาด/สัดส่วนชัดเจน ป้องกัน Cumulative Layout Shift</li>
+      <li>โครงหลากอุปกรณ์: ปรับกริดอัตโนมัติ, ปุ่ม/โซนแตะ ≥ 44px</li>
+    </ul>
   </section>
 
-  <!-- CTA -->
-  <section class="container py-4">
-    <div class="cta">
-      <a href={links.live} target="_blank" rel="noreferrer" class="btn-cta">เปิดดูเว็บไซต์จริง</a>
-      <!-- internal link: ไม่เปิดแท็บใหม่ -->
-      <a href={url("/projects")} class="btn-ghost">กลับไปหน้า Projects</a>
+  <!-- ===== Lessons & Next ===== -->
+  <section class="case-block">
+    <h2 class="case-head">สิ่งที่ได้เรียนรู้ & ขั้นถัดไป</h2>
+    <ul class="bullets">
+      <li>การ “ยืมภาษา” จากเทมเพลตเดิม ช่วยเร็วขึ้น แต่ยังต้อง <b>ตีความใหม่</b> ให้เข้าบุคลิกเจ้าของงาน</li>
+      <li>คอนเทนต์ที่ต่างขนาดกันมาก ต้องมี <b>การ์ดมาตรฐานเดียว</b> เพื่อให้กริดนิ่ง</li>
+      <li>ถัดไป: เพิ่มหน้ารายละเอียดผลงาน (Case Detail) และสคริปต์แปลงรูปอัตโนมัติ</li>
+    </ul>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="section">
+    <div class="container-narrow">
+      <div class="deliver">
+        <a class="cta big" href={links.live} target="_blank" rel="noreferrer">🚀 เปิดดูเว็บไซต์ The Memories</a>
+      </div>
     </div>
   </section>
+</Project>
 
-  <script>
-    // Keep pills in sync with scroll position
-    document.addEventListener("DOMContentLoaded", () => {
-      const pills = document.querySelectorAll(".section-nav .pill");
-      const secs  = ["#overview","#home","#portfolio","#about"]
-        .map((s) => document.querySelector(s))
-        .filter(Boolean);
+<style is:global>
+  /* ===== Blocks ===== */
+  .case-block { padding: 3rem 0; display: grid; gap: 1rem; }
+  .case-head  { font-size: 2rem; font-weight: 800; margin: 0 0 .6rem; }
+  .band-soft  { background: var(--bg-soft,#f5f7f3); border-radius: 16px; padding: 3rem; }
+  .bullets    { margin:.35rem 0 0; padding-left: 1.1rem; }
+  .bullets li { margin:.25rem 0; }
 
-      const onScroll = () => {
-        const y = window.scrollY + 120;
-        let active = 0;
-        secs.forEach((sec, i) => { if (sec.offsetTop <= y) active = i; });
-        pills.forEach((p) => p.classList.remove("active"));
-        if (pills[active]) pills[active].classList.add("active");
-      };
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
 
-      document.addEventListener("scroll", onScroll, { passive: true });
-      onScroll();
-    });
-  </script>
+  /* Lightweight media figure */
+  .media.sm :global(.frame),
+  .media.sm :where(img,video){
+    max-width: 720px; width: 100%; margin-inline:auto;
+    border-radius: 14px; overflow: hidden;
+  }
+  @media (max-width:600px){
+    .media.sm :global(.frame),
+    .media.sm :where(img,video){ max-width: 540px; }
+  }
 
-  <style>
-    /* Sticky pills */
-    .section-nav {
-      position: sticky;
-      top: 72px;
-      z-index: 5;
-      display: flex;
-      gap: .5rem;
-      margin: 0 auto 1rem;
-      padding: .35rem;
-      width: min(100%, 980px);
-      background: #f6f7f7;
-      border-radius: 999px;
-      border: 1px solid rgba(0,0,0,.06);
-      box-shadow: 0 2px 8px rgba(0,0,0,.06);
-    }
-    .section-nav .pill {
-      text-decoration: none;
-      color: #333;
-      padding: .45rem 1rem;
-      border-radius: 999px;
-      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
-      white-space: nowrap;
-    }
-    .section-nav .pill.active {
-      background: #0f6657;
-      color: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,.15);
-    }
-
-    /* Frames */
-    .frame {
-      margin: 0;
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(0,0,0,.12);
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
-      background: #0e0e0e;
-    }
-    .frame img { display:block; width:100%; height:auto; }
-
-    .meta {
-      display: grid;
-      row-gap: .45rem;
-      font-size: .95rem;
-    }
-
-    .meta div {
-      display: flex;
-      align-items: flex-start;
-    }
-
-    .meta .k {
-      display: inline-block;
-      min-width: 90px; /* กำหนดความกว้างคงที่ของหัวข้อ */
-      color: #666;
-      font-weight: 600;
-      line-height: 1.6;
-      flex-shrink: 0;
-    }
-
-    .meta .v {
-      flex: 1;
-      color: #111;
-      line-height: 1.6;
-      text-align: justify; /* ทำให้บรรทัดตกเต็มระยะเหมือนเอกสาร */
-      text-justify: inter-word;
-      word-break: break-word;
-    }
-
-
-    /* Bullets */
-    .check { padding-left: 1.1rem; margin: .4rem 0 0; }
-    .check li { margin:.22rem 0; }
-
-    /* CTAs */
-    .btn-cta, .btn-ghost {
-      display:inline-block;
-      border-radius:999px;
-      padding:.6rem 1.2rem;
-      font-weight:600;
-      text-decoration:none;
-      transition:transform .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
-    }
-    .btn-cta {
-      background:#0f6657; color:#fff; border:1px solid #0f6657;
-      box-shadow:0 4px 12px rgba(0,0,0,.15);
-    }
-    .btn-cta:hover { transform:translateY(-1px); }
-    .btn-ghost {
-      background:#fff; color:#222; border:1px solid rgba(0,0,0,.12);
-    }
-    .cta { display:flex; gap:.6rem; justify-content:center; }
-
-    @media (max-width: 575.98px) {
-      .section-nav { top: 60px; }
-    }
-  </style>
-</Main>
+  /* CTA buttons */
+  .deliver{
+    margin:1.1rem 0 0;
+    display:flex; flex-wrap:wrap; gap:.65rem; justify-content:center;
+  }
+  .cta{
+    display:inline-block; padding:.7rem 1.1rem; border-radius:999px;
+    font-weight:800; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+  }
+  .cta.big{   background:#111; color:#fff; border:1px solid rgba(0,0,0,.06); }
+  .cta.big:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(0,0,0,.20); }
+  .cta.ghost{ background:#fff; color:#111; border:1px solid rgba(0,0,0,.12); }
+  .cta.ghost:hover{ transform:translateY(-2px); box-shadow:0 10px 18px rgba(0,0,0,.12); }
+</style>

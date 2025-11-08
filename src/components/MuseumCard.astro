@@ -1,0 +1,46 @@
+---
+/**
+ * MuseumCard — quiet, gallery-style project card.
+ * Props:
+ *  - href: string
+ *  - title: string
+ *  - meta?: string   // e.g., "UX/UI • Health"
+ *  - image: string   // /img/project/...
+ *  - ratio?: string  // CSS aspect-ratio, default "16/9"
+ */
+const { href = "#", title = "", meta = "", image = "", ratio = "16/9" } = Astro.props;
+
+const base = import.meta.env.BASE_URL || "/";
+const resolve = (p="") => /^https?:\/\//i.test(p) ? p : `${base}${p.replace(/^\/+/, "")}`;
+---
+<a class="museum-card" href={resolve(href)} aria-label={`Open ${title}`}>
+  <div class="museum-card__frame" style={`aspect-ratio:${ratio}`}>
+    <img src={resolve(image)} alt="" loading="lazy" decoding="async" />
+  </div>
+  <div class="museum-card__meta">
+    {meta && <p class="k">{meta}</p>}
+    <h3 class="t">{title}</h3>
+  </div>
+</a>
+
+<style>
+.museum-card {
+  display:block; background:var(--bg-elev); border:1px solid var(--border-subtle);
+  border-radius:16px; overflow:hidden; text-decoration:none;
+  box-shadow:var(--shadow-soft); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.museum-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:rgba(0,0,0,.08); }
+
+.museum-card__frame{
+  background:#0b0b0b; position:relative; overflow:hidden; border-bottom:1px solid var(--border-subtle);
+}
+.museum-card__frame img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .35s ease, opacity .35s ease;
+}
+.museum-card:hover .museum-card__frame img{ transform:scale(1.03); }
+
+.museum-card__meta{ padding:1rem 1.1rem 1.25rem; }
+.museum-card__meta .k{ margin:0 0 .25rem; font-size:.9rem; color:var(--text-muted); }
+.museum-card__meta .t{ margin:0; font-size:1.05rem; font-weight:700; color:var(--text-strong); }
+</style>

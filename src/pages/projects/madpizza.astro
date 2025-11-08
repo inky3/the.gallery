@@ -1,195 +1,207 @@
 ---
-import Main from "../../layouts/Main.astro";
+import Project from "../../layouts/Project.astro";
+import CaseMedia from "../../components/CaseMedia.astro";
 
-/** Meta */
-const hero = {
-  head: "Mad Pizza — Digital Menu (iPad)",
-  description:
-    "โปรเจกต์ออกแบบเมนูดิจิทัลบน iPad สำหรับร้าน MAD PIZZA ที่สร้างบน Figma เท่านั้น (ยังไม่พัฒนาเว็บจริง) โฟกัส UX/UI สำหรับการใช้งานหน้าร้าน: อ่านง่าย แตะง่าย โหลดเบา และสอดคล้องอัตลักษณ์สีแดง–ส้มของแบรนด์"
+/* ===== Page Meta ===== */
+const page = {
+  title: "Mad Pizza",
+  meta: "UX/UI • iPad Menu",
+  lead:
+    "เมนูพิซซ่าที่เลือกง่าย เห็นชัดในหนึ่งมอง—อร่อย สนุก อบอุ่น สไตล์ Mad Pizza • เลือกรสที่ใช่ ในอารมณ์ที่เป็นคุณ",
+  cover: "/img/project/madpizza/hero.jpg", // ← ถ้าไม่มี ให้ใช้ /img/project/madpizza.jpg
+  timeframe: "2024–2025",
+  role: ["UX/UI Design", "Prototype Architecture"],
+  stack: ["Figma Prototype", "Design Tokens", "Component Variants"],
+  links: [],
 };
 
-/** Path Helper (for GitHub Pages) */
-const base = import.meta.env.BASE_URL || "/";
-const url = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
-
-/** Links */
+/* ===== External Links (live assets) ===== */
 const links = {
-  prototype:
+  figma:
     "https://www.figma.com/proto/XArrul0wbneI0hyZP4mntO/Madpizza?page-id=0%3A1&node-id=1-5&p=f&viewport=210%2C143%2C0.17&t=1VNQwdh78BC66g6O-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1%3A5",
 };
 ---
 
-<Main head={hero.head} description={hero.description}>
-  <!-- Overview Section -->
-  <section id="overview" class="container py-4 pb-1">
-    <div class="row g-4 align-items-start">
-      <div class="col-12 col-lg-7">
-        <figure class="frame">
-          <img
-            src={url("/img/project/madpizza.jpg")}
-            alt="หน้าเมนู MAD PIZZA"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-      </div>
+<Project
+  {...page}
+  heroTitleColor="#ffffff"
+  heroLeadColor="#ffffff"
+  heroAlign="center"
+  heroValign="center"
+  heroOverlay={0.18}
+  heroHeight={260}
+>
 
-      <div class="col-12 col-lg-5">
-        <h2 class="h4 mb-3">ภาพรวมโปรเจกต์</h2>
-        <p class="lead-sm">
-          โปรเจกต์นี้เป็นการออกแบบ <strong>เมนูดิจิทัลสำหรับ iPad</strong> 
-          เพื่อใช้จริงในร้าน <em>MAD PIZZA</em> โดยมีคอนเซ็ปต์ “เมนูที่อบอุ่น สดใหม่ เหมือนพิซซ่าจากเตา”
-          เน้นดีไซน์ที่สะอาด กดง่าย และเหมาะกับการใช้งานหน้าร้านจริง
+  <!-- == Overview ======================================================= -->
+  <section class="case-block">
+    <h2 class="case-head">ภาพรวมโครงการ (Overview)</h2>
+    <p>
+      โปรเจ็กต์นี้ออกแบบ <b>iPad Menu</b> สำหรับร้าน Mad Pizza โดยยึดเอกลักษณ์สี <b>แดง–ครีม</b>
+      และบุคลิกแบรนด์ที่อบอุ่น สนุก และเป็นกันเอง เป้าหมายคือให้ลูกค้า <b>เลือกเมนูได้ไว</b>
+      <b>อ่านง่าย</b> และ <b>แตะสั่งได้แม่นยำ</b> ในสภาพแวดล้อมร้านที่มีแสงหลากหลาย
+    </p>
+    <ul class="bullets">
+      <li><b>สถานะ:</b> ไฟล์นี้เป็น <b>Figma Prototype</b> (กำลังพัฒนาเว็บไซต์จริง)</li>
+      <li><b>อุปกรณ์เป้าหมาย:</b> iPad จอ 10–12.9 นิ้ว (แนวนอนเป็นหลัก)</li>
+      <li><b>นโยบายภาพ:</b> ใช้ภาพเมนูขนาดใหญ่ นำสายตา และคงความคมชัด</li>
+    </ul>
+  </section>
+
+  <!-- == Brand Mood & Story ============================================ -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">อัตลักษณ์แบรนด์ (Brand Mood & Story)</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="h3">DNA ของ Mad Pizza</h3>
+        <ul class="bullets">
+          <li><b>Warm & Playful:</b> โทนแดงสด + ครีมเหมือนอบจากเตา</li>
+          <li><b>Friendly:</b> บรรยากาศชวนคุย ชวนแชร์เมนู</li>
+          <li><b>Bold Visuals:</b> ตัวอักษรอ่านชัด ตัดพื้นหลังแรง</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="h3">Mascot</h3>
+        <p class="muted">
+          ยังไม่มีไฟล์เวกเตอร์—ในต้นแบบใช้เป็นองค์ประกอบเชิงบุคลิก (พื้นที่ว่าง + ไอคอน placeholder)
+          เพื่อคง character โดยไม่ผูกกับไฟล์ภาพความละเอียดสูง
         </p>
-
-        <div class="meta mt-3">
-          <div>
-            <span class="k">บทบาท</span>
-            <span class="v">
-              ออกแบบ UX/UI และทำ Prototype บน Figma ครบทั้งเลย์เอาต์, ดีไซน์โทน, Micro-interaction, และสเปกส่งต่อทีมพัฒนา (Design Handoff)
-            </span>
-          </div>
-
-          <div>
-            <span class="k">เทคโนโลยี</span>
-            <span class="v">
-              Figma (Auto-Layout, Variants/Components, Design Tokens, Prototyping, Interaction Map)
-            </span>
-          </div>
-
-          <div>
-            <span class="k">ขอบเขต</span>
-            <span class="v">
-              โครงเมนูสำหรับ iPad: Hero/Brand, แถบหมวด, การ์ดเมนู, ราคา/ป้ายโปร, สถานะสั่งซื้อ, และแนวทาง Responsive สำหรับ Tablet แนวตั้ง/แนวนอน
-            </span>
-          </div>
-
-          <div>
-            <span class="k">สถานะ</span>
-            <span class="v">Prototype (Figma)</span>
-          </div>
-        </div>
-
-        <div class="mt-4 d-flex gap-2 flex-wrap">
-          <a href={links.prototype} target="_blank" rel="noreferrer" class="btn-cta">
-            ดู Figma Prototype
-          </a>
-          <a href={url("/projects")} class="btn-ghost">กลับไป Projects</a>
-        </div>
       </div>
     </div>
   </section>
 
-  <!-- Menu Showcase -->
-  <section id="menu" class="container py-5">
-    <h3 class="h5 mb-3">ตัวอย่างการ์ดเมนู (Spec สำหรับ Dev – อ้างอิงจาก Figma)</h3>
-    <div class="row g-4">
-      <div class="col-12 col-md-4">
-        <div class="menu-card">
-          <img src={url("/img/project/madpizza/truffella.jpg")} alt="Truffella" />
-          <div class="info">
-            <div class="name">TRUFFELLA</div>
-            <div class="price">340.-</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <div class="menu-card">
-          <img src={url("/img/project/madpizza/lamb-bizkit.jpg")} alt="Lamb Bizkit" />
-          <div class="info">
-            <div class="name">LAMB BIZKIT</div>
-            <div class="price">370.-</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <div class="menu-card">
-          <img src={url("/img/project/madpizza/maddy-mighty-meaty.jpg")} alt="Maddy Mighty Meaty" />
-          <div class="info">
-            <div class="name">MADDY MIGHTY MEATY</div>
-            <div class="price">395.-</div>
-          </div>
-        </div>
+  <!-- == Users & Context =============================================== -->
+  <section class="case-block">
+    <h2 class="case-head">ผู้ใช้และบริบท (Users & Context)</h2>
+    <ul class="bullets">
+      <li>ลูกค้าหน้าร้าน หยิบ iPad เพื่อสั่งอาหาร <b>ต้องเห็นหมวดและรายการเด่นในครั้งแรกที่มอง</b></li>
+      <li>การใช้งานมือเดียว/ถือด้วยมือซ้าย–ขวา → ปุ่มหลักอยู่ในโซนแตะง่าย</li>
+      <li>แสงร้านหลากหลาย → คอนทราสต์สูง, สีแดง–ครีมปรับความสว่างให้ไม่แสบตา</li>
+    </ul>
+  </section>
+
+  <!-- == Design Goals =================================================== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">เป้าหมายการออกแบบ (Design Goals)</h2>
+    <ol class="goals">
+      <li><b>ภาพนำ ข้อความรอง:</b> Card เน้นภาพ ข้อความสั้น และราคาเห็นชัด</li>
+      <li><b>แตะง่าย:</b> ปุ่มเพิ่มรายการ/ตัวเลือก ≥ 44px และมีพื้นที่กันพลาด</li>
+      <li><b>หมวดเด่น:</b> Category bar เลื่อนสบาย + สถานะ active ชัด</li>
+      <li><b>อ่านไว:</b> ฟอนต์หนา/ขนาดใหญ่, แยกข้อมูลหลัก–รองอย่างเป็นระบบ</li>
+    </ol>
+  </section>
+
+  <!-- == Visual System ================================================== -->
+  <section class="case-block">
+    <h2 class="case-head">ระบบภาพและการจัดวาง (Visual System)</h2>
+    <ul class="bullets">
+      <li><b>สี:</b> Red #C02820 / Cream #FFF4E6 / Ink #111 — contrast ≥ WCAG AA</li>
+      <li><b>Type Scale:</b> H1 28–32, H2 22–24, Body 16–18 (iPad)</li>
+      <li><b>Spacing:</b> 8pt system, gutter กว้างเพื่อกันพลาดขณะเลื่อน</li>
+    </ul>
+    <div class="media-grid">
+      <!-- ↓ Reduced, centered figure -->
+      <div class="media small">
+        <CaseMedia image="/img/project/madpizza.jpg" caption="บัตรเมนูตัวอย่างโทนแดง–ครีม" />
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="container py-4">
-    <div class="cta">
-      <a href={links.prototype} target="_blank" rel="noreferrer" class="btn-cta">เปิด Figma Prototype</a>
-      <a href={url("/projects")} class="btn-ghost">ย้อนกลับ Projects</a>
+  <!-- == UI Components ================================================== -->
+  <section class="case-block band-soft">
+    <h2 class="case-head">องค์ประกอบหลัก (UI Components)</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="h3">Category Bar</h3>
+        <p>สไลด์แนวนอน, ตัว active มีแถบเน้นและสีแดงหลัก, แตะซ้ำเลื่อนไปหัวรายการ</p>
+      </div>
+      <div>
+        <h3 class="h3">Menu Card</h3>
+        <p>ภาพเต็มกรอบ, ชื่อ–ราคาเด่น, ปุ่ม <b>เพิ่มลงตะกร้า</b> ชัด, มีสถานะแจ้งจำนวน</p>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <h3 class="h3">Item Modal</h3>
+        <p>ตัวเลือกไซซ์/หน้าพิซซ่า/ซอส เส้นทางเดียว ไม่วนซ้อน ลดภาระตัดสินใจ</p>
+      </div>
+      <div>
+        <h3 class="h3">Cart Drawer</h3>
+        <p>สรุปราคาแบบ step-by-step, ปุ่มชำระเงินทึบแดง, มีพื้นที่ error/notice ชัด</p>
+      </div>
     </div>
   </section>
 
-  <style>
-    /* Frame */
-    .frame {
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(0,0,0,.12);
-      box-shadow: 0 10px 24px rgba(0,0,0,.18);
-      background: #0e0e0e;
-    }
-    .frame img { display:block; width:100%; height:auto; }
+  <!-- == Deliverables: Bottom Button =================================== -->
+  <section class="section">
+    <div class="container-narrow">
+      <div class="deliver">
+        <a class="cta big" href={links.figma} target="_blank" rel="noreferrer">
+          🔴 เปิดดู Figma Prototype
+        </a>
+      </div>
+    </div>
+  </section>
 
-    /* Meta grid */
-    .meta { display:grid; row-gap:.45rem; font-size:.95rem; }
-    .meta div { display:flex; align-items:flex-start; }
-    .meta .k {
-      display:inline-block; min-width:90px; color:#666; font-weight:600; line-height:1.6; flex-shrink:0;
-    }
-    .meta .v {
-      flex:1; color:#111; line-height:1.6; text-align:justify; text-justify:inter-word; word-break:break-word;
-    }
+</Project>
 
-    /* Buttons */
-    .btn-cta, .btn-ghost {
-      display:inline-block; border-radius:999px; padding:.6rem 1.2rem; font-weight:600;
-      text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .2s ease, color .2s ease;
-    }
-    .btn-cta { background:#C02820; color:#fff; border:1px solid #C02820; box-shadow:0 4px 12px rgba(0,0,0,.15); }
-    .btn-cta:hover { transform:translateY(-1px); }
-    .btn-ghost { background:#fff; color:#222; border:1px solid rgba(0,0,0,.12); }
-    .cta { display:flex; gap:.6rem; justify-content:center; }
+<style is:global>
+/* ===== Block & Typo ===== */
+.case-block { padding: 3rem 0; display: grid; gap: 1rem; }
+.case-head  { font-size: 2rem; font-weight: 800; margin: 0 0 .6rem; }
+.band-soft  { background: var(--bg-soft,#f5f7f3); border-radius: 16px; padding: 3rem; }
+.bullets    { margin:.35rem 0 0; padding-left: 1.1rem; }
+.bullets li { margin:.25rem 0; }
+.goals { margin:.25rem 0 0 1.1rem; }
 
-    /* Menu cards */
-    .menu-card {
-      border-radius:16px;
-      border:1px solid rgba(0,0,0,.1);
-      background:#fff;
-      overflow:hidden;
-      box-shadow:0 6px 12px rgba(0,0,0,.08);
-      transition:transform .2s ease, box-shadow .2s ease;
-    }
-    .menu-card:hover {
-      transform:translateY(-3px);
-      box-shadow:0 10px 20px rgba(0,0,0,.12);
-    }
-    .menu-card img {
-      width:100%;
-      height:220px;
-      object-fit:cover;
-      background:#f3f3f3;
-    }
-    .menu-card .info {
-      padding:.8rem 1rem;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-    .menu-card .name {
-      font-weight:700;
-      color:#111;
-    }
-    .menu-card .price {
-      font-weight:600;
-      color:#C02820;
-    }
+/* ===== Layout ===== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 900px){ .two-col { grid-template-columns: 1fr; } }
 
-    @media (max-width: 575.98px) {
-      .menu-card img { height:180px; }
-      .meta .k { min-width:75px; }
-    }
-  </style>
-</Main>
+.media-grid {
+  --cols:1;
+  display:grid; gap:.9rem;
+  grid-template-columns:repeat(var(--cols),minmax(0,1fr));
+}
+
+/* ↓ Reduced & centered media size */
+.media.small :global(.frame),
+.media.small :where(img, video) {
+  max-width: 720px;         /* reduce overall size */
+  width: 100%;
+  margin-inline: auto;       /* center in grid */
+}
+@media (max-width: 600px){
+  .media.small :global(.frame),
+  .media.small :where(img, video) {
+    max-width: 540px;        /* smaller on phones */
+  }
+}
+
+/* ===== Phone mockups (if you add later) ===== */
+.phone.sm { max-width: 240px; margin-inline: auto; }
+.phone.sm :global(.frame){ border-radius: 22px; overflow:hidden; }
+
+/* ===== Deliverables CTA (bottom) ===== */
+.deliver{
+  margin: 1.25rem 0 0;
+  display: flex; flex-wrap: wrap; gap: .65rem;
+  justify-content: center;
+}
+.cta{
+  display:inline-block; padding:.7rem 1.1rem; border-radius:999px;
+  font-weight:800; text-decoration:none; transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+.cta.big{
+  background:#C02820; color:#fff; border:1px solid rgba(0,0,0,.05);
+}
+.cta.big:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px rgba(192,40,32,.25); }
+
+/* Optional dark band utility you can reuse across articles */
+.band-util-dark{
+  background:#0f1113; color:#fff;
+  padding:2.5rem 1.5rem; border-radius: 16px;
+}
+.band-util-dark h2, .band-util-dark .title { color:#fff; }
+.band-util-dark p { color:#fff; opacity:.95; }
+</style>

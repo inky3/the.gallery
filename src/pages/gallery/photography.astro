@@ -1,209 +1,243 @@
 ---
-import Main from '../../layouts/Main.astro';
-import Card from '../../components/Card.astro';
+import Main   from "../../layouts/Main.astro";
+import Nav    from "../../components/Nav.astro";
+import Footer from "../../components/Footer.astro";
+import Band   from "../../components/Band.astro";
+import Card   from "../../components/Card.astro";
 
+/* Meta */
 const hero = {
   head: "Photography",
-  description: "Product, travel, motorsport, daily shots."
+  description: "Product, travel, motorsport, and everyday captures.",
 };
 
-// filter pills (same style idea as index / projects)
+/* BASE-URL safe helpers (GitHub Pages) */
+const base = import.meta.env.BASE_URL || "/";
+const href = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const enc  = (p = "/") => href(p).replace(/ /g, "%20");
+
+/* Filter tabs */
 const filters = [
-  { key: "all", label: "All" },
-  { key: "single", label: "Single" },
+  { key: "all",        label: "All" },
+  { key: "single",     label: "Single" },
   { key: "collection", label: "Collection" },
 ];
 
-// photo items
+/* Data */
 const items = [
   {
     title: "Casa Lapin Coffee Bean",
-    image: "/img/photography/casa-lapin.jpg",
+    image: enc("/img/photography/casa-lapin.jpg"),
     category: "single",
     intro: "Packaged เมล็ดกาแฟ คาเฟ่ Casa Lapin โทนอุ่น แสงนุ่ม",
   },
   {
     title: "Porsche 956 Set",
-    image: "/img/photography/porsche956/IMG_9504.JPG",
+    image: enc("/img/photography/porsche956/IMG_9504.jpg"),
     category: "collection",
     intro: "ภาพ Collection ชุดรถแข่ง Le Mans Porsche 956",
-    href: "/the.gallery/gallery/photography/porsche956"
+    href: href("/gallery/photography/porsche956"),
   },
-  // example multi-category (optional — shows how to extend)
-  // {
-  //   title: "Studio Product + Track",
-  //   image: "/img/photography/sample.jpg",
-  //   category: ["product", "motorsport"],
-  //   intro: "Mixed session, studio + paddock.",
-  //   href: "#"
-  // }
 ];
 ---
 
 <Main head={hero.head} description={hero.description}>
-  <section class="py-5">
-    <div class="container">
-      <!-- HEADER -->
-      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
-        <div>
-          <h2 class="mb-1">Photography</h2>
-          <p class="text-muted mb-0">Filter by category</p>
-        </div>
+  <Fragment slot="nav"><Nav /></Fragment>
 
-        <!-- pill-like filter (desktop + mobile) -->
-        <div class="pill-filter" id="photoFilterNav">
+  <!-- Centered hero -->
+  <Band
+    title="Photography"
+    lead={hero.description}
+    variant="dark"
+    align="center"
+    valign="center"
+    height={220}
+    overlay={0.18}
+  />
+
+  <section class="wrap">
+    <div class="container-narrow">
+      <!-- Toolbar -->
+      <div class="toolbar" role="group" aria-label="Gallery toolbar">
+        <div id="filterNav" class="filters" role="tablist" aria-label="Filter photos">
           {filters.map((f, i) => (
             <button
               type="button"
-              class={`pill-btn ${i === 0 ? 'active' : ''}`}
+              class={`pill ${i === 0 ? "is-active" : ""}`}
               data-filter={f.key}
-            >
+              role="tab"
+              aria-selected={i === 0 ? "true" : "false"}>
               {f.label}
             </button>
           ))}
         </div>
 
-        <!-- ONE mobile-only button (like projects) -->
-        <button id="toggleDescriptions" class="desc-btn" type="button">
+        <!-- Mobile-only caption toggle -->
+        <button id="toggleDesc" class="toggle" type="button" aria-pressed="false">
           View Description
         </button>
       </div>
 
-      <!-- GALLERY -->
-      <div class="row g-4" id="gallery">
-        {items.map((item) => (
-          <Card
-            title={item.title}
-            image={item.image}
-            category={item.category}
-            intro={item.intro}
-            href={item.href}
-          />
+      <!-- Grid -->
+      <div id="grid" class="grid" aria-live="polite">
+        {items.map((it) => (
+          <article class="tile" data-category={it.category}>
+            <Card
+              title={it.title}
+              image={it.image}
+              href={it.href}
+              intro={it.intro}
+              type={it.category === "collection" ? "Collection" : "Single"} />
+          </article>
         ))}
       </div>
     </div>
   </section>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const nav = document.getElementById("photoFilterNav");
-      const cards = document.querySelectorAll(".gallery-card");
-      const toggleBtn = document.getElementById("toggleDescriptions");
+  <Fragment slot="footer"><Footer /></Fragment>
 
-      // ----- FILTER -----
-      if (nav) {
-        nav.addEventListener("click", (e) => {
-          const el = e.target;
-          if (!(el instanceof HTMLElement) || el.tagName !== "BUTTON") return;
+  <!-- Behavior: smooth filtering + mobile caption toggle -->
+  <script is:inline>
+    (() => {
+      const nav   = document.getElementById("filterNav");
+      const tiles = Array.from(document.querySelectorAll(".tile"));
+      const btn   = document.getElementById("toggleDesc");
 
-          // active state
-          nav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
-          el.classList.add("active");
+      if (!nav || !tiles.length) return;
 
-          const filter = (el.dataset.filter || "all").toLowerCase();
+      const DURATION = 240;
 
-          cards.forEach((card) => {
-            // card.dataset.category could be "product" or "product,motorsport"
-            const raw = (card.dataset.category || "").toLowerCase();
-            const parts = raw.split(",").map((p) => p.trim()).filter(Boolean);
-            const col = card.closest(".gallery-col");
-
-            const match =
-              filter === "all" ||
-              parts.includes(filter);
-
-            if (col) col.style.display = match ? "" : "none";
-          });
+      // Active pill styling + ARIA
+      function setActive(el){
+        nav.querySelectorAll(".pill").forEach(p => {
+          const on = p === el;
+          p.classList.toggle("is-active", on);
+          p.setAttribute("aria-selected", on ? "true" : "false");
         });
       }
 
-      // ----- MOBILE: single "View Description" -----
-      if (toggleBtn) {
-        const applyState = (on) => {
-          document.querySelectorAll(".card-figure").forEach((fig) => {
-            if (on) fig.classList.add("show-info");
-            else fig.classList.remove("show-info");
-          });
-        };
+      // Show/hide tiles with micro-animations
+      function filterTo(key){
+        const want = (key || "all").toLowerCase();
 
-        toggleBtn.addEventListener("click", () => {
-          const willShow = !toggleBtn.classList.contains("active");
-          toggleBtn.classList.toggle("active", willShow);
-          toggleBtn.textContent = willShow ? "Hide Description" : "View Description";
-          applyState(willShow);
-        });
+        tiles.forEach(t => {
+          const cat  = (t.dataset.category || "").toLowerCase();
+          const show = want === "all" || cat.split(",").includes(want);
 
-        // if desktop, just make sure it stays hidden
-        const checkWidth = () => {
-          if (window.innerWidth > 770) {
-            toggleBtn.classList.remove("active");
-            toggleBtn.style.display = "none";
-            applyState(false);
-          } else {
-            toggleBtn.style.display = "inline-flex";
+          if (show && t.classList.contains("is-hidden")){
+            t.style.display = "";
+            void t.offsetWidth; // reflow
+            t.classList.remove("is-hiding","is-hidden");
+            t.classList.add("is-showing");
+            setTimeout(() => t.classList.remove("is-showing"), DURATION);
+          } else if (!show && !t.classList.contains("is-hidden")){
+            t.classList.add("is-hiding");
+            setTimeout(() => {
+              t.classList.add("is-hidden");
+              t.classList.remove("is-hiding","is-showing");
+              t.style.display = "none";
+            }, DURATION);
           }
-        };
-        checkWidth();
-        window.addEventListener("resize", checkWidth);
+        });
       }
-    });
+
+      // Delegate clicks for filter pills
+      nav.addEventListener("click", e => {
+        const t = e.target;
+        if (!(t instanceof HTMLElement)) return;
+        const key = t.dataset.filter;
+        if (!key) return;
+        setActive(t);
+        filterTo(key);
+      });
+
+      // Mobile global “View Description” toggle
+      const figures = () => Array.from(document.querySelectorAll("[data-fig]"));
+
+      function setToggleState(on){
+        btn.classList.toggle("is-on", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        btn.textContent = on ? "Hide Description" : "View Description";
+        figures().forEach(f => f.classList.toggle("show-info", on));
+      }
+
+      function syncToggleVisibility(){
+        const onMobile = window.innerWidth <= 770;
+        btn.style.display = onMobile ? "inline-flex" : "none";
+        if (!onMobile) setToggleState(false);
+      }
+
+      btn.addEventListener("click", () => {
+        setToggleState(!btn.classList.contains("is-on"));
+      });
+
+      // Init
+      syncToggleVisibility();
+      window.addEventListener("resize", syncToggleVisibility);
+    })();
   </script>
 
   <style>
-    /* pill filter (same DNA as your projects page) */
-    .pill-filter {
-      display: inline-flex;
-      gap: .35rem;
-      background: #f6f7f7;
-      border-radius: 999px;
-      padding: 0.25rem;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
-      flex-wrap: wrap;
-    }
-    .pill-btn {
-      border: none;
-      background: transparent;
-      color: #333;
-      font-weight: 500;
-      padding: 0.45rem 1.2rem;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      white-space: nowrap;
-    }
-    .pill-btn.active {
-      background: #0f6657;
-      color: #fff;
-      box-shadow: 0 1px 3px rgba(0,0,0,.15);
-    }
-    .pill-btn:hover:not(.active) {
-      background: rgba(0,0,0,.04);
-    }
+    /* Page frame */
+    .wrap{ padding:1.25rem 0 3rem; }
+    .container-narrow{ max-width:1140px; margin:0 auto; padding:0 16px; }
 
-    /* mobile-only description toggle (ONE button) */
-    .desc-btn {
-      background: #f5f5f5;
-      border: 1px solid rgba(0,0,0,0.1);
-      color: #333;
-      border-radius: 999px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 500;
-      transition: all 0.25s ease;
-      display: none; /* hidden by default, shown < 770px */
+    /* Toolbar */
+    .toolbar{
+      display:flex; align-items:center; justify-content:center;
+      gap:.8rem; flex-wrap:wrap; margin:.75rem 0 1.15rem;
+      -webkit-tap-highlight-color:transparent;
     }
-    .desc-btn.active {
-      background: #0f6657;
-      color: #fff;
-      border-color: #0f6657;
+    .filters{
+      display:inline-flex; gap:.4rem; padding:.35rem; border-radius:999px;
+      background:#fff;
+      box-shadow:
+        0 1px 2px rgba(0,0,0,.06),
+        0 8px 24px rgba(16,20,24,.08),
+        inset 0 0 0 1px rgba(0,0,0,.06);
     }
+    .pill{
+      appearance:none; border:0; cursor:pointer; background:transparent;
+      padding:.52rem 1.05rem; border-radius:999px; font-weight:700; white-space:nowrap;
+      color:var(--text-strong,#101418);
+      transition:background .18s ease, color .18s ease, transform .12s ease, box-shadow .18s ease;
+    }
+    .pill:hover{ transform:translateY(-1px); }
+    .pill.is-active{ background:var(--accent,#0f6657); color:#fff; box-shadow:0 6px 16px rgba(15,102,87,.28); }
 
-    /* show only below 770px */
-    @media (max-width: 770px) {
-      .desc-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: .3rem;
-      }
+    /* Mobile-only toggle under filters */
+    .toggle{
+      display:none; padding:.52rem 1rem; border-radius:999px; font-weight:700;
+      border:1px solid rgba(0,0,0,.12); background:#fff; cursor:pointer;
+    }
+    .toggle.is-on{ background:var(--accent,#0f6657); color:#fff; border-color:transparent; }
+    @media (max-width:770px){ .toggle{ display:inline-flex; } }
+
+    /* Grid */
+    .grid{
+      --cols:2;
+      display:grid; gap:1.15rem;
+      grid-template-columns:repeat(var(--cols), minmax(0,1fr));
+      align-items:stretch;
+    }
+    @media (max-width:1000px){ .grid{ --cols:2; } }
+    @media (max-width:640px){  .grid{ --cols:1; } }
+
+    /* Filter transitions */
+    .tile{
+      width:100%;
+      transition:opacity .24s ease, transform .24s ease, filter .24s ease;
+      will-change:opacity,transform;
+    }
+    .tile.is-showing{ opacity:1; transform:translateY(0); filter:none; }
+    .tile.is-hiding{  opacity:0; transform:translateY(8px); filter:blur(.2px); }
+    .tile.is-hidden{  opacity:0; transform:translateY(8px); }
+
+    /* Safety */
+    .tile img{ max-width:100%; height:auto; display:block; }
+
+    @media (prefers-reduced-motion:reduce){
+      .tile,.pill,.toggle{ transition:none !important; }
     }
   </style>
 </Main>
