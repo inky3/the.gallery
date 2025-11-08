@@ -20,6 +20,40 @@ const current = (Astro.url.pathname.replace(/\/+$/, "") || "/");
 const isActive = (href) => current === (href === "/" ? "/" : href.replace(/\/+$/, ""));
 const isGalleryActive = current.startsWith("/gallery");
 ---
+
+<script is:inline>
+  (() => {
+    const dd = document.querySelector('[data-gallery-dd]');   // dropdown panel
+    const btn = document.querySelector('[data-gallery-btn]'); // the trigger
+
+    if (!dd || !btn) return;
+
+    const open = () => dd.classList.add('is-open');
+    const close = () => dd.classList.remove('is-open');
+    const toggle = () => dd.classList.toggle('is-open');
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggle();
+    });
+
+    // click-away to close
+    document.addEventListener('click', (e) => {
+      if (!dd.classList.contains('is-open')) return;
+      const t = e.target;
+      if (!(t instanceof Node)) return;
+      if (dd.contains(t) || btn.contains(t)) return; // inside → ignore
+      close();
+    });
+
+    // Esc to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
 <header class="nav nav--dark" role="banner">
   <div class="nav__wrap container-narrow">
     <a href="/" class="nav__brand">THE.GALLERY</a>
@@ -168,4 +202,7 @@ const isGalleryActive = current.startsWith("/gallery");
   padding: .45rem 0;
 }
 
+/* Ensure hidden state doesn’t reserve height */
+[data-gallery-dd]{ display:none; }
+[data-gallery-dd].is-open{ display:block; }
 </style>

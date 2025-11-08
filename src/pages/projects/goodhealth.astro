@@ -2,6 +2,11 @@
 import Project from "../../layouts/Project.astro";
 import CaseMedia from "../../components/CaseMedia.astro";
 
+/* BASE-URL safe helpers */
+const base = import.meta.env.BASE_URL || "/";
+const href = (p="/") => `${base}${String(p).replace(/^\/+/, "")}`;
+const enc  = (p="/") => href(p).replace(/ /g, "%20");
+
 const page = {
   title: "Good Health",
   meta: "UX/UI • Health",
@@ -11,6 +16,13 @@ const page = {
   timeframe: "2024",
   role: ["UX Research", "Information Architecture", "UI Design"],
   stack: ["Figma", "Design System", "Responsive UI"],
+};
+
+const page = {
+  title: "Good Health",
+  meta: "UX/UI • Health",
+  // …
+  cover: enc("/img/project/goodhealth/index.jpg"),
 };
 ---
 
