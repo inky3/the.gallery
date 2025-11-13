@@ -367,3 +367,16 @@ html, body { margin: 0; } /* kill any browser default white gap */
   grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
   margin:2rem 0 3rem;
 }
+
+.hero-band,
+.band-dark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertical center */
+  align-items: center;       /* horizontal center */
+  text-align: center;        /* ensure text lines center */
+  min-height: 200px;         /* adjust as needed */
+  background: #0f1113;       /* your dark theme */
+  color: #fff;
+  padding: 2rem 1rem;
+}

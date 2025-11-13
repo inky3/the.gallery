@@ -1,91 +1,81 @@
 ---
-export interface Props {
-  title?: string;
-  lead?: string;
-  variant?: "dark" | "light";
-  align?: "left" | "center" | "right";
-  bgImage?: string;
-  overlay?: number;            // 0..1
-  height?: number | string;    // e.g. 360, "48vh"
-}
+import { Image } from 'astro:assets';
 
+/**
+ * Band.astro – full-width band component for hero/introduction sections
+ * Props: { title, lead, align, valign, variant, height, overlay }
+ */
 const {
-  title = "",
-  lead = "",
-  variant = "dark",
-  align = "left",
-  bgImage = "",
-  overlay = 0.6,
-  height = 420,
-} = Astro.props as Props;
-
-// Safety: only render strings. Prevents <Band title /> from printing "true".
-const safeTitle = typeof title === "string" ? title : "";
-const safeLead  = typeof lead  === "string" ? lead  : "";
-
-const base = import.meta.env.BASE_URL || "/";
-const resolve = (p = "") => /^https?:\/\//i.test(p) ? p : `${base}${String(p).replace(/^\/+/, "")}`;
-const heroHeight = typeof height === "number" ? `${height}px` : String(height);
+  title = '',
+  lead = '',
+  align = 'center',
+  valign = 'center',
+  variant = 'light',
+  height = 220,
+  overlay = 0,
+  background = '',
+} = Astro.props;
 ---
 
 <section
-  class={`band ${variant === "dark" ? "band-dark" : "band-light"} align-${align}`}
-  style={`--hero-h:${heroHeight}; --hero-img:url('${resolve(bgImage)}'); --hero-overlay:${overlay};`}
+  class={`band ${variant ? `band-${variant}` : ''} align-${align} valign-${valign}`}
+  style={`min-height:${height}px;${background ? `background-image:url(${background});` : ''}`}
 >
-  <div class="band__bg"></div>
-  <div class="band__overlay"></div>
-
+  {overlay > 0 && <div class="band__overlay" style={`opacity:${overlay}`}></div>}
   <div class="band__inner">
-    {safeTitle && <h1 class="band__title">{safeTitle}</h1>}
-    {safeLead  && <p class="band__lead">{safeLead}</p>}
+    {title && <h1 class="band__title">{title}</h1>}
+    {lead && <p class="band__lead">{lead}</p>}
   </div>
 </section>
 
 <style>
-/* Shell */
-.band {
-  position: relative;
-  width: 100%;
-  min-height: var(--hero-h, 420px);
-  isolation: isolate;
-  overflow: hidden;
-}
+  .band {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: var(--bg-soft, #f6f7f8);
+    color: var(--text-strong, #101418);
+    text-align: center;
+  }
 
-/* Visual layers */
-.band__bg {
-  position: absolute; inset: 0;
-  background-image: var(--hero-img);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: -2;
-}
-.band__overlay {
-  position: absolute; inset: 0;
-  background: #000;
-  opacity: var(--hero-overlay, .60);
-  pointer-events: none;
-  z-index: -1;
-}
+  .band-dark {
+    background: var(--bg-section-dark, #0f1113);
+    color: var(--text-on-dark, #e9ecef);
+  }
 
-/* Content */
-.band__inner {
-  max-width: 1200px;
-  margin-inline: auto;
-  padding: 3.5rem 1.25rem;
-}
-.align-left   .band__inner { text-align: left; }
-.align-center .band__inner { text-align: center; }
-.align-right  .band__inner { text-align: right; }
+  .band__overlay {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 1;
+  }
 
-/* Typography */
-.band-dark .band__title,
-.band-dark .band__lead { color: #fff !important; text-shadow: 0 2px 18px rgba(0,0,0,.65) !important; }
-.band__title { margin: 0 0 .5rem; font-weight: 800; line-height: 1.1; font-size: clamp(2rem, 4.2vw, 3.25rem); }
-.band__lead  { margin: 0; max-width: 68ch; font-size: clamp(1rem, 1.6vw, 1.15rem); opacity: 1 !important; }
+  .band__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding: 3.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+  }
 
-/* Responsive min-height */
-@media (max-width: 768px) {
-  .band { min-height: 260px; }
-}
+  .band__title {
+    font-weight: 900;
+    font-size: clamp(1.8rem, 2.5vw, 2.3rem);
+    margin: 0 0 0.4rem;
+  }
+
+  .band__lead {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    margin: 0;
+    opacity: 0.85;
+  }
 </style>
