@@ -2,6 +2,10 @@
 import Project from "../../layouts/Project.astro";
 import CaseMedia from "../../components/CaseMedia.astro";
 
+/** ===== Base helper (for safe internal links) ===== */
+const base = import.meta.env.BASE_URL || "/";
+const url  = (p = "/") => `${base}${String(p).replace(/^\/+/, "")}`;
+
 /** ===== Page Meta ===== */
 const page = {
   title: "GBPT3D",
@@ -16,8 +20,10 @@ const page = {
 
 /** ===== Prototype Links ===== */
 const links = {
-  figmaDesktop: "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=116-848&t=5J8a9DvYhJEIwENw-1",
-  figmaMobile:  "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=113-67&t=5J8a9DvYhJEIwENw-1",
+  figmaDesktop:
+    "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=116-848&t=5J8a9DvYhJEIwENw-1",
+  figmaMobile:
+    "https://www.figma.com/proto/ucszbu4aEUy7phqyFxME9w/Untitled?node-id=113-67&t=5J8a9DvYhJEIwENw-1",
 };
 ---
 
@@ -28,6 +34,17 @@ const links = {
   heroOverlay={0.18}
   heroHeight={240}
 >
+  <!-- ===== Mobile back button (Projects) ===== -->
+  <nav class="crumb crumb--project">
+    <a
+      href={url("/projects")}
+      class="crumb__back"
+      aria-label="Back to Projects"
+    >
+      <span aria-hidden="true">←</span>
+      <span>Back to Projects</span>
+    </a>
+  </nav>
 
   <!-- ===== Overview ===== -->
   <section class="case-block">
@@ -38,15 +55,30 @@ const links = {
     </p>
 
     <div class="meta-grid">
-      <div><span class="k">บทบาท</span><span class="v">UX Strategy • UX/UI Design • Component Spec</span></div>
-      <div><span class="k">ขอบเขต</span><span class="v">Landing (Value Prop) + Services Catalog + Onboarding/Account</span></div>
-      <div><span class="k">จุดเด่น</span><span class="v">สื่อสาร USP ชัด, CTA เด่น, โครงสร้างพร้อมสเกลสู่ e-commerce/light CRM</span></div>
-      <div><span class="k">สถานะ</span><span class="v">ต้นแบบ Figma พร้อมส่งมอบทีม Dev</span></div>
+      <div>
+        <span class="k">บทบาท</span>
+        <span class="v">UX Strategy • UX/UI Design • Component Spec</span>
+      </div>
+      <div>
+        <span class="k">ขอบเขต</span>
+        <span class="v">Landing (Value Prop) + Services Catalog + Onboarding/Account</span>
+      </div>
+      <div>
+        <span class="k">จุดเด่น</span>
+        <span class="v">สื่อสาร USP ชัด, CTA เด่น, โครงสร้างพร้อมสเกลสู่ e-commerce/light CRM</span>
+      </div>
+      <div>
+        <span class="k">สถานะ</span>
+        <span class="v">ต้นแบบ Figma พร้อมส่งมอบทีม Dev</span>
+      </div>
     </div>
 
     <div class="media-grid">
       <div class="media mild">
-        <CaseMedia image="../../img/project/gbpt3d/index.png" caption="Overview — Desktop" />
+        <CaseMedia
+          image="../../img/project/gbpt3d/index.png"
+          caption="Overview — Desktop"
+        />
       </div>
     </div>
   </section>
@@ -65,7 +97,10 @@ const links = {
     </ul>
     <div class="media-grid">
       <div class="media mild">
-        <CaseMedia image="../../img/project/gbpt3d/service.png" caption="Services — Desktop" />
+        <CaseMedia
+          image="../../img/project/gbpt3d/service.png"
+          caption="Services — Desktop"
+        />
       </div>
     </div>
   </section>
@@ -83,7 +118,10 @@ const links = {
     </ul>
     <div class="media-grid">
       <div class="media mild">
-        <CaseMedia image="../../img/project/gbpt3d/register.png" caption="Register — Desktop" />
+        <CaseMedia
+          image="../../img/project/gbpt3d/register.png"
+          caption="Register — Desktop"
+        />
       </div>
     </div>
   </section>
@@ -92,9 +130,27 @@ const links = {
   <section class="case-block band-soft">
     <h2 class="case-head">Mobile Preview</h2>
     <div class="phones">
-      <figure><img src="../../img/project/gbpt3d/index-phone.png" alt="Hero (Mobile)" /><figcaption>Hero</figcaption></figure>
-      <figure><img src="../../img/project/gbpt3d/service-phone.png" alt="Services (Mobile)" /><figcaption>Services</figcaption></figure>
-      <figure><img src="../../img/project/gbpt3d/register-phone.png" alt="Register (Mobile)" /><figcaption>Register</figcaption></figure>
+      <figure>
+        <img
+          src="../../img/project/gbpt3d/index-phone.png"
+          alt="Hero (Mobile)"
+        />
+        <figcaption>Hero</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="../../img/project/gbpt3d/service-phone.png"
+          alt="Services (Mobile)"
+        />
+        <figcaption>Services</figcaption>
+      </figure>
+      <figure>
+        <img
+          src="../../img/project/gbpt3d/register-phone.png"
+          alt="Register (Mobile)"
+        />
+        <figcaption>Register</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -102,52 +158,159 @@ const links = {
   <section class="section">
     <div class="container-narrow">
       <div class="deliver">
-        <a class="cta big" href={links.figmaDesktop} target="_blank" rel="noreferrer">ดูต้นแบบ (Desktop)</a>
-        <a class="cta ghost" href={links.figmaMobile}  target="_blank" rel="noreferrer">ดูต้นแบบ (Mobile)</a>
+        <a
+          class="cta big"
+          href={links.figmaDesktop}
+          target="_blank"
+          rel="noreferrer"
+        >
+          ดูต้นแบบ (Desktop)
+        </a>
+        <a
+          class="cta ghost"
+          href={links.figmaMobile}
+          target="_blank"
+          rel="noreferrer"
+        >
+          ดูต้นแบบ (Mobile)
+        </a>
       </div>
     </div>
   </section>
-
 </Project>
 
 <style is:global>
+  /* Mobile back chip for projects */
+  .crumb--project {
+    display: none;
+    margin-bottom: 0.5rem;
+  }
+  .crumb__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background: var(--bg-soft, #eef1f4);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--text-strong, #101418);
+  }
+  .crumb__back span:first-child {
+    font-size: 1rem;
+    transform: translateY(-0.5px);
+  }
+  @media (max-width: 768px) {
+    .crumb--project {
+      display: block;
+    }
+  }
+
   /* Copy scale */
-  .lead-sm{ font-size:1.05rem; line-height:1.6; }
+  .lead-sm {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
 
   /* Meta rows */
-  .meta-grid{ display:grid; gap:.35rem; margin:.6rem 0 0; }
-  .meta-grid .k{ color:#66707a; width:120px; display:inline-block; }
-  .meta-grid .v{ color:#101418; }
+  .meta-grid {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.6rem 0 0;
+  }
+  .meta-grid .k {
+    color: #66707a;
+    width: 120px;
+    display: inline-block;
+  }
+  .meta-grid .v {
+    color: #101418;
+  }
 
   /* Mildly reduced media (desktop figures) */
   .media.mild :global(.frame),
-  .media.mild :where(img,video){
-    max-width: 860px; width:100%; margin-inline:auto;
+  .media.mild :where(img, video) {
+    max-width: 860px;
+    width: 100%;
+    margin-inline: auto;
   }
-  @media (max-width: 640px){
+  @media (max-width: 640px) {
     .media.mild :global(.frame),
-    .media.mild :where(img,video){ max-width: 560px; }
+    .media.mild :where(img, video) {
+      max-width: 560px;
+    }
   }
 
   /* Phone strip */
-  .phones{
+  .phones {
     --w: 280px;
-    display:grid; grid-template-columns: repeat(3, minmax(0,1fr));
-    gap:.9rem; justify-items:center;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    justify-items: center;
   }
-  .phones figure{ margin:0; text-align:center; }
-  .phones img{ width: var(--w); max-width:100%; border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 10px 22px rgba(0,0,0,.12); }
-  .phones figcaption{ font-size:.9rem; color:#47515b; margin-top:.4rem; }
-  @media (max-width:900px){ .phones{ grid-template-columns:1fr 1fr; } }
-  @media (max-width:560px){ .phones{ grid-template-columns:1fr; } }
+  .phones figure {
+    margin: 0;
+    text-align: center;
+  }
+  .phones img {
+    width: var(--w);
+    max-width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  }
+  .phones figcaption {
+    font-size: 0.9rem;
+    color: #47515b;
+    margin-top: 0.4rem;
+  }
+  @media (max-width: 900px) {
+    .phones {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .phones {
+      grid-template-columns: 1fr;
+    }
+  }
 
   /* Bottom CTAs (reuse pattern) */
-  .deliver{
-    margin:1.1rem 0 0; display:flex; flex-wrap:wrap; gap:.65rem; justify-content:center;
+  .deliver {
+    margin: 1.1rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
   }
-  .cta{ display:inline-block; padding:.7rem 1.1rem; border-radius:999px; font-weight:800; text-decoration:none; box-shadow:0 3px 10px rgba(0,0,0,.08); transition:transform .15s, box-shadow .15s, background .15s; }
-  .cta.big{ background:#0f6657; color:#fff; border:1px solid #0f6657; }
-  .cta.big:hover{ transform:translateY(-2px); box-shadow:0 10px 20px rgba(15,102,87,.25); }
-  .cta.ghost{ background:#fff; color:#111; border:1px solid rgba(0,0,0,.12); }
-  .cta.ghost:hover{ transform:translateY(-2px); box-shadow:0 10px 18px rgba(0,0,0,.12); }
+  .cta {
+    display: inline-block;
+    padding: 0.7rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  }
+  .cta.big {
+    background: #0f6657;
+    color: #fff;
+    border: 1px solid #0f6657;
+  }
+  .cta.big:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(15, 102, 87, 0.25);
+  }
+  .cta.ghost {
+    background: #fff;
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  .cta.ghost:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.12);
+  }
 </style>
