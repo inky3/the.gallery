@@ -53,18 +53,20 @@ const projects = [
   <Fragment slot="nav"><Nav /></Fragment>
 
   <!-- Compact dark band (fixed height + white copy) -->
- <Band
-  title="Projects"
-  lead="Explore my Website that I created myself."
-  variant="dark"
-  align="center"
-  height={180}
-  overlay={0.15}
-/>
+  <Band
+    title="Projects"
+    lead="Explore my Website that I created myself."
+    variant="dark"
+    align="center"
+    height={180}
+    overlay={0.15}
+  />
 
-<section class="intro-text">
-  <div class="container-narrow">
-</section>
+  <section class="intro-text">
+    <div class="container-narrow">
+      <!-- (optional intro copy here) -->
+    </div>
+  </section>
 
   <section class="section section-tight">
     <div class="container-narrow">
@@ -76,7 +78,7 @@ const projects = [
       </div>
 
       <div class="ggrid" id="projects-grid">
-        {projects.map(p => (
+        {projects.map((p) => (
           <GlassCard
             href={p.href}
             title={p.title}
@@ -98,70 +100,103 @@ const projects = [
     .section-tight { padding-top: 1.25rem; }
 
     .filter-rail{
-      display:flex; gap:.5rem; padding:.4rem; border-radius:999px;
-      background:var(--bg-soft,#eef1f4); border:1px solid var(--border-subtle,rgba(0,0,0,.06));
-      width:max-content; margin: 0 auto 1.1rem;
+      display:flex;
+      gap:.5rem;
+      padding:.4rem;
+      border-radius:999px;
+      background:var(--bg-soft,#eef1f4);
+      border:1px solid var(--border-subtle,rgba(0,0,0,.06));
+      width:max-content;
+      margin: 0 auto 1.1rem;
     }
     .chip{
-      appearance:none; border:none; background:transparent; cursor:pointer;
-      padding:.5rem 1rem; border-radius:999px; font-weight:700;
-      color:var(--text-strong,#101418); opacity:.85; transition:background .18s, color .18s, transform .1s, opacity .18s;
+      appearance:none;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      padding:.5rem 1rem;
+      border-radius:999px;
+      font-weight:700;
+      color:var(--text-strong,#101418);
+      opacity:.85;
+      transition:background .18s, color .18s, transform .1s, opacity .18s;
     }
-    .chip:hover{ transform:translateY(-1px); opacity:1; }
-    .chip.is-active{ background: var(--accent,#0f6657); color:#fff; opacity:1; }
+    .chip:hover{
+      transform:translateY(-1px);
+      opacity:1;
+    }
+    .chip.is-active{
+      background: var(--accent,#0f6657);
+      color:#fff;
+      opacity:1;
+    }
 
     .ggrid{
       --cols:3;
-      display:grid; gap:1.1rem;
+      display:grid;
+      gap:1.1rem;
       grid-template-columns:repeat(var(--cols), minmax(0,1fr));
     }
-    @media (max-width:1000px){ .ggrid{ --cols:2; } }
-    @media (max-width:640px){ .ggrid{ --cols:1; } }
+    @media (max-width:1000px){
+      .ggrid{ --cols:2; }
+    }
+    @media (max-width:640px){
+      .ggrid{ --cols:1; }
+    }
   </style>
 
-  <!-- Behavior: filter + tap-to-open + desktop hover safety -->
+  <!-- Behavior: filter + desktop hover; mobile taps go straight to page -->
   <script is:inline>
     (() => {
       const grid  = document.getElementById('projects-grid');
+      if (!grid) return;
+
       const chips = Array.from(document.querySelectorAll('.filter-rail .chip'));
       const cards = Array.from(grid.querySelectorAll('.gcard'));
 
-      const apply = (key) => {
-        cards.forEach(c => {
+      const apply = (key = 'all') => {
+        cards.forEach((c) => {
           const tags = (c.dataset.tags || "").split(',').filter(Boolean);
           const hit = key === 'all' || tags.includes(key);
           c.style.display = hit ? '' : 'none';
         });
       };
 
-      chips.forEach(btn => {
+      chips.forEach((btn) => {
         btn.addEventListener('click', () => {
-          chips.forEach(b => {
+          chips.forEach((b) => {
             const active = b === btn;
             b.classList.toggle('is-active', active);
             b.setAttribute('aria-selected', active ? 'true' : 'false');
           });
-          apply(btn.dataset.filter);
+          apply(btn.dataset.filter || 'all');
         });
       });
 
-      // Touch-friendly: tap to open glass panel, second tap navigates
-      grid.addEventListener('click', (e) => {
-        const a = e.target.closest('.gcard');
-        if (!a) return;
-        if (!a.classList.contains('is-open')) {
-          e.preventDefault();
-          Array.from(grid.querySelectorAll('.gcard.is-open')).forEach(x => x.classList.remove('is-open'));
-          a.classList.add('is-open');
-          setTimeout(() => a.classList.remove('is-open'), 4000);
-        }
-      });
+      // Only do "tap to open" preview on desktop / non-mobile
+      const isMobileViewport = window.matchMedia("(max-width: 820px)").matches;
 
-      // Desktop hover safety
-      cards.forEach(a => {
-        a.addEventListener('pointerenter', () => a.classList.add('is-open'));
-        a.addEventListener('pointerleave', () => a.classList.remove('is-open'));
-      });
+      if (!isMobileViewport) {
+        // Desktop: click once to open, second click follows link
+        grid.addEventListener('click', (e) => {
+          const a = e.target.closest('.gcard');
+          if (!a) return;
+
+          if (!a.classList.contains('is-open')) {
+            e.preventDefault();
+            Array.from(grid.querySelectorAll('.gcard.is-open'))
+              .forEach((x) => x.classList.remove('is-open'));
+            a.classList.add('is-open');
+            setTimeout(() => a.classList.remove('is-open'), 4000);
+          }
+        });
+
+        // Desktop hover
+        cards.forEach((a) => {
+          a.addEventListener('pointerenter', () => a.classList.add('is-open'));
+          a.addEventListener('pointerleave', () => a.classList.remove('is-open'));
+        });
+      }
     })();
   </script>
 </Main>
